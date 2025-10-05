@@ -12,7 +12,8 @@
 {{- .Page.Scratch.Set "mermaidCount" $mermaidNum -}}
 
 {{- /* Build SVG path (Mermaid CLI numbers from 1) */ -}}
-{{- $svgPath := printf "%s-%d.svg" $file $mermaidNum -}}
+{{- /* SVG files are in static/posts/ and served from /posts/ */ -}}
+{{- $svgPath := printf "/posts/%s-%d.svg" $file $mermaidNum -}}
 
 <div class="mermaid-diagram">
   <img src="{{ $svgPath }}"

@@ -111,6 +111,10 @@ while IFS= read -r -d '' file; do
             --backgroundColor transparent \
             2>&1 | grep -E "(Generated|Generating|Error)" || true
 
+        # Move generated SVG files to static/posts/ (Hugo serves static files as-is)
+        mkdir -p "$SCRIPT_DIR/static/posts"
+        mv "$DIR"/*.svg "$SCRIPT_DIR/static/posts/" 2>/dev/null || true
+
         DIAGRAMS_CONVERTED=$((DIAGRAMS_CONVERTED + 1))
     fi
 done < <(find "$SCRIPT_DIR/content/posts" -name "*.md" -print0)
