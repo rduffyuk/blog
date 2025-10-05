@@ -4,16 +4,29 @@
   // Only initialize Mermaid if there are mermaid blocks on the page
   if (document.querySelector('.mermaid')) {
     const mermaid = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
+
+    // Detect if dark mode is active (PaperMod theme uses .dark class on body)
+    const isDark = document.body.classList.contains('dark');
+
     mermaid.default.initialize({
       startOnLoad: true,
-      theme: 'dark',
-      themeVariables: {
+      theme: isDark ? 'dark' : 'default',
+      themeVariables: isDark ? {
+        // Dark mode: Purple/teal theme
         primaryColor: '#BB86FC',
         primaryTextColor: '#fff',
         primaryBorderColor: '#7c4dff',
         lineColor: '#F8B229',
         secondaryColor: '#03dac6',
         tertiaryColor: '#121212'
+      } : {
+        // Light mode: High contrast readable colors
+        primaryColor: '#6200EE',
+        primaryTextColor: '#000',
+        primaryBorderColor: '#6200EE',
+        lineColor: '#0077FF',
+        secondaryColor: '#018786',
+        tertiaryColor: '#f5f5f5'
       }
     });
   }
