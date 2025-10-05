@@ -199,30 +199,30 @@ ConvoCanvas would be different:
 
 ```mermaid
 graph LR
-    subgraph Phase1["⚡ Phase 1: MVP (72 hours)"]
-        Upload[📤 Upload Conversation] --> Parse[🔍 Parse Content]
-        Parse --> Analyze[🧠 AI Analysis]
-        Analyze --> Generate[📝 Generate Ideas]
+    subgraph Phase1[" Phase 1: MVP (72 hours)"]
+        Upload[Upload Conversation] --> Parse[Parse Content]
+        Parse --> Analyze[AI Analysis]
+        Analyze --> Generate[Generate Ideas]
     end
 
-    subgraph Phase2["🚀 Phase 2: Enhancement"]
-        WebUI[🌐 Web Interface]
-        Webhooks[🔗 Webhooks]
-        Drafts[✍️ Full Drafts]
+    subgraph Phase2[" Phase 2: Enhancement"]
+        WebUI[Web Interface]
+        Webhooks[Webhooks Integration]
+        Drafts[Full Draft Generation]
     end
 
-    subgraph Phase3["🤖 Phase 3: Automation"]
-        Schedule[⏰ Scheduled Publishing]
-        Multi[📱 Multi-Platform]
-        Analytics[📊 Analytics]
+    subgraph Phase3[" Phase 3: Automation"]
+        Schedule[Scheduled Publishing]
+        Multi[Multi-Platform Support]
+        Analytics[Analytics Tracking]
     end
 
     Phase1 --> Phase2
     Phase2 --> Phase3
 
-    style Phase1 fill:#e1f5fe
-    style Phase2 fill:#fff3e0
-    style Phase3 fill:#f3e5f5
+    style Phase1 fill:#1976D2,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style Phase2 fill:#F57C00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Phase3 fill:#7B1FA2,stroke:#4A148C,stroke-width:3px,color:#fff
 ```
 
 
