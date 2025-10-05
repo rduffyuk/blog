@@ -56,7 +56,53 @@
         }
 
     </style>
-</noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><style>
+   
+  .mermaid {
+    min-width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--code-bg);
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 18px !important;
+  }
+
+   
+  .mermaid svg {
+    min-height: 400px;
+    max-width: 100%;
+    height: auto;
+  }
+
+   
+  .mermaid .nodeLabel,
+  .mermaid .edgeLabel {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+  }
+
+   
+  .mermaid .cluster-label {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+   
+  .mermaid text {
+    font-size: 16px !important;
+    stroke: none !important;
+  }
+
+   
+  .mermaid-container {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+  }
+</style>
 <meta property="og:url" content="https://blog.rduffy.uk/categories/planning/">
   <meta property="og:site_name" content="Ryan Duffy - AI Infrastructure & Local LLM Journey">
   <meta property="og:title" content="Planning">
@@ -179,35 +225,51 @@
     mermaid.default.initialize({
       startOnLoad: true,
       theme: isDark ? 'dark' : 'base',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      
+      fontSize: 20,
+      
+      wrap: true,
+      
+      curve: 'basis',
       themeVariables: isDark ? {
         
-        primaryColor: '#BB86FC',
-        primaryTextColor: '#FFFFFF',
-        primaryBorderColor: '#7C4DFF',
-        lineColor: '#FFD700',
-        secondaryColor: '#03DAC6',
-        tertiaryColor: '#1E1E1E',
-        noteBkgColor: '#7C4DFF',
-        noteTextColor: '#FFFFFF',
+        fontSize: '20px',
+        primaryColor: '#7C4DFF',           
+        primaryTextColor: '#FFFFFF',       
+        primaryBorderColor: '#B388FF',     
+        lineColor: '#FFD700',              
+        secondaryColor: '#00E676',         
+        tertiaryColor: '#1E1E1E',          
+        
+        nodeBorder: '#B388FF',
+        mainBkg: '#7C4DFF',
+        textColor: '#FFFFFF',
+        
+        clusterBkg: '#424242',             
+        clusterBorder: '#B388FF',          
+        
         edgeLabelBackground: '#1E1E1E',
-        clusterBkg: '#2D2D2D',
-        clusterBorder: '#7C4DFF',
-        fontSize: '16px'
+        labelTextColor: '#FFFFFF'
       } : {
         
-        primaryColor: '#0D47A1',        
-        primaryTextColor: '#000000',    
-        primaryBorderColor: '#01579B',  
-        lineColor: '#BF360C',           
-        secondaryColor: '#004D40',      
-        tertiaryColor: '#FAFAFA',       
-        noteBkgColor: '#1565C0',
-        noteTextColor: '#FFFFFF',
-        edgeLabelBackground: '#FFFFFF',
-        clusterBkg: '#E1F5FE',          
-        clusterBorder: '#0D47A1',
-        fontSize: '16px'
+        fontSize: '20px',
+        primaryColor: '#FFFFFF',           
+        primaryTextColor: '#000000',       
+        primaryBorderColor: '#0D47A1',     
+        lineColor: '#D32F2F',              
+        secondaryColor: '#1B5E20',         
+        tertiaryColor: '#FAFAFA',          
+        
+        nodeBorder: '#0D47A1',
+        mainBkg: '#FFFFFF',
+        textColor: '#000000',
+        
+        clusterBkg: '#E3F2FD',             
+        clusterBorder: '#1565C0',          
+        
+        edgeLabelBackground: '#FFFDE7',    
+        labelTextColor: '#000000'          
       }
     });
   }

@@ -1,2 +1,51 @@
 {{- /* Favicon */ -}}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+{{- /* Mermaid diagram sizing and visibility fixes */ -}}
+<style>
+  /* Make Mermaid diagrams larger and more readable */
+  .mermaid {
+    min-width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--code-bg);
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 18px !important;
+  }
+
+  /* Force larger text in diagrams */
+  .mermaid svg {
+    min-height: 400px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Increase node/label font sizes */
+  .mermaid .nodeLabel,
+  .mermaid .edgeLabel {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+  }
+
+  /* Make cluster/subgraph labels bigger */
+  .mermaid .cluster-label {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+  /* Ensure text is always readable */
+  .mermaid text {
+    font-size: 16px !important;
+    stroke: none !important;
+  }
+
+  /* Add visual separation */
+  .mermaid-container {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+  }
+</style>
