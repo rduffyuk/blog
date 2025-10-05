@@ -1,4 +1,4 @@
-baseURL = 'https://rduffy.uk/'
+baseURL = 'https://blog.rduffy.uk/'
 languageCode = 'en-gb'
 title = 'Ryan Duffy - AI Infrastructure & Local LLM Journey'
 theme = 'PaperMod'
