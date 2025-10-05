@@ -1,0 +1,6 @@
+{{- /* Hugo render hook for Mermaid code blocks */ -}}
+{{- /* Converts ```mermaid blocks to <pre class="mermaid"> for Mermaid.js */ -}}
+<pre class="mermaid">
+{{- .Inner | htmlEscape | safeHTML -}}
+</pre>
+{{- .Page.Store.Set "hasMermaid" true -}}

@@ -31,79 +31,39 @@
 &lt;strong&gt;Layers&lt;/strong&gt;: 4&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;architecture-diagram&#34;&gt;Architecture Diagram&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;architecture-beta
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    %% Layer Groups
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    group presentation_layer(cloud)[PRESENTATION LAYER]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    group service_layer(server)[SERVICE LAYER]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    group ai_layer(disk)[AI LAYER]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    group data_layer(database)[DATA LAYER]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    group infrastructure_layer(internet)[INFRASTRUCTURE LAYER]
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    %% Components
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service presentation_1(cloud)[Obsidian Desktop\nHost: Desktop] in presentation_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service presentation_2(cloud)[ConvoCanvas UI\nHost: Next.js] in presentation_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service presentation_3(cloud)[Prometheus UI\nK3s: monitoring] in presentation_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service service_1(server)[Prefect\nHost: Workflows] in service_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service service_2(server)[MCP Server\nHost: FastMCP] in service_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service service_3(server)[Neural Vault\nHost: FastMCP] in service_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_1(server)[Ollama\nHost: Service] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_2(server)[ChromaDB\nHost: Vectors] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_3(server)[AgentRouter\nHost: RAG] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_4(server)[FastSearchAgent\nHost: No LLM] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_5(server)[DeepResearchAgent\nHost: Ollama] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_6(server)[Claude Code\nHost: MCP] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service ai_7(server)[Aider v0.86.1\nHost: Editor] in ai_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service data_1(disk)[Redis Cache\nHost: Cache] in data_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    %% INFRASTRUCTURE: Offline - 11 components expected
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service infrastructure_offline(server)[K3s Cluster Offline] in infrastructure_layer
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    %% User Entry Point
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    service user(cloud)[👤 User]
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;hr&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;architecture-beta
+
+    %% Layer Groups
+    group presentation_layer(cloud)[PRESENTATION LAYER]
+    group service_layer(server)[SERVICE LAYER]
+    group ai_layer(disk)[AI LAYER]
+    group data_layer(database)[DATA LAYER]
+    group infrastructure_layer(internet)[INFRASTRUCTURE LAYER]
+
+    %% Components
+    service presentation_1(cloud)[Obsidian Desktop\nHost: Desktop] in presentation_layer
+    service presentation_2(cloud)[ConvoCanvas UI\nHost: Next.js] in presentation_layer
+    service presentation_3(cloud)[Prometheus UI\nK3s: monitoring] in presentation_layer
+
+    service service_1(server)[Prefect\nHost: Workflows] in service_layer
+    service service_2(server)[MCP Server\nHost: FastMCP] in service_layer
+    service service_3(server)[Neural Vault\nHost: FastMCP] in service_layer
+
+    service ai_1(server)[Ollama\nHost: Service] in ai_layer
+    service ai_2(server)[ChromaDB\nHost: Vectors] in ai_layer
+    service ai_3(server)[AgentRouter\nHost: RAG] in ai_layer
+    service ai_4(server)[FastSearchAgent\nHost: No LLM] in ai_layer
+    service ai_5(server)[DeepResearchAgent\nHost: Ollama] in ai_layer
+    service ai_6(server)[Claude Code\nHost: MCP] in ai_layer
+    service ai_7(server)[Aider v0.86.1\nHost: Editor] in ai_layer
+
+    service data_1(disk)[Redis Cache\nHost: Cache] in data_layer
+
+    %% INFRASTRUCTURE: Offline - 11 components expected
+    service infrastructure_offline(server)[K3s Cluster Offline] in infrastructure_layer
+
+    %% User Entry Point
+    service user(cloud)[👤 User]&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id=&#34;component-breakdown&#34;&gt;Component Breakdown&lt;/h2&gt;
 &lt;h3 id=&#34;presentation-layer-3-components&#34;&gt;PRESENTATION LAYER (3 components)&lt;/h3&gt;
 &lt;ul&gt;
