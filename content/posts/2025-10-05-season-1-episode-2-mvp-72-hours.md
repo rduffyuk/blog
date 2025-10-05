@@ -76,27 +76,17 @@ The ecosystem was coming together. 🌐
 
 ```mermaid
 graph LR
-    subgraph Before[" "]
+    subgraph Before["Before Refactor - Messy MVP"]
         direction TB
-        Title1[❌ Before Refactor - Messy MVP]
-        style Title1 fill:none,stroke:none,color:#ff6347
-
-        Upload1[📤 Upload] --> Monolith[🔴 Monolithic Function<br/>50+ lines<br/>print\(\) error handling]
+        Upload1[📤 Upload] --> Monolith[🔴 Monolithic Function<br/>50+ lines<br/>print error handling]
         Monolith --> Return1[📦 Return ideas]
-
-        Title1 ~~~ Upload1
     end
 
-    subgraph After[" "]
+    subgraph After["After Refactor - Clean Architecture"]
         direction TB
-        Title2[✅ After Refactor - Clean Architecture]
-        style Title2 fill:none,stroke:none,color:#228b22
-
         Upload2[📤 Upload] --> Parser[🔍 ConversationParser<br/>Parse markdown]
         Parser --> Analyzer[🧠 ContentAnalyzer<br/>Extract insights]
         Analyzer --> Response[📝 ConversationResponse<br/>Type-safe JSON]
-
-        Title2 ~~~ Upload2
     end
 
     Before ==>|3-Hour Marathon| After

@@ -73,8 +73,58 @@ fi
 
 echo ""
 
-# Step 3: Build Hugo site
-echo "🏗️  Step 3: Building Hugo site..."
+# Step 3: Pre-render Mermaid diagrams to SVG
+echo "🎨 Step 3: Pre-rendering Mermaid diagrams..."
+cd "$SCRIPT_DIR"
+
+# Pull Mermaid CLI Docker image if not present
+if ! docker image inspect minlag/mermaid-cli:10.8.0 &> /dev/null; then
+    echo "  📥 Pulling Mermaid CLI Docker image (one-time download)..."
+    docker pull minlag/mermaid-cli:10.8.0
+fi
+
+# Find all markdown files with Mermaid blocks and convert them
+echo "  🔍 Scanning for Mermaid diagrams..."
+DIAGRAMS_CONVERTED=0
+
+# Process each markdown file in content/posts/
+while IFS= read -r -d '' file; do
+    # Get absolute path for Docker volume mounting
+    FULLPATH=$(realpath "$file")
+    DIR=$(dirname "$FULLPATH")
+    BASENAME=$(basename "$file" .md)
+    FILENAME=$(basename "$file")
+
+    # Check if file contains mermaid blocks
+    if grep -q '```mermaid' "$file"; then
+        echo "  ▶️  Converting diagrams in: $(basename $DIR)/$FILENAME"
+
+        # Run Mermaid CLI in Docker with absolute paths and proper user permissions
+        docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -v "$DIR":/data \
+            -v "$SCRIPT_DIR/.mermaidrc":/data/.mermaidrc \
+            minlag/mermaid-cli:10.8.0 \
+            -i "$FILENAME" \
+            -o "$BASENAME.svg" \
+            --configFile .mermaidrc \
+            --backgroundColor transparent \
+            2>&1 | grep -E "(Generated|Generating|Error)" || true
+
+        DIAGRAMS_CONVERTED=$((DIAGRAMS_CONVERTED + 1))
+    fi
+done < <(find "$SCRIPT_DIR/content/posts" -name "*.md" -print0)
+
+if [ $DIAGRAMS_CONVERTED -eq 0 ]; then
+    echo "  ℹ️  No Mermaid diagrams found"
+else
+    echo "  ✅ Converted diagrams in $DIAGRAMS_CONVERTED files"
+fi
+
+echo ""
+
+# Step 4: Build Hugo site
+echo "🏗️  Step 4: Building Hugo site..."
 cd "$SCRIPT_DIR"
 
 # Check if hugo is available

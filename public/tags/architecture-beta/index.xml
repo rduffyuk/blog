@@ -20,39 +20,13 @@
 &lt;strong&gt;Layers&lt;/strong&gt;: 4&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;architecture-diagram&#34;&gt;Architecture Diagram&lt;/h2&gt;
-&lt;pre class=&#34;mermaid&#34;&gt;architecture-beta
-
-    %% Layer Groups
-    group presentation_layer(cloud)[PRESENTATION LAYER]
-    group service_layer(server)[SERVICE LAYER]
-    group ai_layer(disk)[AI LAYER]
-    group data_layer(database)[DATA LAYER]
-    group infrastructure_layer(internet)[INFRASTRUCTURE LAYER]
-
-    %% Components
-    service presentation_1(cloud)[Obsidian Desktop\nHost: Desktop] in presentation_layer
-    service presentation_2(cloud)[ConvoCanvas UI\nHost: Next.js] in presentation_layer
-    service presentation_3(cloud)[Prometheus UI\nK3s: monitoring] in presentation_layer
-
-    service service_1(server)[Prefect\nHost: Workflows] in service_layer
-    service service_2(server)[MCP Server\nHost: FastMCP] in service_layer
-    service service_3(server)[Neural Vault\nHost: FastMCP] in service_layer
-
-    service ai_1(server)[Ollama\nHost: Service] in ai_layer
-    service ai_2(server)[ChromaDB\nHost: Vectors] in ai_layer
-    service ai_3(server)[AgentRouter\nHost: RAG] in ai_layer
-    service ai_4(server)[FastSearchAgent\nHost: No LLM] in ai_layer
-    service ai_5(server)[DeepResearchAgent\nHost: Ollama] in ai_layer
-    service ai_6(server)[Claude Code\nHost: MCP] in ai_layer
-    service ai_7(server)[Aider v0.86.1\nHost: Editor] in ai_layer
-
-    service data_1(disk)[Redis Cache\nHost: Cache] in data_layer
-
-    %% INFRASTRUCTURE: Offline - 11 components expected
-    service infrastructure_offline(server)[K3s Cluster Offline] in infrastructure_layer
-
-    %% User Entry Point
-    service user(cloud)[👤 User]&lt;/pre&gt;&lt;hr&gt;
+&lt;div class=&#34;mermaid-diagram&#34;&gt;
+  &lt;img src=&#34;Architecture-v0.1.0-mermaid-arch-3.svg&#34;
+       alt=&#34;Diagram 3&#34;
+       loading=&#34;lazy&#34;
+       style=&#34;max-width: 100%; height: auto; display: block; margin: 2rem auto;&#34;&gt;
+&lt;/div&gt;
+&lt;hr&gt;
 &lt;h2 id=&#34;component-breakdown&#34;&gt;Component Breakdown&lt;/h2&gt;
 &lt;h3 id=&#34;presentation-layer-3-components&#34;&gt;PRESENTATION LAYER (3 components)&lt;/h3&gt;
 &lt;ul&gt;

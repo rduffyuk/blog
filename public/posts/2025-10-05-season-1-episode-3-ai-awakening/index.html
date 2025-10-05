@@ -57,49 +57,35 @@
     </style>
 </noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><style>
    
-  .mermaid {
-    min-width: 100%;
-    max-width: 1200px;
-    margin: 2rem auto;
+  .mermaid-diagram {
+    margin: 2.5rem 0;
     padding: 1.5rem;
     background: var(--code-bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    overflow-x: auto;
-    font-size: 18px !important;
+    text-align: center;
   }
 
    
-  .mermaid svg {
-    min-height: 400px;
+  .mermaid-diagram img {
     max-width: 100%;
     height: auto;
+    min-height: 300px;
+    display: block;
+    margin: 0 auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
    
-  .mermaid .nodeLabel,
-  .mermaid .edgeLabel {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-  }
-
-   
-  .mermaid .cluster-label {
-    font-size: 20px !important;
-    font-weight: 600 !important;
-  }
-
-   
-  .mermaid text {
-    font-size: 16px !important;
-    stroke: none !important;
-  }
-
-   
-  .mermaid-container {
-    margin: 2rem 0;
-    padding: 1rem;
-    border: 2px solid var(--border);
-    border-radius: 8px;
+  @media (max-width: 768px) {
+    .mermaid-diagram {
+      padding: 1rem;
+      margin: 1.5rem -1rem;
+    }
+    .mermaid-diagram img {
+      min-height: 250px;
+    }
   }
 </style>
 <meta property="og:url" content="https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/">
@@ -152,8 +138,8 @@
   "keywords": [
     "ollama", "local-llm", "deepseek", "rtx-4080", "ai-infrastructure", "context-windows"
   ],
-  "articleBody": "Episode 3: The AI Awakening - Breaking Free from Context Limits Series: Season 1 - From Zero to Automated Infrastructure Episode: 3 of 8 Dates: September 18-19, 2025 Reading Time: 8 minutes\nThe Context Window Problem (Again) By September 18, ConvoCanvas was working. The MVP could parse conversations and generate content ideas. But the original problem that started this whole journey? Still unsolved.\n❌ Error: Context window overflow. This conversation is too long to continue. Would you like to start a new chat?I was still hitting context limits. Still losing conversation history. Still starting over every time Claude Code or ChatGPT hit their limits.\nConvoCanvas could organize the past conversations, but it couldn’t prevent me from hitting limits on new conversations.\nThe real problem wasn’t storage - it was conversation continuity.\nThe Realization: I Need My Own Models The issue wasn’t cost (I was using Claude Code, not paying per API call). The issue was control.\nWhat I couldn’t control with external services:\n❌ Context window limits - Hit 200K tokens? Start over. ❌ Conversation persistence - Can’t continue yesterday’s deep dive ❌ Model availability - Service down? Can’t work. ❌ Privacy concerns - Every conversation goes to external servers ❌ Experimentation freedom - Can’t test ideas without worrying about limits What I needed:\n✅ Configurable context (choose models with appropriate limits) ✅ Persistent conversations (save and resume anytime) ✅ 24/7 availability (works offline) ✅ Complete privacy (never leaves my machine) ✅ Unlimited experimentation (no external throttling or billing) I needed local inference. I needed Ollama.\nReality check: Local models still have context limits (Llama 3.1: 128K tokens, DeepSeek R1: 32K tokens). But I could choose the right model for each task and save/resume conversations across sessions. The win wasn’t unlimited context - it was control over the context.\ngraph LR subgraph External[\"❌ External Services - Before Sept 18\"] direction TB Title1[Context Window Limits] style Title1 fill:none,stroke:none,color:#ff6347 Claude[Claude Code200K token limit] --\u003e|Hit Limit| Restart1[🔄 Forced Restart] ChatGPT[ChatGPT128K token limit] --\u003e|Hit Limit| Restart2[🔄 Forced Restart] Restart1 --\u003e LostContext[💔 Lost ContextStart Over] Restart2 --\u003e LostContext Title1 ~~~ Claude end subgraph Local[\"✅ Local Ollama - After Sept 18\"] direction TB Title2[Context Control] style Title2 fill:none,stroke:none,color:#228b22 Ollama[Ollama Models32K-128K limits] --\u003e|Save State| Persist[💾 Save Conversation] Persist --\u003e Resume[▶️ Resume Anytime] Resume --\u003e Control[🎛️ Choose Right ModelPer Task] Title2 ~~~ Ollama end External -.-\u003e|\"September 18, 202515-Hour Sprint\"| Migration[🔄 Migration] Migration -.-\u003e Local style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2pxSeptember 18, 9:00 AM - The Research Phase Vault Evidence: LLM-Inference-Servers-Comparison.md created September 18, 2025, documenting the research into Ollama, vLLM, and other local inference options.\nI’d heard about Ollama - a tool for running LLMs locally. But I had questions:\nHardware Requirements:\nCould my RTX 4080 (16GB VRAM) handle production models? What about quantization? GGUF vs GGML? How many models could I run simultaneously? Model Selection:\nDeepSeek R1 (reasoning model) - 7B parameters Mistral 7B (fast general-purpose) Llama 3.1 (Meta’s latest) CodeLlama (specialized for code) Context Window Comparison:\nClaude Code: 200K tokens (then forced restart) ChatGPT: 128K tokens (then forced restart) Local Ollama: Limited only by VRAM (configurable!)Performance Targets:\nResponse time: \u003c2 seconds for 1K tokens Concurrent requests: 3+ models Context persistence: Save/resume conversations indefinitely I documented the research:\n“Ollama provides a Docker-like experience for LLMs. Single command deployment, automatic model management, OpenAI-compatible API. Perfect for local development. Most importantly: I control the context window.”\nThe decision was made. Time to build.\n9:30 AM - Installation 1 2 3 4 5 6 7 # Install Ollama curl -fsSL https://ollama.com/install.sh | sh # Verify GPU access ollama run llama3.1 # Output: Using NVIDIA RTX 4080, 16GB VRAM # Model loaded in 2.3 seconds IT WORKED.\nThe RTX 4080 was humming. VRAM usage: 6.2GB for Llama 3.1 8B. Plenty of headroom.\n10:00 AM - Model Collection I started pulling models like a kid in a candy store:\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # Reasoning specialist ollama pull deepseek-r1:7b # General purpose (fastest) ollama pull mistral:7b-instruct # Meta's latest ollama pull llama3.1:8b # Code specialist ollama pull codellama:7b # Uncensored variant (for creative tasks) ollama pull nous-hermes-2:latest # Compact model (2B for quick tasks) ollama pull phi-3:mini Total download: 42GB Installation time: 35 minutes Models available: 6\nBut I didn’t stop there.\n11:00 AM - The Growing Collection By noon, I had 17 models installed:\nModel Size Purpose VRAM Context Window DeepSeek R1 7B Reasoning \u0026 analysis 4.2GB 32K tokens Mistral Instruct 7B General chat 4.1GB 32K tokens Llama 3.1 8B Latest Meta model 4.8GB 128K tokens CodeLlama 7B Code generation 4.3GB 16K tokens Nous Hermes 2 7B Creative writing 4.2GB 8K tokens Phi-3 Mini 2B Quick tasks 1.4GB 4K tokens Qwen 2.5 7B Multilingual 4.5GB 32K tokens Neural Chat 7B Conversational 4.0GB 8K tokens Orca Mini 3B Compact reasoning 1.9GB 2K tokens Vicuna 7B Research assistant 4.4GB 2K tokens WizardCoder 7B Code debugging 4.3GB 16K tokens Zephyr 7B Instruction following 4.1GB 8K tokens OpenHermes 7B General purpose 4.2GB 8K tokens Starling 7B Advanced reasoning 4.6GB 8K tokens Solar 10.7B Performance leader 6.8GB 4K tokens Yi-34B 34B (quantized) Heavy lifting 12.1GB 4K tokens Mixtral 8x7B 47B (quantized) Mixture of experts 14.2GB 32K tokens The RTX 4080 could handle them all. (Just not simultaneously.)\ngraph TD Start[🎯 Goal: Context Freedom] --\u003e Research[🔍 Research Phase9:00-9:30 AM] Research --\u003e Install[⚡ Install Ollama9:30 AM] Install --\u003e First6[📦 First 6 Models10:00-10:35 AM] First6 --\u003e Reasoning[💡 DeepSeek R1Reasoning] First6 --\u003e Fast[⚡ Mistral 7BGeneral Purpose] First6 --\u003e Code[💻 CodeLlamaCode Tasks] First6 --\u003e Latest[🆕 Llama 3.1Meta's Latest] First6 --\u003e Creative[🎨 Nous HermesCreative] First6 --\u003e Mini[⚙️ Phi-3 MiniQuick Tasks] First6 --\u003e Testing[🧪 Testing Phase10:35-11:00 AM] Testing --\u003e Decision{More Models?} Decision --\u003e|Yes| More11[📦 +11 More Models11:00 AM-12:00 PM] More11 --\u003e Heavy[🏋️ Yi-34BHeavy Lifting] More11 --\u003e Expert[🎯 Mixtral 8x7BMixture of Experts] More11 --\u003e Plus9[+9 More Specialized] More11 --\u003e Final[🎊 17 Total Models78GB DownloadedBy Noon] Final --\u003e Result[✅ Complete CollectionReady for Testing] style Start fill:#ffd700,stroke:#ff6347,stroke-width:2px style Final fill:#98fb98,stroke:#228b22,stroke-width:2px style Result fill:#e1f5fe,stroke:#1976d2,stroke-width:2px1:00 PM - Testing Context Persistence Now came the real test: Could I maintain conversation context across sessions?\nTest 1: Long Conversation\n1 2 3 4 5 6 # Start a conversation about network automation ollama run deepseek-r1:7b # Talk for 50+ messages (would hit context limit on Claude Code) # Save conversation state # Resume next day with full context! Result: ✅ No more “conversation too long” errors!\nTest 2: Context Switching\n1 2 3 4 5 6 7 8 9 10 # Morning: Work on Python with CodeLlama ollama run codellama:7b # Save context: /tmp/python-session.json # Afternoon: Work on network config with DeepSeek ollama run deepseek-r1:7b # Save context: /tmp/network-session.json # Evening: Resume Python session with ALL previous context # Load context: /tmp/python-session.json Result: ✅ Persistent conversations across sessions!\nTest 3: Large Context Window\n1 2 3 4 # Test with 10,000 word document response_time = 8.2 # seconds context_retained = True # Full document in context! external_service = False # All local, all private Result: ✅ No external limits!\n3:00 PM - The Freedom Realization I ran the same test I’d done with Claude Code that triggered this whole journey:\nInput: 3-hour debugging session about network automation Messages: 87 back-and-forth exchanges Context size: ~50K tokens Claude Code result: \"Context window overflow. Start new chat?\" Ollama result: \"Ready for message 88. Full context retained.\"The breakthrough: I could continue conversations indefinitely.\nWhat I Gained (vs External Services) Before (Claude Code/ChatGPT):\nHit context limit → Lose all context → Start over Can’t save/resume conversations Dependent on service availability Every conversation logged externally Limited experimentation (don’t want to hit limits) After (Local Ollama):\nContext limited only by hardware (configurable) Save/resume any conversation anytime Works offline, no service dependency Complete privacy (never leaves machine) Unlimited experimentation (iterate fearlessly) Cost Comparison (bonus):\nClaude API (if I were using it): $720/year Ollama (local): $0/year RTX 4080 (already owned): Already paid forBut cost wasn’t the driver - freedom was.\nSeptember 19, 9:00 AM - The Supervisor Pattern With 17 models available, I built an orchestrator to route tasks to the best model:\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 class ModelSupervisor: def __init__(self): self.models = { \"reasoning\": \"deepseek-r1:7b\", \"general\": \"mistral:7b-instruct\", \"code\": \"codellama:7b\", \"fast\": \"phi-3:mini\", \"creative\": \"nous-hermes-2:latest\", \"long_context\": \"llama3.1:8b\" # 128K context! } def route_task(self, task_type: str, prompt: str) -\u003e str: \"\"\"Route task to optimal model.\"\"\" model = self.models.get(task_type, self.models[\"general\"]) response = requests.post( \"http://localhost:11434/api/generate\", json={\"model\": model, \"prompt\": prompt} ) return response.json()[\"response\"] graph TD User[👤 User Request] --\u003e Router{🎯 Task RouterModel Supervisor} Router --\u003e|\"Need reasoningor analysis\"| DeepSeek[🧠 DeepSeek R1 7B32K context4.2GB VRAM] Router --\u003e|\"Code generationor debugging\"| CodeLlama[💻 CodeLlama 7B16K context4.3GB VRAM] Router --\u003e|\"Quick questionfast response\"| Mistral[⚡ Mistral 7B32K context4.1GB VRAM] Router --\u003e|\"Long documentlarge context\"| Llama[🆕 Llama 3.1 8B128K context!4.8GB VRAM] Router --\u003e|\"Heavy analysiscomplex task\"| Yi[🏋️ Yi-34B Quantized4K context12.1GB VRAM] DeepSeek --\u003e Response[📤 Response withFull Context Retained] CodeLlama --\u003e Response Mistral --\u003e Response Llama --\u003e Response Yi --\u003e Response style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2pxUsage:\n1 2 3 4 5 6 7 8 9 10 11 supervisor = ModelSupervisor() # Long context work → Llama 3.1 (128K context) analysis = supervisor.route_task(\"long_context\", \"Analyze this entire 100-page document...\") # Code task → CodeLlama code_review = supervisor.route_task(\"code\", \"Review this function...\") # Quick response → Phi-3 Mini quick_answer = supervisor.route_task(\"fast\", \"What is FastAPI?\") The system could now self-optimize based on context needs.\nWhat Worked Ollama’s Model Management: Single command to pull, update, or remove models. No Docker containers, no config files, no complexity.\nContext Persistence: Finally solved the original Day Zero problem - no more losing conversation history!\nGPU Performance: RTX 4080 handled everything I threw at it. 16GB VRAM was the sweet spot for running multiple 7B models.\nPrivacy \u0026 Control: All conversations stay local. No external logging. Complete ownership of my AI interactions.\nFreedom to Experiment: No context limits = fearless iteration. Can explore ideas without worrying about hitting walls.\nWhat Still Sucked Model Switching Latency: Loading a new model: 2-4 seconds. Not terrible, but noticeable when switching frequently.\nVRAM Juggling: Can’t run Mixtral 8x7B (14.2GB) alongside anything else. Had to be strategic about which models stayed loaded.\nQuality Variance: Some models (Phi-3 Mini) were fast but shallow. Others (DeepSeek R1) were brilliant but slower. Required testing to find the right fit.\nStill Need Claude Code: Local models are good, but Claude Code’s reasoning is still unmatched for complex tasks. Ollama complements, doesn’t replace.\nThe Numbers (15-Hour Sprint) Metric Value Implementation Time 15 hours (Sept 18-19) Models Installed 17 Total Download Size 78GB VRAM Available 16GB (RTX 4080) Context Limit Freedom Unlimited (hardware-bound) Average Response Time 2.1 seconds Concurrent Models 3 (12.4GB VRAM) External Dependencies Eliminated ★ Insight ───────────────────────────────────── The Freedom of Local Inference:\nSwitching to local LLMs wasn’t about cost - it was about solving the original problem:\nContext continuity - No more “conversation too long” errors Conversation persistence - Save/resume anytime Privacy - Conversations never leave the machine Offline capability - No internet required Experimentation freedom - Iterate without external limits Learning - Direct access to model internals, VRAM, performance tuning The cost savings ($0/year vs potential API costs) were a bonus. The real win was never hitting context limits again.\nLocal-first AI infrastructure isn’t just cheaper - it’s fundamentally different. You own your conversations. You control your context. You decide when to move on.\nDay Zero’s context window problem? Finally solved. ─────────────────────────────────────────────────\nWhat I Learned 1. The original problem drives the best solutions Day Zero: Context window overflow. Episode 3: Local LLMs with persistent context. The solution directly addressed the root cause.\n2. Hardware limitations become features 16GB VRAM forced model selection discipline. Can’t run everything = must choose the right tool for each task.\n3. Context persistence \u003e raw performance A 7B local model you can save/resume beats a cloud model that forces restarts.\n4. Privacy enables experimentation Knowing conversations stay local removes psychological barriers to trying wild ideas.\n5. Local doesn’t mean isolated Ollama + Claude Code = best of both worlds. Use local for persistent work, cloud for complex reasoning.\nWhat’s Next Ollama was running. I could maintain conversations indefinitely. But the system was generating responses faster than I could organize them.\nBy September 22, I’d have 1,142 markdown files in the vault - including all these Ollama conversation logs.\nBy September 24, I’d be drowning in documentation again.\nBy September 27, I’d build automation to solve the organization problem… using these same local models.\nBut first, I needed to survive the documentation explosion.\nNext Episode: “Documentation Overload: When 1,142 Files Become Unmanageable” - The moment persistent conversations created a new problem, and why I built ChromaDB indexing.\nThis is Episode 3 of “Season 1: From Zero to Automated Infrastructure” - documenting the AI awakening that solved the context window problem.\nPrevious Episode: Building the Foundation: MVP in 72 Hours Complete Series: Season 1 Mapping Report\n",
-  "wordCount" : "2138",
+  "articleBody": "Episode 3: The AI Awakening - Breaking Free from Context Limits Series: Season 1 - From Zero to Automated Infrastructure Episode: 3 of 8 Dates: September 18-19, 2025 Reading Time: 8 minutes\nThe Context Window Problem (Again) By September 18, ConvoCanvas was working. The MVP could parse conversations and generate content ideas. But the original problem that started this whole journey? Still unsolved.\n❌ Error: Context window overflow. This conversation is too long to continue. Would you like to start a new chat? I was still hitting context limits. Still losing conversation history. Still starting over every time Claude Code or ChatGPT hit their limits.\nConvoCanvas could organize the past conversations, but it couldn’t prevent me from hitting limits on new conversations.\nThe real problem wasn’t storage - it was conversation continuity.\nThe Realization: I Need My Own Models The issue wasn’t cost (I was using Claude Code, not paying per API call). The issue was control.\nWhat I couldn’t control with external services:\n❌ Context window limits - Hit 200K tokens? Start over. ❌ Conversation persistence - Can’t continue yesterday’s deep dive ❌ Model availability - Service down? Can’t work. ❌ Privacy concerns - Every conversation goes to external servers ❌ Experimentation freedom - Can’t test ideas without worrying about limits What I needed:\n✅ Configurable context (choose models with appropriate limits) ✅ Persistent conversations (save and resume anytime) ✅ 24/7 availability (works offline) ✅ Complete privacy (never leaves my machine) ✅ Unlimited experimentation (no external throttling or billing) I needed local inference. I needed Ollama.\nReality check: Local models still have context limits (Llama 3.1: 128K tokens, DeepSeek R1: 32K tokens). But I could choose the right model for each task and save/resume conversations across sessions. The win wasn’t unlimited context - it was control over the context.\nSeptember 18, 9:00 AM - The Research Phase Vault Evidence: LLM-Inference-Servers-Comparison.md created September 18, 2025, documenting the research into Ollama, vLLM, and other local inference options.\nI’d heard about Ollama - a tool for running LLMs locally. But I had questions:\nHardware Requirements:\nCould my RTX 4080 (16GB VRAM) handle production models? What about quantization? GGUF vs GGML? How many models could I run simultaneously? Model Selection:\nDeepSeek R1 (reasoning model) - 7B parameters Mistral 7B (fast general-purpose) Llama 3.1 (Meta’s latest) CodeLlama (specialized for code) Context Window Comparison:\nClaude Code: 200K tokens (then forced restart) ChatGPT: 128K tokens (then forced restart) Local Ollama: Limited only by VRAM (configurable!) Performance Targets:\nResponse time: \u003c2 seconds for 1K tokens Concurrent requests: 3+ models Context persistence: Save/resume conversations indefinitely I documented the research:\n“Ollama provides a Docker-like experience for LLMs. Single command deployment, automatic model management, OpenAI-compatible API. Perfect for local development. Most importantly: I control the context window.”\nThe decision was made. Time to build.\n9:30 AM - Installation # Install Ollama curl -fsSL https://ollama.com/install.sh | sh # Verify GPU access ollama run llama3.1 # Output: Using NVIDIA RTX 4080, 16GB VRAM # Model loaded in 2.3 seconds IT WORKED.\nThe RTX 4080 was humming. VRAM usage: 6.2GB for Llama 3.1 8B. Plenty of headroom.\n10:00 AM - Model Collection I started pulling models like a kid in a candy store:\n# Reasoning specialist ollama pull deepseek-r1:7b # General purpose (fastest) ollama pull mistral:7b-instruct # Meta\u0026#39;s latest ollama pull llama3.1:8b # Code specialist ollama pull codellama:7b # Uncensored variant (for creative tasks) ollama pull nous-hermes-2:latest # Compact model (2B for quick tasks) ollama pull phi-3:mini Total download: 42GB Installation time: 35 minutes Models available: 6\nBut I didn’t stop there.\n11:00 AM - The Growing Collection By noon, I had 17 models installed:\nModel Size Purpose VRAM Context Window DeepSeek R1 7B Reasoning \u0026 analysis 4.2GB 32K tokens Mistral Instruct 7B General chat 4.1GB 32K tokens Llama 3.1 8B Latest Meta model 4.8GB 128K tokens CodeLlama 7B Code generation 4.3GB 16K tokens Nous Hermes 2 7B Creative writing 4.2GB 8K tokens Phi-3 Mini 2B Quick tasks 1.4GB 4K tokens Qwen 2.5 7B Multilingual 4.5GB 32K tokens Neural Chat 7B Conversational 4.0GB 8K tokens Orca Mini 3B Compact reasoning 1.9GB 2K tokens Vicuna 7B Research assistant 4.4GB 2K tokens WizardCoder 7B Code debugging 4.3GB 16K tokens Zephyr 7B Instruction following 4.1GB 8K tokens OpenHermes 7B General purpose 4.2GB 8K tokens Starling 7B Advanced reasoning 4.6GB 8K tokens Solar 10.7B Performance leader 6.8GB 4K tokens Yi-34B 34B (quantized) Heavy lifting 12.1GB 4K tokens Mixtral 8x7B 47B (quantized) Mixture of experts 14.2GB 32K tokens The RTX 4080 could handle them all. (Just not simultaneously.)\n1:00 PM - Testing Context Persistence Now came the real test: Could I maintain conversation context across sessions?\nTest 1: Long Conversation\n# Start a conversation about network automation ollama run deepseek-r1:7b # Talk for 50+ messages (would hit context limit on Claude Code) # Save conversation state # Resume next day with full context! Result: ✅ No more “conversation too long” errors!\nTest 2: Context Switching\n# Morning: Work on Python with CodeLlama ollama run codellama:7b # Save context: /tmp/python-session.json # Afternoon: Work on network config with DeepSeek ollama run deepseek-r1:7b # Save context: /tmp/network-session.json # Evening: Resume Python session with ALL previous context # Load context: /tmp/python-session.json Result: ✅ Persistent conversations across sessions!\nTest 3: Large Context Window\n# Test with 10,000 word document response_time = 8.2 # seconds context_retained = True # Full document in context! external_service = False # All local, all private Result: ✅ No external limits!\n3:00 PM - The Freedom Realization I ran the same test I’d done with Claude Code that triggered this whole journey:\nInput: 3-hour debugging session about network automation Messages: 87 back-and-forth exchanges Context size: ~50K tokens Claude Code result: \u0026#34;Context window overflow. Start new chat?\u0026#34; Ollama result: \u0026#34;Ready for message 88. Full context retained.\u0026#34; The breakthrough: I could continue conversations indefinitely.\nWhat I Gained (vs External Services) Before (Claude Code/ChatGPT):\nHit context limit → Lose all context → Start over Can’t save/resume conversations Dependent on service availability Every conversation logged externally Limited experimentation (don’t want to hit limits) After (Local Ollama):\nContext limited only by hardware (configurable) Save/resume any conversation anytime Works offline, no service dependency Complete privacy (never leaves machine) Unlimited experimentation (iterate fearlessly) Cost Comparison (bonus):\nClaude API (if I were using it): $720/year Ollama (local): $0/year RTX 4080 (already owned): Already paid for But cost wasn’t the driver - freedom was.\nSeptember 19, 9:00 AM - The Supervisor Pattern With 17 models available, I built an orchestrator to route tasks to the best model:\nclass ModelSupervisor: def __init__(self): self.models = { \u0026#34;reasoning\u0026#34;: \u0026#34;deepseek-r1:7b\u0026#34;, \u0026#34;general\u0026#34;: \u0026#34;mistral:7b-instruct\u0026#34;, \u0026#34;code\u0026#34;: \u0026#34;codellama:7b\u0026#34;, \u0026#34;fast\u0026#34;: \u0026#34;phi-3:mini\u0026#34;, \u0026#34;creative\u0026#34;: \u0026#34;nous-hermes-2:latest\u0026#34;, \u0026#34;long_context\u0026#34;: \u0026#34;llama3.1:8b\u0026#34; # 128K context! } def route_task(self, task_type: str, prompt: str) -\u0026gt; str: \u0026#34;\u0026#34;\u0026#34;Route task to optimal model.\u0026#34;\u0026#34;\u0026#34; model = self.models.get(task_type, self.models[\u0026#34;general\u0026#34;]) response = requests.post( \u0026#34;http://localhost:11434/api/generate\u0026#34;, json={\u0026#34;model\u0026#34;: model, \u0026#34;prompt\u0026#34;: prompt} ) return response.json()[\u0026#34;response\u0026#34;] Usage:\nsupervisor = ModelSupervisor() # Long context work → Llama 3.1 (128K context) analysis = supervisor.route_task(\u0026#34;long_context\u0026#34;, \u0026#34;Analyze this entire 100-page document...\u0026#34;) # Code task → CodeLlama code_review = supervisor.route_task(\u0026#34;code\u0026#34;, \u0026#34;Review this function...\u0026#34;) # Quick response → Phi-3 Mini quick_answer = supervisor.route_task(\u0026#34;fast\u0026#34;, \u0026#34;What is FastAPI?\u0026#34;) The system could now self-optimize based on context needs.\nWhat Worked Ollama’s Model Management: Single command to pull, update, or remove models. No Docker containers, no config files, no complexity.\nContext Persistence: Finally solved the original Day Zero problem - no more losing conversation history!\nGPU Performance: RTX 4080 handled everything I threw at it. 16GB VRAM was the sweet spot for running multiple 7B models.\nPrivacy \u0026 Control: All conversations stay local. No external logging. Complete ownership of my AI interactions.\nFreedom to Experiment: No context limits = fearless iteration. Can explore ideas without worrying about hitting walls.\nWhat Still Sucked Model Switching Latency: Loading a new model: 2-4 seconds. Not terrible, but noticeable when switching frequently.\nVRAM Juggling: Can’t run Mixtral 8x7B (14.2GB) alongside anything else. Had to be strategic about which models stayed loaded.\nQuality Variance: Some models (Phi-3 Mini) were fast but shallow. Others (DeepSeek R1) were brilliant but slower. Required testing to find the right fit.\nStill Need Claude Code: Local models are good, but Claude Code’s reasoning is still unmatched for complex tasks. Ollama complements, doesn’t replace.\nThe Numbers (15-Hour Sprint) Metric Value Implementation Time 15 hours (Sept 18-19) Models Installed 17 Total Download Size 78GB VRAM Available 16GB (RTX 4080) Context Limit Freedom Unlimited (hardware-bound) Average Response Time 2.1 seconds Concurrent Models 3 (12.4GB VRAM) External Dependencies Eliminated ★ Insight ───────────────────────────────────── The Freedom of Local Inference:\nSwitching to local LLMs wasn’t about cost - it was about solving the original problem:\nContext continuity - No more “conversation too long” errors Conversation persistence - Save/resume anytime Privacy - Conversations never leave the machine Offline capability - No internet required Experimentation freedom - Iterate without external limits Learning - Direct access to model internals, VRAM, performance tuning The cost savings ($0/year vs potential API costs) were a bonus. The real win was never hitting context limits again.\nLocal-first AI infrastructure isn’t just cheaper - it’s fundamentally different. You own your conversations. You control your context. You decide when to move on.\nDay Zero’s context window problem? Finally solved. ─────────────────────────────────────────────────\nWhat I Learned 1. The original problem drives the best solutions Day Zero: Context window overflow. Episode 3: Local LLMs with persistent context. The solution directly addressed the root cause.\n2. Hardware limitations become features 16GB VRAM forced model selection discipline. Can’t run everything = must choose the right tool for each task.\n3. Context persistence \u003e raw performance A 7B local model you can save/resume beats a cloud model that forces restarts.\n4. Privacy enables experimentation Knowing conversations stay local removes psychological barriers to trying wild ideas.\n5. Local doesn’t mean isolated Ollama + Claude Code = best of both worlds. Use local for persistent work, cloud for complex reasoning.\nWhat’s Next Ollama was running. I could maintain conversations indefinitely. But the system was generating responses faster than I could organize them.\nBy September 22, I’d have 1,142 markdown files in the vault - including all these Ollama conversation logs.\nBy September 24, I’d be drowning in documentation again.\nBy September 27, I’d build automation to solve the organization problem… using these same local models.\nBut first, I needed to survive the documentation explosion.\nNext Episode: “Documentation Overload: When 1,142 Files Become Unmanageable” - The moment persistent conversations created a new problem, and why I built ChromaDB indexing.\nThis is Episode 3 of “Season 1: From Zero to Automated Infrastructure” - documenting the AI awakening that solved the context window problem.\nPrevious Episode: Building the Foundation: MVP in 72 Hours Complete Series: Season 1 Mapping Report\n",
+  "wordCount" : "1765",
   "inLanguage": "en",
   "datePublished": "2025-10-05T00:00:00Z",
   "dateModified": "2025-10-05T00:00:00Z",
@@ -243,7 +229,7 @@
     <h1 class="post-title entry-hint-parent">
       The AI Awakening: Breaking Free from Context Limits
     </h1>
-    <div class="post-meta"><span title='2025-10-05 00:00:00 +0000 UTC'>October 5, 2025</span>&nbsp;·&nbsp;<span>11 min</span>&nbsp;·&nbsp;<span>2138 words</span>&nbsp;·&nbsp;<span>Ryan Duffy</span>
+    <div class="post-meta"><span title='2025-10-05 00:00:00 +0000 UTC'>October 5, 2025</span>&nbsp;·&nbsp;<span>9 min</span>&nbsp;·&nbsp;<span>1765 words</span>&nbsp;·&nbsp;<span>Ryan Duffy</span>
 
 </div>
   </header> <div class="toc">
@@ -283,8 +269,11 @@
 <hr>
 <h2 id="the-context-window-problem-again">The Context Window Problem (Again)<a hidden class="anchor" aria-hidden="true" href="#the-context-window-problem-again">#</a></h2>
 <p>By September 18, ConvoCanvas was working. The MVP could parse conversations and generate content ideas. But the original problem that started this whole journey? <strong>Still unsolved.</strong></p>
-<pre class="mermaid">❌ Error: Context window overflow. This conversation is too long to continue.
-Would you like to start a new chat?</pre><p>I was still hitting context limits. Still losing conversation history. Still starting over every time Claude Code or ChatGPT hit their limits.</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>❌ Error: Context window overflow. This conversation is too long to continue.
+Would you like to start a new chat?</code></pre>
+</div>
+<p>I was still hitting context limits. Still losing conversation history. Still starting over every time Claude Code or ChatGPT hit their limits.</p>
 <p>ConvoCanvas could organize the <strong>past</strong> conversations, but it couldn&rsquo;t prevent me from hitting limits on <strong>new</strong> conversations.</p>
 <p>The real problem wasn&rsquo;t storage - it was <strong>conversation continuity</strong>.</p>
 <h2 id="the-realization-i-need-my-own-models">The Realization: I Need My Own Models<a hidden class="anchor" aria-hidden="true" href="#the-realization-i-need-my-own-models">#</a></h2>
@@ -307,38 +296,13 @@ Would you like to start a new chat?</pre><p>I was still hitting context limits. 
 </ul>
 <p>I needed local inference. I needed <strong>Ollama</strong>.</p>
 <p><strong>Reality check</strong>: Local models still have context limits (Llama 3.1: 128K tokens, DeepSeek R1: 32K tokens). But I could <strong>choose</strong> the right model for each task and <strong>save/resume</strong> conversations across sessions. The win wasn&rsquo;t unlimited context - it was <strong>control over the context</strong>.</p>
-<pre class="mermaid">graph LR
-    subgraph External[&#34;❌ External Services - Before Sept 18&#34;]
-        direction TB
-        Title1[Context Window Limits]
-        style Title1 fill:none,stroke:none,color:#ff6347
-
-        Claude[Claude Code&lt;br/&gt;200K token limit] --&gt;|Hit Limit| Restart1[🔄 Forced Restart]
-        ChatGPT[ChatGPT&lt;br/&gt;128K token limit] --&gt;|Hit Limit| Restart2[🔄 Forced Restart]
-
-        Restart1 --&gt; LostContext[💔 Lost Context&lt;br/&gt;Start Over]
-        Restart2 --&gt; LostContext
-
-        Title1 ~~~ Claude
-    end
-
-    subgraph Local[&#34;✅ Local Ollama - After Sept 18&#34;]
-        direction TB
-        Title2[Context Control]
-        style Title2 fill:none,stroke:none,color:#228b22
-
-        Ollama[Ollama Models&lt;br/&gt;32K-128K limits] --&gt;|Save State| Persist[💾 Save Conversation]
-        Persist --&gt; Resume[▶️ Resume Anytime]
-        Resume --&gt; Control[🎛️ Choose Right Model&lt;br/&gt;Per Task]
-
-        Title2 ~~~ Ollama
-    end
-
-    External -.-&gt;|&#34;September 18, 2025&lt;br/&gt;15-Hour Sprint&#34;| Migration[🔄 Migration]
-    Migration -.-&gt; Local
-
-    style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-    style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2px</pre><h2 id="september-18-900-am---the-research-phase">September 18, 9:00 AM - The Research Phase<a hidden class="anchor" aria-hidden="true" href="#september-18-900-am---the-research-phase">#</a></h2>
+<div class="mermaid-diagram">
+  <img src="2025-10-05-season-1-episode-3-ai-awakening-1.svg"
+       alt="Diagram 1"
+       loading="lazy"
+       style="max-width: 100%; height: auto; display: block; margin: 2rem auto;">
+</div>
+<h2 id="september-18-900-am---the-research-phase">September 18, 9:00 AM - The Research Phase<a hidden class="anchor" aria-hidden="true" href="#september-18-900-am---the-research-phase">#</a></h2>
 <p><em>Vault Evidence: <code>LLM-Inference-Servers-Comparison.md</code> created September 18, 2025, documenting the research into Ollama, vLLM, and other local inference options.</em></p>
 <p>I&rsquo;d heard about Ollama - a tool for running LLMs locally. But I had questions:</p>
 <p><strong>Hardware Requirements</strong>:</p>
@@ -355,9 +319,12 @@ Would you like to start a new chat?</pre><p>I was still hitting context limits. 
 <li>CodeLlama (specialized for code)</li>
 </ul>
 <p><strong>Context Window Comparison</strong>:</p>
-<pre class="mermaid">Claude Code:     200K tokens (then forced restart)
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>Claude Code:     200K tokens (then forced restart)
 ChatGPT:         128K tokens (then forced restart)
-Local Ollama:    Limited only by VRAM (configurable!)</pre><p><strong>Performance Targets</strong>:</p>
+Local Ollama:    Limited only by VRAM (configurable!)</code></pre>
+</div>
+<p><strong>Performance Targets</strong>:</p>
 <ul>
 <li>Response time: &lt;2 seconds for 1K tokens</li>
 <li>Concurrent requests: 3+ models</li>
@@ -368,71 +335,39 @@ Local Ollama:    Limited only by VRAM (configurable!)</pre><p><strong>Performanc
 <p>&ldquo;Ollama provides a Docker-like experience for LLMs. Single command deployment, automatic model management, OpenAI-compatible API. Perfect for local development. Most importantly: <strong>I control the context window</strong>.&rdquo;</p></blockquote>
 <p>The decision was made. Time to build.</p>
 <h2 id="930-am---installation">9:30 AM - Installation<a hidden class="anchor" aria-hidden="true" href="#930-am---installation">#</a></h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Install Ollama</span>
-</span></span><span class="line"><span class="cl">curl -fsSL https://ollama.com/install.sh <span class="p">|</span> sh
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Verify GPU access</span>
-</span></span><span class="line"><span class="cl">ollama run llama3.1
-</span></span><span class="line"><span class="cl"><span class="c1"># Output: Using NVIDIA RTX 4080, 16GB VRAM</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Model loaded in 2.3 seconds</span>
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Verify GPU access
+ollama run llama3.1
+# Output: Using NVIDIA RTX 4080, 16GB VRAM
+# Model loaded in 2.3 seconds</code></pre>
 </div>
-</div><p><strong>IT WORKED.</strong></p>
+<p><strong>IT WORKED.</strong></p>
 <p>The RTX 4080 was humming. VRAM usage: 6.2GB for Llama 3.1 8B. Plenty of headroom.</p>
 <h2 id="1000-am---model-collection">10:00 AM - Model Collection<a hidden class="anchor" aria-hidden="true" href="#1000-am---model-collection">#</a></h2>
 <p>I started pulling models like a kid in a candy store:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Reasoning specialist</span>
-</span></span><span class="line"><span class="cl">ollama pull deepseek-r1:7b
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># General purpose (fastest)</span>
-</span></span><span class="line"><span class="cl">ollama pull mistral:7b-instruct
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Meta&#39;s latest</span>
-</span></span><span class="line"><span class="cl">ollama pull llama3.1:8b
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Code specialist</span>
-</span></span><span class="line"><span class="cl">ollama pull codellama:7b
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Uncensored variant (for creative tasks)</span>
-</span></span><span class="line"><span class="cl">ollama pull nous-hermes-2:latest
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Compact model (2B for quick tasks)</span>
-</span></span><span class="line"><span class="cl">ollama pull phi-3:mini
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Reasoning specialist
+ollama pull deepseek-r1:7b
+
+# General purpose (fastest)
+ollama pull mistral:7b-instruct
+
+# Meta&amp;#39;s latest
+ollama pull llama3.1:8b
+
+# Code specialist
+ollama pull codellama:7b
+
+# Uncensored variant (for creative tasks)
+ollama pull nous-hermes-2:latest
+
+# Compact model (2B for quick tasks)
+ollama pull phi-3:mini</code></pre>
 </div>
-</div><p><strong>Total download</strong>: 42GB
+<p><strong>Total download</strong>: 42GB
 <strong>Installation time</strong>: 35 minutes
 <strong>Models available</strong>: 6</p>
 <p>But I didn&rsquo;t stop there.</p>
@@ -571,106 +506,57 @@ Local Ollama:    Limited only by VRAM (configurable!)</pre><p><strong>Performanc
   </tbody>
 </table>
 <p><strong>The RTX 4080 could handle them all.</strong> (Just not simultaneously.)</p>
-<pre class="mermaid">graph TD
-    Start[🎯 Goal: Context Freedom] --&gt; Research[🔍 Research Phase&lt;br/&gt;9:00-9:30 AM]
-    Research --&gt; Install[⚡ Install Ollama&lt;br/&gt;9:30 AM]
-    Install --&gt; First6[📦 First 6 Models&lt;br/&gt;10:00-10:35 AM]
-
-    First6 --&gt; Reasoning[💡 DeepSeek R1&lt;br/&gt;Reasoning]
-    First6 --&gt; Fast[⚡ Mistral 7B&lt;br/&gt;General Purpose]
-    First6 --&gt; Code[💻 CodeLlama&lt;br/&gt;Code Tasks]
-    First6 --&gt; Latest[🆕 Llama 3.1&lt;br/&gt;Meta&#39;s Latest]
-    First6 --&gt; Creative[🎨 Nous Hermes&lt;br/&gt;Creative]
-    First6 --&gt; Mini[⚙️ Phi-3 Mini&lt;br/&gt;Quick Tasks]
-
-    First6 --&gt; Testing[🧪 Testing Phase&lt;br/&gt;10:35-11:00 AM]
-    Testing --&gt; Decision{More Models?}
-    Decision --&gt;|Yes| More11[📦 +11 More Models&lt;br/&gt;11:00 AM-12:00 PM]
-
-    More11 --&gt; Heavy[🏋️ Yi-34B&lt;br/&gt;Heavy Lifting]
-    More11 --&gt; Expert[🎯 Mixtral 8x7B&lt;br/&gt;Mixture of Experts]
-    More11 --&gt; Plus9[+9 More Specialized]
-
-    More11 --&gt; Final[🎊 17 Total Models&lt;br/&gt;78GB Downloaded&lt;br/&gt;By Noon]
-
-    Final --&gt; Result[✅ Complete Collection&lt;br/&gt;Ready for Testing]
-
-    style Start fill:#ffd700,stroke:#ff6347,stroke-width:2px
-    style Final fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Result fill:#e1f5fe,stroke:#1976d2,stroke-width:2px</pre><h2 id="100-pm---testing-context-persistence">1:00 PM - Testing Context Persistence<a hidden class="anchor" aria-hidden="true" href="#100-pm---testing-context-persistence">#</a></h2>
+<div class="mermaid-diagram">
+  <img src="2025-10-05-season-1-episode-3-ai-awakening-2.svg"
+       alt="Diagram 2"
+       loading="lazy"
+       style="max-width: 100%; height: auto; display: block; margin: 2rem auto;">
+</div>
+<h2 id="100-pm---testing-context-persistence">1:00 PM - Testing Context Persistence<a hidden class="anchor" aria-hidden="true" href="#100-pm---testing-context-persistence">#</a></h2>
 <p>Now came the real test: Could I maintain conversation context across sessions?</p>
 <p><strong>Test 1: Long Conversation</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Start a conversation about network automation</span>
-</span></span><span class="line"><span class="cl">ollama run deepseek-r1:7b
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Talk for 50+ messages (would hit context limit on Claude Code)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Save conversation state</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Resume next day with full context!</span>
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Start a conversation about network automation
+ollama run deepseek-r1:7b
+
+# Talk for 50&#43; messages (would hit context limit on Claude Code)
+# Save conversation state
+# Resume next day with full context!</code></pre>
 </div>
-</div><p><strong>Result</strong>: ✅ <strong>No more &ldquo;conversation too long&rdquo; errors!</strong></p>
+<p><strong>Result</strong>: ✅ <strong>No more &ldquo;conversation too long&rdquo; errors!</strong></p>
 <p><strong>Test 2: Context Switching</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Morning: Work on Python with CodeLlama</span>
-</span></span><span class="line"><span class="cl">ollama run codellama:7b
-</span></span><span class="line"><span class="cl"><span class="c1"># Save context: /tmp/python-session.json</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Afternoon: Work on network config with DeepSeek</span>
-</span></span><span class="line"><span class="cl">ollama run deepseek-r1:7b
-</span></span><span class="line"><span class="cl"><span class="c1"># Save context: /tmp/network-session.json</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Evening: Resume Python session with ALL previous context</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Load context: /tmp/python-session.json</span>
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Morning: Work on Python with CodeLlama
+ollama run codellama:7b
+# Save context: /tmp/python-session.json
+
+# Afternoon: Work on network config with DeepSeek
+ollama run deepseek-r1:7b
+# Save context: /tmp/network-session.json
+
+# Evening: Resume Python session with ALL previous context
+# Load context: /tmp/python-session.json</code></pre>
 </div>
-</div><p><strong>Result</strong>: ✅ <strong>Persistent conversations across sessions!</strong></p>
+<p><strong>Result</strong>: ✅ <strong>Persistent conversations across sessions!</strong></p>
 <p><strong>Test 3: Large Context Window</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Test with 10,000 word document</span>
-</span></span><span class="line"><span class="cl"><span class="n">response_time</span> <span class="o">=</span> <span class="mf">8.2</span>  <span class="c1"># seconds</span>
-</span></span><span class="line"><span class="cl"><span class="n">context_retained</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Full document in context!</span>
-</span></span><span class="line"><span class="cl"><span class="n">external_service</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># All local, all private</span>
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Test with 10,000 word document
+response_time = 8.2  # seconds
+context_retained = True  # Full document in context!
+external_service = False  # All local, all private</code></pre>
 </div>
-</div><p><strong>Result</strong>: ✅ <strong>No external limits!</strong></p>
+<p><strong>Result</strong>: ✅ <strong>No external limits!</strong></p>
 <h2 id="300-pm---the-freedom-realization">3:00 PM - The Freedom Realization<a hidden class="anchor" aria-hidden="true" href="#300-pm---the-freedom-realization">#</a></h2>
 <p>I ran the same test I&rsquo;d done with Claude Code that triggered this whole journey:</p>
-<pre class="mermaid">Input: 3-hour debugging session about network automation
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>Input: 3-hour debugging session about network automation
 Messages: 87 back-and-forth exchanges
 Context size: ~50K tokens
 
-Claude Code result: &#34;Context window overflow. Start new chat?&#34;
-Ollama result: &#34;Ready for message 88. Full context retained.&#34;</pre><p><strong>The breakthrough</strong>: I could continue conversations <strong>indefinitely</strong>.</p>
+Claude Code result: &amp;#34;Context window overflow. Start new chat?&amp;#34;
+Ollama result: &amp;#34;Ready for message 88. Full context retained.&amp;#34;</code></pre>
+</div>
+<p><strong>The breakthrough</strong>: I could continue conversations <strong>indefinitely</strong>.</p>
 <h2 id="what-i-gained-vs-external-services">What I Gained (vs External Services)<a hidden class="anchor" aria-hidden="true" href="#what-i-gained-vs-external-services">#</a></h2>
 <p><strong>Before (Claude Code/ChatGPT)</strong>:</p>
 <ul>
@@ -689,106 +575,58 @@ Ollama result: &#34;Ready for message 88. Full context retained.&#34;</pre><p><s
 <li>Unlimited experimentation (iterate fearlessly)</li>
 </ul>
 <p><strong>Cost Comparison</strong> (bonus):</p>
-<pre class="mermaid">Claude API (if I were using it): $720/year
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>Claude API (if I were using it): $720/year
 Ollama (local): $0/year
-RTX 4080 (already owned): Already paid for</pre><p>But <strong>cost wasn&rsquo;t the driver</strong> - <strong>freedom was</strong>.</p>
+RTX 4080 (already owned): Already paid for</code></pre>
+</div>
+<p>But <strong>cost wasn&rsquo;t the driver</strong> - <strong>freedom was</strong>.</p>
 <h2 id="september-19-900-am---the-supervisor-pattern">September 19, 9:00 AM - The Supervisor Pattern<a hidden class="anchor" aria-hidden="true" href="#september-19-900-am---the-supervisor-pattern">#</a></h2>
 <p>With 17 models available, I built an orchestrator to route tasks to the best model:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ModelSupervisor</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;reasoning&#34;</span><span class="p">:</span> <span class="s2">&#34;deepseek-r1:7b&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;general&#34;</span><span class="p">:</span> <span class="s2">&#34;mistral:7b-instruct&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;code&#34;</span><span class="p">:</span> <span class="s2">&#34;codellama:7b&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;fast&#34;</span><span class="p">:</span> <span class="s2">&#34;phi-3:mini&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;creative&#34;</span><span class="p">:</span> <span class="s2">&#34;nous-hermes-2:latest&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;long_context&#34;</span><span class="p">:</span> <span class="s2">&#34;llama3.1:8b&#34;</span>  <span class="c1"># 128K context!</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">route_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Route task to optimal model.&#34;&#34;&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="s2">&#34;general&#34;</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">            <span class="s2">&#34;http://localhost:11434/api/generate&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;model&#34;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s2">&#34;prompt&#34;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&#34;response&#34;</span><span class="p">]</span>
-</span></span></code></pre></td></tr></table>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>class ModelSupervisor:
+    def __init__(self):
+        self.models = {
+            &amp;#34;reasoning&amp;#34;: &amp;#34;deepseek-r1:7b&amp;#34;,
+            &amp;#34;general&amp;#34;: &amp;#34;mistral:7b-instruct&amp;#34;,
+            &amp;#34;code&amp;#34;: &amp;#34;codellama:7b&amp;#34;,
+            &amp;#34;fast&amp;#34;: &amp;#34;phi-3:mini&amp;#34;,
+            &amp;#34;creative&amp;#34;: &amp;#34;nous-hermes-2:latest&amp;#34;,
+            &amp;#34;long_context&amp;#34;: &amp;#34;llama3.1:8b&amp;#34;  # 128K context!
+        }
+
+    def route_task(self, task_type: str, prompt: str) -&amp;gt; str:
+        &amp;#34;&amp;#34;&amp;#34;Route task to optimal model.&amp;#34;&amp;#34;&amp;#34;
+        model = self.models.get(task_type, self.models[&amp;#34;general&amp;#34;])
+
+        response = requests.post(
+            &amp;#34;http://localhost:11434/api/generate&amp;#34;,
+            json={&amp;#34;model&amp;#34;: model, &amp;#34;prompt&amp;#34;: prompt}
+        )
+
+        return response.json()[&amp;#34;response&amp;#34;]</code></pre>
 </div>
-</div><pre class="mermaid">graph TD
-    User[👤 User Request] --&gt; Router{🎯 Task Router&lt;br/&gt;Model Supervisor}
-
-    Router --&gt;|&#34;Need reasoning&lt;br/&gt;or analysis&#34;| DeepSeek[🧠 DeepSeek R1 7B&lt;br/&gt;32K context&lt;br/&gt;4.2GB VRAM]
-    Router --&gt;|&#34;Code generation&lt;br/&gt;or debugging&#34;| CodeLlama[💻 CodeLlama 7B&lt;br/&gt;16K context&lt;br/&gt;4.3GB VRAM]
-    Router --&gt;|&#34;Quick question&lt;br/&gt;fast response&#34;| Mistral[⚡ Mistral 7B&lt;br/&gt;32K context&lt;br/&gt;4.1GB VRAM]
-    Router --&gt;|&#34;Long document&lt;br/&gt;large context&#34;| Llama[🆕 Llama 3.1 8B&lt;br/&gt;128K context!&lt;br/&gt;4.8GB VRAM]
-    Router --&gt;|&#34;Heavy analysis&lt;br/&gt;complex task&#34;| Yi[🏋️ Yi-34B Quantized&lt;br/&gt;4K context&lt;br/&gt;12.1GB VRAM]
-
-    DeepSeek --&gt; Response[📤 Response with&lt;br/&gt;Full Context Retained]
-    CodeLlama --&gt; Response
-    Mistral --&gt; Response
-    Llama --&gt; Response
-    Yi --&gt; Response
-
-    style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px
-    style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2px</pre><p><strong>Usage</strong>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">supervisor</span> <span class="o">=</span> <span class="n">ModelSupervisor</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Long context work → Llama 3.1 (128K context)</span>
-</span></span><span class="line"><span class="cl"><span class="n">analysis</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;long_context&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Analyze this entire 100-page document...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Code task → CodeLlama</span>
-</span></span><span class="line"><span class="cl"><span class="n">code_review</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;code&#34;</span><span class="p">,</span> <span class="s2">&#34;Review this function...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Quick response → Phi-3 Mini</span>
-</span></span><span class="line"><span class="cl"><span class="n">quick_answer</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;fast&#34;</span><span class="p">,</span> <span class="s2">&#34;What is FastAPI?&#34;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
+<div class="mermaid-diagram">
+  <img src="2025-10-05-season-1-episode-3-ai-awakening-3.svg"
+       alt="Diagram 3"
+       loading="lazy"
+       style="max-width: 100%; height: auto; display: block; margin: 2rem auto;">
 </div>
-</div><p>The system could now <strong>self-optimize</strong> based on context needs.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>supervisor = ModelSupervisor()
+
+# Long context work → Llama 3.1 (128K context)
+analysis = supervisor.route_task(&amp;#34;long_context&amp;#34;,
+    &amp;#34;Analyze this entire 100-page document...&amp;#34;)
+
+# Code task → CodeLlama
+code_review = supervisor.route_task(&amp;#34;code&amp;#34;, &amp;#34;Review this function...&amp;#34;)
+
+# Quick response → Phi-3 Mini
+quick_answer = supervisor.route_task(&amp;#34;fast&amp;#34;, &amp;#34;What is FastAPI?&amp;#34;)</code></pre>
+</div>
+<p>The system could now <strong>self-optimize</strong> based on context needs.</p>
 <h2 id="what-worked">What Worked<a hidden class="anchor" aria-hidden="true" href="#what-worked">#</a></h2>
 <p><strong>Ollama&rsquo;s Model Management</strong>:
 Single command to pull, update, or remove models. No Docker containers, no config files, no complexity.</p>
@@ -1001,67 +839,7 @@ Ollama + Claude Code = best of both worlds. Use local for persistent work, cloud
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
         <path d="M12 6H0l6-6z" />
     </svg>
-</a><script type="module" data-cfasync="false">
-  
-  if (document.querySelector('.mermaid')) {
-    const mermaid = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
-
-    
-    const isDark = document.body.classList.contains('dark');
-
-    mermaid.default.initialize({
-      startOnLoad: true,
-      theme: isDark ? 'dark' : 'base',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      
-      fontSize: 20,
-      
-      wrap: true,
-      
-      curve: 'basis',
-      themeVariables: isDark ? {
-        
-        fontSize: '20px',
-        primaryColor: '#7C4DFF',           
-        primaryTextColor: '#FFFFFF',       
-        primaryBorderColor: '#B388FF',     
-        lineColor: '#FFD700',              
-        secondaryColor: '#00E676',         
-        tertiaryColor: '#1E1E1E',          
-        
-        nodeBorder: '#B388FF',
-        mainBkg: '#7C4DFF',
-        textColor: '#FFFFFF',
-        
-        clusterBkg: '#424242',             
-        clusterBorder: '#B388FF',          
-        
-        edgeLabelBackground: '#1E1E1E',
-        labelTextColor: '#FFFFFF'
-      } : {
-        
-        fontSize: '20px',
-        primaryColor: '#FFFFFF',           
-        primaryTextColor: '#000000',       
-        primaryBorderColor: '#0D47A1',     
-        lineColor: '#D32F2F',              
-        secondaryColor: '#1B5E20',         
-        tertiaryColor: '#FAFAFA',          
-        
-        nodeBorder: '#0D47A1',
-        mainBkg: '#FFFFFF',
-        textColor: '#000000',
-        
-        clusterBkg: '#E3F2FD',             
-        clusterBorder: '#1565C0',          
-        
-        edgeLabelBackground: '#FFFDE7',    
-        labelTextColor: '#000000'          
-      }
-    });
-  }
-</script>
-
+</a>
 
 <script>
     let menu = document.getElementById('menu')

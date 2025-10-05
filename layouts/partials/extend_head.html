@@ -1,51 +1,37 @@
 {{- /* Favicon */ -}}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-{{- /* Mermaid diagram sizing and visibility fixes */ -}}
+{{- /* Pre-rendered Mermaid diagram styling */ -}}
 <style>
-  /* Make Mermaid diagrams larger and more readable */
-  .mermaid {
-    min-width: 100%;
-    max-width: 1200px;
-    margin: 2rem auto;
+  /* Style for diagram containers */
+  .mermaid-diagram {
+    margin: 2.5rem 0;
     padding: 1.5rem;
     background: var(--code-bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    overflow-x: auto;
-    font-size: 18px !important;
+    text-align: center;
   }
 
-  /* Force larger text in diagrams */
-  .mermaid svg {
-    min-height: 400px;
+  /* Ensure diagrams are large and crisp */
+  .mermaid-diagram img {
     max-width: 100%;
     height: auto;
+    min-height: 300px;
+    display: block;
+    margin: 0 auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
-  /* Increase node/label font sizes */
-  .mermaid .nodeLabel,
-  .mermaid .edgeLabel {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-  }
-
-  /* Make cluster/subgraph labels bigger */
-  .mermaid .cluster-label {
-    font-size: 20px !important;
-    font-weight: 600 !important;
-  }
-
-  /* Ensure text is always readable */
-  .mermaid text {
-    font-size: 16px !important;
-    stroke: none !important;
-  }
-
-  /* Add visual separation */
-  .mermaid-container {
-    margin: 2rem 0;
-    padding: 1rem;
-    border: 2px solid var(--border);
-    border-radius: 8px;
+  /* Responsive sizing for mobile */
+  @media (max-width: 768px) {
+    .mermaid-diagram {
+      padding: 1rem;
+      margin: 1.5rem -1rem;
+    }
+    .mermaid-diagram img {
+      min-height: 250px;
+    }
   }
 </style>

@@ -1,6 +1,22 @@
-{{- /* Hugo render hook for Mermaid code blocks */ -}}
-{{- /* Converts ```mermaid blocks to <pre class="mermaid"> for Mermaid.js */ -}}
-<pre class="mermaid">
-{{- .Inner | htmlEscape | safeHTML -}}
-</pre>
-{{- .Page.Store.Set "hasMermaid" true -}}
+{{- /* Hugo render hook for Mermaid code blocks - Pre-rendered SVG approach */ -}}
+{{- /* The build.sh script generates SVG files from Mermaid code blocks */ -}}
+{{- /* This hook replaces the code block with an <img> tag pointing to the SVG */ -}}
+
+{{- $file := .Page.File.BaseFileName -}}
+
+{{- /* Get current Mermaid diagram count from page scratch, default to 0 */ -}}
+{{- $mermaidCount := .Page.Scratch.Get "mermaidCount" | default 0 -}}
+{{- $mermaidNum := add $mermaidCount 1 -}}
+
+{{- /* Update counter for next diagram */ -}}
+{{- .Page.Scratch.Set "mermaidCount" $mermaidNum -}}
+
+{{- /* Build SVG path (Mermaid CLI numbers from 1) */ -}}
+{{- $svgPath := printf "%s-%d.svg" $file $mermaidNum -}}
+
+<div class="mermaid-diagram">
+  <img src="{{ $svgPath }}"
+       alt="Diagram {{ $mermaidNum }}"
+       loading="lazy"
+       style="max-width: 100%; height: auto; display: block; margin: 2rem auto;">
+</div>

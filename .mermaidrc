@@ -1,0 +1,30 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#FFFFFF",
+    "primaryTextColor": "#000000",
+    "primaryBorderColor": "#1565C0",
+    "secondaryColor": "#E3F2FD",
+    "secondaryTextColor": "#000000",
+    "secondaryBorderColor": "#1565C0",
+    "tertiaryColor": "#FFFFFF",
+    "tertiaryTextColor": "#000000",
+    "tertiaryBorderColor": "#1565C0",
+    "lineColor": "#D32F2F",
+    "textColor": "#000000",
+    "mainBkg": "#FFFFFF",
+    "nodeBorder": "#1565C0",
+    "clusterBkg": "#E3F2FD",
+    "clusterBorder": "#1565C0",
+    "edgeLabelBackground": "#FFFDE7",
+    "fontSize": "20px",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  },
+  "flowchart": {
+    "curve": "basis",
+    "padding": 20,
+    "nodeSpacing": 50,
+    "rankSpacing": 50,
+    "diagramPadding": 20
+  }
+}
