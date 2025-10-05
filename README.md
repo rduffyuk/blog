@@ -123,9 +123,42 @@ Located in project root (parent directory):
 ## Troubleshooting
 
 ### Diagrams Not Rendering
-1. Check browser console for JavaScript errors
-2. Verify Mermaid CDN is accessible (jsdelivr.net)
-3. Inspect HTML - diagrams should be `<div class="mermaid">` (not `<pre><code>`)
+
+#### **Most Common Issue: Cloudflare Rocket Loader**
+
+If diagrams work locally (`hugo server`) but fail in production, Cloudflare's Rocket Loader is likely breaking ES module imports.
+
+**Symptoms**:
+- ✅ Local development: Diagrams render perfectly
+- ❌ Production: Diagrams show as plain text
+- Console error: `Failed to load module script` or `Unexpected token 'import'`
+
+**Fix Option 1 - Disable Rocket Loader (Recommended)**:
+1. Log into Cloudflare Dashboard
+2. Go to **Speed** → **Optimization**
+3. Scroll to **Rocket Loader** and toggle **OFF**
+4. **Purge Cache**: Caching → Configuration → Purge Everything
+5. Wait 2-3 minutes for changes to propagate
+
+**Fix Option 2 - Script Already Has Bypass**:
+Our Mermaid script includes `data-cfasync="false"` which tells Rocket Loader to skip this script. If Rocket Loader is still interfering, use Fix Option 1.
+
+**Verify Fix**:
+```bash
+# Check if Rocket Loader is active on your site
+curl -I https://blog.rduffy.uk | grep -i "cf-"
+```
+
+#### **Other Diagram Issues**
+
+1. **Check browser console** for JavaScript errors
+2. **Verify Mermaid CDN** is accessible:
+   ```bash
+   curl -I https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs
+   ```
+3. **Inspect HTML source** - diagrams should be `<pre class="mermaid">` (not `<pre><code>`)
+4. **Test in incognito mode** to rule out browser extension interference
+5. **Check Content Security Policy** - ensure `script-src` allows `cdn.jsdelivr.net`
 
 ### Build Fails
 ```bash

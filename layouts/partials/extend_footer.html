@@ -1,5 +1,6 @@
 {{- /* Mermaid.js conditional loading - only loads if diagrams present */ -}}
-<script type="module">
+{{- /* data-cfasync="false" bypasses Cloudflare Rocket Loader which breaks ES modules */ -}}
+<script type="module" data-cfasync="false">
   // Only initialize Mermaid if there are mermaid blocks on the page
   if (document.querySelector('.mermaid')) {
     const mermaid = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
