@@ -18,14 +18,14 @@
     "clusterBorder": "#2E5C8A",
     "edgeLabelBackground": "#FFFFFF",
     "edgeLabelText": "#000000",
-    "fontSize": "48px",
+    "fontSize": "72px",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
   },
   "flowchart": {
     "curve": "basis",
-    "padding": 35,
-    "nodeSpacing": 80,
-    "rankSpacing": 80,
-    "diagramPadding": 40
+    "padding": 50,
+    "nodeSpacing": 100,
+    "rankSpacing": 100,
+    "diagramPadding": 50
   }
 }

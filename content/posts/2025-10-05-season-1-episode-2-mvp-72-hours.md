@@ -91,8 +91,8 @@ graph LR
 
     Before ==>|3-Hour Marathon| After
 
-    style Before fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-    style After fill:#e1ffe1,stroke:#228b22,stroke-width:2px
+    style Before fill:#D32F2F,stroke:#ff6347,stroke-width:2px
+    style After fill:#2E7D4E,stroke:#228b22,stroke-width:2px
 ```
 
 **11:30 AM - Session Start** ⏰

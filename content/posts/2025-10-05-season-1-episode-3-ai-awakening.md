@@ -88,8 +88,8 @@ graph LR
     External -.->|"September 18, 2025<br/>15-Hour Sprint"| Migration[🔄 Migration]
     Migration -.-> Local
 
-    style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-    style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2px
+    style External fill:#D32F2F,stroke:#ff6347,stroke-width:2px
+    style Local fill:#2E7D4E,stroke:#228b22,stroke-width:2px
 ```
 
 ## September 18, 9:00 AM - The Research Phase
@@ -224,8 +224,8 @@ graph TD
     Final --> Result[✅ Complete Collection<br/>Ready for Testing]
 
     style Start fill:#ffd700,stroke:#ff6347,stroke-width:2px
-    style Final fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Result fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
+    style Final fill:#2E7D4E,stroke:#228b22,stroke-width:2px
+    style Result fill:#1976D2,stroke:#1976d2,stroke-width:2px
 ```
 
 ## 1:00 PM - Testing Context Persistence
@@ -355,8 +355,8 @@ graph TD
     Yi --> Response
 
     style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px
-    style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
+    style Llama fill:#2E7D4E,stroke:#228b22,stroke-width:2px
+    style Response fill:#1976D2,stroke:#1976d2,stroke-width:2px
 ```
 
 **Usage**:
