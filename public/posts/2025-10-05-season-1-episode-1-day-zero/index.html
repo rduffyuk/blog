@@ -57,8 +57,9 @@
     </style>
 </noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false,
     theme: 'dark',
     themeVariables: {
       primaryColor: '#BB86FC',
@@ -68,6 +69,32 @@
       secondaryColor: '#03dac6',
       tertiaryColor: '#121212'
     }
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    const mermaidBlocks = document.querySelectorAll('code.language-mermaid, code[data-lang="mermaid"], pre > code:not([class])');
+
+    mermaidBlocks.forEach((block, index) => {
+      
+      const content = block.textContent;
+      if (content.trim().match(/^(graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|journey|gantt|pie|gitGraph|flowchart)/)) {
+        
+        const mermaidDiv = document.createElement('div');
+        mermaidDiv.className = 'mermaid';
+        mermaidDiv.textContent = content;
+
+        
+        const pre = block.closest('pre');
+        if (pre) {
+          pre.parentNode.replaceChild(mermaidDiv, pre);
+        }
+      }
+    });
+
+    
+    mermaid.run();
   });
 </script>
 <meta property="og:url" content="https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/">
@@ -248,14 +275,14 @@
 <strong>Reading Time</strong>: 7 minutes</p>
 <hr>
 <h2 id="-the-error-that-started-everything">💥 The Error That Started Everything<a hidden class="anchor" aria-hidden="true" href="#-the-error-that-started-everything">#</a></h2>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>❌ Error: Context window overflow. This conversation is too long to continue.
-</span></span><span style="display:flex;"><span>Would you like to start a new chat?
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❌ Error: Context window overflow. This conversation is too long to continue.
+</span></span><span class="line"><span class="cl">Would you like to start a new chat?
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>I stared at that message for the third time that week. 😤 I&rsquo;d just spent two hours debugging a network automation script with Claude, finally getting somewhere, and boom - context limit reached. All that context, all those examples, all that back-and-forth refinement&hellip; gone.</p>
@@ -269,117 +296,117 @@
 <p>&ldquo;I want to build a system that turns AI conversations into content. Not manually - automatically. Can we design an Obsidian vault structure for this?&rdquo;</p></blockquote>
 <p>What followed was a 90-minute planning session that, in retrospect, would shape the next 25 days that laid the foundation for ConvoCanvas. ⚡</p>
 <h2 id="-the-vision-five-folders-to-rule-them-all">🗂️ The Vision: Five Folders to Rule Them All<a hidden class="anchor" aria-hidden="true" href="#-the-vision-five-folders-to-rule-them-all">#</a></h2>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>graph TB
-</span></span><span style="display:flex;"><span>    subgraph DayZero[&#34; &#34;]
-</span></span><span style="display:flex;"><span>        direction TB
-</span></span><span style="display:flex;"><span>        Title[🌟 Day Zero Architecture - Sept 11, 2025]
-</span></span><span style="display:flex;"><span>        style Title fill:none,stroke:none,color:#ffd700
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        AI[👤 AI Conversations&lt;br/&gt;200+ scattered files] --&gt; Vision{💡 ConvoCanvas Vision}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Vision --&gt; V1[📁 01-AI-Conversations&lt;br/&gt;Raw material]
-</span></span><span style="display:flex;"><span>        Vision --&gt; V2[💎 02-Content-Ideas&lt;br/&gt;Extracted value]
-</span></span><span style="display:flex;"><span>        Vision --&gt; V3[📚 03-Learning-Log&lt;br/&gt;Knowledge capture]
-</span></span><span style="display:flex;"><span>        Vision --&gt; V4[🔧 04-Project-Development&lt;br/&gt;ConvoCanvas itself]
-</span></span><span style="display:flex;"><span>        Vision --&gt; V5[📋 05-Templates&lt;br/&gt;Automation foundation]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        V1 --&gt; Tags[🏷️ 50+ Tag Taxonomy]
-</span></span><span style="display:flex;"><span>        V2 --&gt; Tags
-</span></span><span style="display:flex;"><span>        V3 --&gt; Tags
-</span></span><span style="display:flex;"><span>        V4 --&gt; Tags
-</span></span><span style="display:flex;"><span>        V5 --&gt; Tags
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Tags --&gt; Future[🚀 Future: Automated&lt;br/&gt;Content Generation]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Title ~~~ AI
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style Vision fill:#ffd700,stroke:#ff6347,stroke-width:3px
-</span></span><span style="display:flex;"><span>    style Future fill:#98fb98,stroke:#228b22,stroke-width:2px
-</span></span><span style="display:flex;"><span>    style DayZero fill:#f0f8ff,stroke:#4682b4,stroke-width:2px
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TB
+</span></span><span class="line"><span class="cl">    subgraph DayZero[&#34; &#34;]
+</span></span><span class="line"><span class="cl">        direction TB
+</span></span><span class="line"><span class="cl">        Title[🌟 Day Zero Architecture - Sept 11, 2025]
+</span></span><span class="line"><span class="cl">        style Title fill:none,stroke:none,color:#ffd700
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        AI[👤 AI Conversations&lt;br/&gt;200+ scattered files] --&gt; Vision{💡 ConvoCanvas Vision}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Vision --&gt; V1[📁 01-AI-Conversations&lt;br/&gt;Raw material]
+</span></span><span class="line"><span class="cl">        Vision --&gt; V2[💎 02-Content-Ideas&lt;br/&gt;Extracted value]
+</span></span><span class="line"><span class="cl">        Vision --&gt; V3[📚 03-Learning-Log&lt;br/&gt;Knowledge capture]
+</span></span><span class="line"><span class="cl">        Vision --&gt; V4[🔧 04-Project-Development&lt;br/&gt;ConvoCanvas itself]
+</span></span><span class="line"><span class="cl">        Vision --&gt; V5[📋 05-Templates&lt;br/&gt;Automation foundation]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        V1 --&gt; Tags[🏷️ 50+ Tag Taxonomy]
+</span></span><span class="line"><span class="cl">        V2 --&gt; Tags
+</span></span><span class="line"><span class="cl">        V3 --&gt; Tags
+</span></span><span class="line"><span class="cl">        V4 --&gt; Tags
+</span></span><span class="line"><span class="cl">        V5 --&gt; Tags
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Tags --&gt; Future[🚀 Future: Automated&lt;br/&gt;Content Generation]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Title ~~~ AI
+</span></span><span class="line"><span class="cl">    end
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    style Vision fill:#ffd700,stroke:#ff6347,stroke-width:3px
+</span></span><span class="line"><span class="cl">    style Future fill:#98fb98,stroke:#228b22,stroke-width:2px
+</span></span><span class="line"><span class="cl">    style DayZero fill:#f0f8ff,stroke:#4682b4,stroke-width:2px
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>We designed a vault structure that wasn&rsquo;t just storage - it was a <strong>content creation pipeline</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>ConvoCanvas-Vault/
-</span></span><span style="display:flex;"><span>├── 01-AI-Conversations/      # Raw material
-</span></span><span style="display:flex;"><span>│   ├── Claude/
-</span></span><span style="display:flex;"><span>│   ├── ChatGPT/
-</span></span><span style="display:flex;"><span>│   ├── Gemini/
-</span></span><span style="display:flex;"><span>│   └── Perplexity/
-</span></span><span style="display:flex;"><span>├── 02-Content-Ideas/          # Extracted value
-</span></span><span style="display:flex;"><span>│   ├── LinkedIn-Posts/
-</span></span><span style="display:flex;"><span>│   ├── Blog-Drafts/
-</span></span><span style="display:flex;"><span>│   └── Video-Concepts/
-</span></span><span style="display:flex;"><span>├── 03-Learning-Log/           # Knowledge capture
-</span></span><span style="display:flex;"><span>│   ├── Daily-Notes/
-</span></span><span style="display:flex;"><span>│   ├── Technical-Insights/
-</span></span><span style="display:flex;"><span>│   └── Challenges-Solutions/
-</span></span><span style="display:flex;"><span>├── 04-Project-Development/    # ConvoCanvas itself
-</span></span><span style="display:flex;"><span>│   ├── ConvoCanvas-Design/
-</span></span><span style="display:flex;"><span>│   ├── Code-Snippets/
-</span></span><span style="display:flex;"><span>│   └── Architecture-Decisions/
-</span></span><span style="display:flex;"><span>└── 05-Templates/              # Automation foundation
-</span></span><span style="display:flex;"><span>    ├── Conversation-Analysis/
-</span></span><span style="display:flex;"><span>    ├── Content-Planning/
-</span></span><span style="display:flex;"><span>    └── Learning-Reflection/
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ConvoCanvas-Vault/
+</span></span><span class="line"><span class="cl">├── 01-AI-Conversations/      # Raw material
+</span></span><span class="line"><span class="cl">│   ├── Claude/
+</span></span><span class="line"><span class="cl">│   ├── ChatGPT/
+</span></span><span class="line"><span class="cl">│   ├── Gemini/
+</span></span><span class="line"><span class="cl">│   └── Perplexity/
+</span></span><span class="line"><span class="cl">├── 02-Content-Ideas/          # Extracted value
+</span></span><span class="line"><span class="cl">│   ├── LinkedIn-Posts/
+</span></span><span class="line"><span class="cl">│   ├── Blog-Drafts/
+</span></span><span class="line"><span class="cl">│   └── Video-Concepts/
+</span></span><span class="line"><span class="cl">├── 03-Learning-Log/           # Knowledge capture
+</span></span><span class="line"><span class="cl">│   ├── Daily-Notes/
+</span></span><span class="line"><span class="cl">│   ├── Technical-Insights/
+</span></span><span class="line"><span class="cl">│   └── Challenges-Solutions/
+</span></span><span class="line"><span class="cl">├── 04-Project-Development/    # ConvoCanvas itself
+</span></span><span class="line"><span class="cl">│   ├── ConvoCanvas-Design/
+</span></span><span class="line"><span class="cl">│   ├── Code-Snippets/
+</span></span><span class="line"><span class="cl">│   └── Architecture-Decisions/
+</span></span><span class="line"><span class="cl">└── 05-Templates/              # Automation foundation
+</span></span><span class="line"><span class="cl">    ├── Conversation-Analysis/
+</span></span><span class="line"><span class="cl">    ├── Content-Planning/
+</span></span><span class="line"><span class="cl">    └── Learning-Reflection/
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Simple. Purposeful. <strong>Automatable</strong>. ✨</p>
@@ -405,60 +432,60 @@
 <h2 id="-templates-the-secret-sauce">📝 Templates: The Secret Sauce<a hidden class="anchor" aria-hidden="true" href="#-templates-the-secret-sauce">#</a></h2>
 <p>The real power wasn&rsquo;t in folders or tags - it was in <strong>templates</strong> that would structure every conversation for maximum value extraction.</p>
 <p><strong>Conversation Analysis Template</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Conversation Analysis: {{title}}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Metadata
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">-</span> **Date**: {{date}}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **AI Service**: {{service}}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **Duration**: {{duration}}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **Topic Focus**: [auto-extracted]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Key Insights
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">-</span> [Automatically extracted important points]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Technical Learning Points
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">-</span> [Code snippets, commands, configurations]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Content Opportunities
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">### LinkedIn Posts
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">- [ ]</span> [Generated idea 1]
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">- [ ]</span> [Generated idea 2]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">### Blog Ideas
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">- [ ]</span> [Generated topic 1]
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">- [ ]</span> [Generated topic 2]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">### Video/Tutorial Concepts
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">- [ ]</span> [Generated concept 1]
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gh"># Conversation Analysis: {{title}}
+</span></span></span><span class="line"><span class="cl"><span class="gh"></span>
+</span></span><span class="line"><span class="cl"><span class="gu">## Metadata
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">-</span> **Date**: {{date}}
+</span></span><span class="line"><span class="cl"><span class="k">-</span> **AI Service**: {{service}}
+</span></span><span class="line"><span class="cl"><span class="k">-</span> **Duration**: {{duration}}
+</span></span><span class="line"><span class="cl"><span class="k">-</span> **Topic Focus**: [auto-extracted]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Key Insights
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">-</span> [Automatically extracted important points]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Technical Learning Points
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">-</span> [Code snippets, commands, configurations]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Content Opportunities
+</span></span></span><span class="line"><span class="cl"><span class="gu">### LinkedIn Posts
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">- [ ]</span> [Generated idea 1]
+</span></span><span class="line"><span class="cl"><span class="k">- [ ]</span> [Generated idea 2]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### Blog Ideas
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">- [ ]</span> [Generated topic 1]
+</span></span><span class="line"><span class="cl"><span class="k">- [ ]</span> [Generated topic 2]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### Video/Tutorial Concepts
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span><span class="k">- [ ]</span> [Generated concept 1]
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>This template would become the foundation for ConvoCanvas&rsquo;s content extraction engine. 🎨</p>
@@ -495,60 +522,60 @@
 <li>✅ <strong>API-first</strong>: Build once, integrate everywhere</li>
 </ul>
 <h2 id="-the-technical-vision">🏗️ The Technical Vision<a hidden class="anchor" aria-hidden="true" href="#-the-technical-vision">#</a></h2>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>graph LR
-</span></span><span style="display:flex;"><span>    subgraph Phase1[<span style="color:#e6db74">&#34;⚡ Phase 1: MVP (72 hours)&#34;</span>]
-</span></span><span style="display:flex;"><span>        Upload[<span style="color:#960050;background-color:#1e0010">📤</span> Upload Conversation] <span style="color:#f92672">--&gt;</span> Parse[<span style="color:#960050;background-color:#1e0010">🔍</span> Parse Content]
-</span></span><span style="display:flex;"><span>        Parse <span style="color:#f92672">--&gt;</span> Analyze[<span style="color:#960050;background-color:#1e0010">🧠</span> AI Analysis]
-</span></span><span style="display:flex;"><span>        Analyze <span style="color:#f92672">--&gt;</span> Generate[<span style="color:#960050;background-color:#1e0010">📝</span> Generate Ideas]
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    subgraph Phase2[<span style="color:#e6db74">&#34;🚀 Phase 2: Enhancement&#34;</span>]
-</span></span><span style="display:flex;"><span>        WebUI[<span style="color:#960050;background-color:#1e0010">🌐</span> Web Interface]
-</span></span><span style="display:flex;"><span>        Webhooks[<span style="color:#960050;background-color:#1e0010">🔗</span> Webhooks]
-</span></span><span style="display:flex;"><span>        Drafts[<span style="color:#960050;background-color:#1e0010">✍️</span> Full Drafts]
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    subgraph Phase3[<span style="color:#e6db74">&#34;🤖 Phase 3: Automation&#34;</span>]
-</span></span><span style="display:flex;"><span>        Schedule[<span style="color:#960050;background-color:#1e0010">⏰</span> Scheduled Publishing]
-</span></span><span style="display:flex;"><span>        Multi[<span style="color:#960050;background-color:#1e0010">📱</span> Multi<span style="color:#f92672">-</span>Platform]
-</span></span><span style="display:flex;"><span>        Analytics[<span style="color:#960050;background-color:#1e0010">📊</span> Analytics]
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Phase1 <span style="color:#f92672">--&gt;</span> Phase2
-</span></span><span style="display:flex;"><span>    Phase2 <span style="color:#f92672">--&gt;</span> Phase3
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style Phase1 fill:<span style="color:#75715e">#e1f5fe</span>
-</span></span><span style="display:flex;"><span>    style Phase2 fill:<span style="color:#75715e">#fff3e0</span>
-</span></span><span style="display:flex;"><span>    style Phase3 fill:<span style="color:#75715e">#f3e5f5</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">graph</span> <span class="n">LR</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subgraph</span> <span class="n">Phase1</span><span class="p">[</span><span class="s2">&#34;⚡ Phase 1: MVP (72 hours)&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Upload</span><span class="p">[</span><span class="err">📤</span> <span class="n">Upload</span> <span class="n">Conversation</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">Parse</span><span class="p">[</span><span class="err">🔍</span> <span class="n">Parse</span> <span class="n">Content</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Parse</span> <span class="o">--&gt;</span> <span class="n">Analyze</span><span class="p">[</span><span class="err">🧠</span> <span class="n">AI</span> <span class="n">Analysis</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Analyze</span> <span class="o">--&gt;</span> <span class="n">Generate</span><span class="p">[</span><span class="err">📝</span> <span class="n">Generate</span> <span class="n">Ideas</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subgraph</span> <span class="n">Phase2</span><span class="p">[</span><span class="s2">&#34;🚀 Phase 2: Enhancement&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">WebUI</span><span class="p">[</span><span class="err">🌐</span> <span class="n">Web</span> <span class="n">Interface</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Webhooks</span><span class="p">[</span><span class="err">🔗</span> <span class="n">Webhooks</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Drafts</span><span class="p">[</span><span class="err">✍️</span> <span class="n">Full</span> <span class="n">Drafts</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subgraph</span> <span class="n">Phase3</span><span class="p">[</span><span class="s2">&#34;🤖 Phase 3: Automation&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Schedule</span><span class="p">[</span><span class="err">⏰</span> <span class="n">Scheduled</span> <span class="n">Publishing</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Multi</span><span class="p">[</span><span class="err">📱</span> <span class="n">Multi</span><span class="o">-</span><span class="n">Platform</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Analytics</span><span class="p">[</span><span class="err">📊</span> <span class="n">Analytics</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Phase1</span> <span class="o">--&gt;</span> <span class="n">Phase2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Phase2</span> <span class="o">--&gt;</span> <span class="n">Phase3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Phase1</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#e1f5fe</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Phase2</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#fff3e0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Phase3</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#f3e5f5</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>By the end of that 90-minute session, we had a technical roadmap:</p>

@@ -57,8 +57,9 @@
     </style>
 </noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false,
     theme: 'dark',
     themeVariables: {
       primaryColor: '#BB86FC',
@@ -68,6 +69,32 @@
       secondaryColor: '#03dac6',
       tertiaryColor: '#121212'
     }
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    const mermaidBlocks = document.querySelectorAll('code.language-mermaid, code[data-lang="mermaid"], pre > code:not([class])');
+
+    mermaidBlocks.forEach((block, index) => {
+      
+      const content = block.textContent;
+      if (content.trim().match(/^(graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|journey|gantt|pie|gitGraph|flowchart)/)) {
+        
+        const mermaidDiv = document.createElement('div');
+        mermaidDiv.className = 'mermaid';
+        mermaidDiv.textContent = content;
+
+        
+        const pre = block.closest('pre');
+        if (pre) {
+          pre.parentNode.replaceChild(mermaidDiv, pre);
+        }
+      }
+    });
+
+    
+    mermaid.run();
   });
 </script>
 <meta property="og:url" content="https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/">
@@ -251,14 +278,14 @@
 <hr>
 <h2 id="the-context-window-problem-again">The Context Window Problem (Again)<a hidden class="anchor" aria-hidden="true" href="#the-context-window-problem-again">#</a></h2>
 <p>By September 18, ConvoCanvas was working. The MVP could parse conversations and generate content ideas. But the original problem that started this whole journey? <strong>Still unsolved.</strong></p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>❌ Error: Context window overflow. This conversation is too long to continue.
-</span></span><span style="display:flex;"><span>Would you like to start a new chat?
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❌ Error: Context window overflow. This conversation is too long to continue.
+</span></span><span class="line"><span class="cl">Would you like to start a new chat?
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>I was still hitting context limits. Still losing conversation history. Still starting over every time Claude Code or ChatGPT hit their limits.</p>
@@ -284,74 +311,74 @@
 </ul>
 <p>I needed local inference. I needed <strong>Ollama</strong>.</p>
 <p><strong>Reality check</strong>: Local models still have context limits (Llama 3.1: 128K tokens, DeepSeek R1: 32K tokens). But I could <strong>choose</strong> the right model for each task and <strong>save/resume</strong> conversations across sessions. The win wasn&rsquo;t unlimited context - it was <strong>control over the context</strong>.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>graph LR
-</span></span><span style="display:flex;"><span>    subgraph External[&#34;❌ External Services - Before Sept 18&#34;]
-</span></span><span style="display:flex;"><span>        direction TB
-</span></span><span style="display:flex;"><span>        Title1[Context Window Limits]
-</span></span><span style="display:flex;"><span>        style Title1 fill:none,stroke:none,color:#ff6347
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Claude[Claude Code&lt;br/&gt;200K token limit] --&gt;|Hit Limit| Restart1[🔄 Forced Restart]
-</span></span><span style="display:flex;"><span>        ChatGPT[ChatGPT&lt;br/&gt;128K token limit] --&gt;|Hit Limit| Restart2[🔄 Forced Restart]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Restart1 --&gt; LostContext[💔 Lost Context&lt;br/&gt;Start Over]
-</span></span><span style="display:flex;"><span>        Restart2 --&gt; LostContext
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Title1 ~~~ Claude
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    subgraph Local[&#34;✅ Local Ollama - After Sept 18&#34;]
-</span></span><span style="display:flex;"><span>        direction TB
-</span></span><span style="display:flex;"><span>        Title2[Context Control]
-</span></span><span style="display:flex;"><span>        style Title2 fill:none,stroke:none,color:#228b22
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Ollama[Ollama Models&lt;br/&gt;32K-128K limits] --&gt;|Save State| Persist[💾 Save Conversation]
-</span></span><span style="display:flex;"><span>        Persist --&gt; Resume[▶️ Resume Anytime]
-</span></span><span style="display:flex;"><span>        Resume --&gt; Control[🎛️ Choose Right Model&lt;br/&gt;Per Task]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Title2 ~~~ Ollama
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    External -.-&gt;|&#34;September 18, 2025&lt;br/&gt;15-Hour Sprint&#34;| Migration[🔄 Migration]
-</span></span><span style="display:flex;"><span>    Migration -.-&gt; Local
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-</span></span><span style="display:flex;"><span>    style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2px
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph LR
+</span></span><span class="line"><span class="cl">    subgraph External[&#34;❌ External Services - Before Sept 18&#34;]
+</span></span><span class="line"><span class="cl">        direction TB
+</span></span><span class="line"><span class="cl">        Title1[Context Window Limits]
+</span></span><span class="line"><span class="cl">        style Title1 fill:none,stroke:none,color:#ff6347
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Claude[Claude Code&lt;br/&gt;200K token limit] --&gt;|Hit Limit| Restart1[🔄 Forced Restart]
+</span></span><span class="line"><span class="cl">        ChatGPT[ChatGPT&lt;br/&gt;128K token limit] --&gt;|Hit Limit| Restart2[🔄 Forced Restart]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Restart1 --&gt; LostContext[💔 Lost Context&lt;br/&gt;Start Over]
+</span></span><span class="line"><span class="cl">        Restart2 --&gt; LostContext
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Title1 ~~~ Claude
+</span></span><span class="line"><span class="cl">    end
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    subgraph Local[&#34;✅ Local Ollama - After Sept 18&#34;]
+</span></span><span class="line"><span class="cl">        direction TB
+</span></span><span class="line"><span class="cl">        Title2[Context Control]
+</span></span><span class="line"><span class="cl">        style Title2 fill:none,stroke:none,color:#228b22
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Ollama[Ollama Models&lt;br/&gt;32K-128K limits] --&gt;|Save State| Persist[💾 Save Conversation]
+</span></span><span class="line"><span class="cl">        Persist --&gt; Resume[▶️ Resume Anytime]
+</span></span><span class="line"><span class="cl">        Resume --&gt; Control[🎛️ Choose Right Model&lt;br/&gt;Per Task]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Title2 ~~~ Ollama
+</span></span><span class="line"><span class="cl">    end
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    External -.-&gt;|&#34;September 18, 2025&lt;br/&gt;15-Hour Sprint&#34;| Migration[🔄 Migration]
+</span></span><span class="line"><span class="cl">    Migration -.-&gt; Local
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
+</span></span><span class="line"><span class="cl">    style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2px
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="september-18-900-am---the-research-phase">September 18, 9:00 AM - The Research Phase<a hidden class="anchor" aria-hidden="true" href="#september-18-900-am---the-research-phase">#</a></h2>
@@ -371,16 +398,16 @@
 <li>CodeLlama (specialized for code)</li>
 </ul>
 <p><strong>Context Window Comparison</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Claude Code:     200K tokens (then forced restart)
-</span></span><span style="display:flex;"><span>ChatGPT:         128K tokens (then forced restart)
-</span></span><span style="display:flex;"><span>Local Ollama:    Limited only by VRAM (configurable!)
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Claude Code:     200K tokens (then forced restart)
+</span></span><span class="line"><span class="cl">ChatGPT:         128K tokens (then forced restart)
+</span></span><span class="line"><span class="cl">Local Ollama:    Limited only by VRAM (configurable!)
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Performance Targets</strong>:</p>
@@ -394,68 +421,68 @@
 <p>&ldquo;Ollama provides a Docker-like experience for LLMs. Single command deployment, automatic model management, OpenAI-compatible API. Perfect for local development. Most importantly: <strong>I control the context window</strong>.&rdquo;</p></blockquote>
 <p>The decision was made. Time to build.</p>
 <h2 id="930-am---installation">9:30 AM - Installation<a hidden class="anchor" aria-hidden="true" href="#930-am---installation">#</a></h2>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Install Ollama</span>
-</span></span><span style="display:flex;"><span>curl -fsSL https://ollama.com/install.sh | sh
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Verify GPU access</span>
-</span></span><span style="display:flex;"><span>ollama run llama3.1
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Output: Using NVIDIA RTX 4080, 16GB VRAM</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Model loaded in 2.3 seconds</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Install Ollama</span>
+</span></span><span class="line"><span class="cl">curl -fsSL https://ollama.com/install.sh <span class="p">|</span> sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Verify GPU access</span>
+</span></span><span class="line"><span class="cl">ollama run llama3.1
+</span></span><span class="line"><span class="cl"><span class="c1"># Output: Using NVIDIA RTX 4080, 16GB VRAM</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Model loaded in 2.3 seconds</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>IT WORKED.</strong></p>
 <p>The RTX 4080 was humming. VRAM usage: 6.2GB for Llama 3.1 8B. Plenty of headroom.</p>
 <h2 id="1000-am---model-collection">10:00 AM - Model Collection<a hidden class="anchor" aria-hidden="true" href="#1000-am---model-collection">#</a></h2>
 <p>I started pulling models like a kid in a candy store:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Reasoning specialist</span>
-</span></span><span style="display:flex;"><span>ollama pull deepseek-r1:7b
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># General purpose (fastest)</span>
-</span></span><span style="display:flex;"><span>ollama pull mistral:7b-instruct
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Meta&#39;s latest</span>
-</span></span><span style="display:flex;"><span>ollama pull llama3.1:8b
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Code specialist</span>
-</span></span><span style="display:flex;"><span>ollama pull codellama:7b
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Uncensored variant (for creative tasks)</span>
-</span></span><span style="display:flex;"><span>ollama pull nous-hermes-2:latest
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Compact model (2B for quick tasks)</span>
-</span></span><span style="display:flex;"><span>ollama pull phi-3:mini
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Reasoning specialist</span>
+</span></span><span class="line"><span class="cl">ollama pull deepseek-r1:7b
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># General purpose (fastest)</span>
+</span></span><span class="line"><span class="cl">ollama pull mistral:7b-instruct
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Meta&#39;s latest</span>
+</span></span><span class="line"><span class="cl">ollama pull llama3.1:8b
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Code specialist</span>
+</span></span><span class="line"><span class="cl">ollama pull codellama:7b
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Uncensored variant (for creative tasks)</span>
+</span></span><span class="line"><span class="cl">ollama pull nous-hermes-2:latest
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Compact model (2B for quick tasks)</span>
+</span></span><span class="line"><span class="cl">ollama pull phi-3:mini
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Total download</strong>: 42GB
@@ -597,150 +624,150 @@
   </tbody>
 </table>
 <p><strong>The RTX 4080 could handle them all.</strong> (Just not simultaneously.)</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>graph TD
-</span></span><span style="display:flex;"><span>    Start[<span style="color:#960050;background-color:#1e0010">🎯</span> Goal: Context Freedom] <span style="color:#f92672">--&gt;</span> Research[<span style="color:#960050;background-color:#1e0010">🔍</span> Research Phase<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">9</span>:<span style="color:#ae81ff">00</span><span style="color:#f92672">-</span><span style="color:#ae81ff">9</span>:<span style="color:#ae81ff">30</span> AM]
-</span></span><span style="display:flex;"><span>    Research <span style="color:#f92672">--&gt;</span> Install[<span style="color:#960050;background-color:#1e0010">⚡</span> Install Ollama<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">9</span>:<span style="color:#ae81ff">30</span> AM]
-</span></span><span style="display:flex;"><span>    Install <span style="color:#f92672">--&gt;</span> First6[<span style="color:#960050;background-color:#1e0010">📦</span> First <span style="color:#ae81ff">6</span> Models<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">10</span>:<span style="color:#ae81ff">00</span><span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>:<span style="color:#ae81ff">35</span> AM]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Reasoning[<span style="color:#960050;background-color:#1e0010">💡</span> DeepSeek R1<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Reasoning]
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Fast[<span style="color:#960050;background-color:#1e0010">⚡</span> Mistral <span style="color:#ae81ff">7</span>B<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>General Purpose]
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Code[<span style="color:#960050;background-color:#1e0010">💻</span> CodeLlama<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Code Tasks]
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Latest[<span style="color:#960050;background-color:#1e0010">🆕</span> Llama <span style="color:#ae81ff">3.1</span><span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Meta<span style="color:#e6db74">&#39;s Latest]</span>
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Creative[<span style="color:#960050;background-color:#1e0010">🎨</span> Nous Hermes<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Creative]
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Mini[<span style="color:#960050;background-color:#1e0010">⚙️</span> Phi<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> Mini<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Quick Tasks]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    First6 <span style="color:#f92672">--&gt;</span> Testing[<span style="color:#960050;background-color:#1e0010">🧪</span> Testing Phase<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">10</span>:<span style="color:#ae81ff">35</span><span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>:<span style="color:#ae81ff">00</span> AM]
-</span></span><span style="display:flex;"><span>    Testing <span style="color:#f92672">--&gt;</span> Decision{More Models<span style="color:#960050;background-color:#1e0010">?</span>}
-</span></span><span style="display:flex;"><span>    Decision <span style="color:#f92672">--&gt;|</span>Yes<span style="color:#f92672">|</span> More11[<span style="color:#960050;background-color:#1e0010">📦</span> <span style="color:#f92672">+</span><span style="color:#ae81ff">11</span> More Models<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">11</span>:<span style="color:#ae81ff">00</span> AM<span style="color:#f92672">-</span><span style="color:#ae81ff">12</span>:<span style="color:#ae81ff">00</span> PM]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    More11 <span style="color:#f92672">--&gt;</span> Heavy[<span style="color:#960050;background-color:#1e0010">🏋️</span> Yi<span style="color:#f92672">-</span><span style="color:#ae81ff">34</span>B<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Heavy Lifting]
-</span></span><span style="display:flex;"><span>    More11 <span style="color:#f92672">--&gt;</span> Expert[<span style="color:#960050;background-color:#1e0010">🎯</span> Mixtral <span style="color:#ae81ff">8</span>x7B<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Mixture of Experts]
-</span></span><span style="display:flex;"><span>    More11 <span style="color:#f92672">--&gt;</span> Plus9[<span style="color:#f92672">+</span><span style="color:#ae81ff">9</span> More Specialized]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    More11 <span style="color:#f92672">--&gt;</span> Final[<span style="color:#960050;background-color:#1e0010">🎊</span> <span style="color:#ae81ff">17</span> Total Models<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">78</span>GB Downloaded<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>By Noon]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Final <span style="color:#f92672">--&gt;</span> Result[<span style="color:#960050;background-color:#1e0010">✅</span> Complete Collection<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Ready <span style="color:#66d9ef">for</span> Testing]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style Start fill:<span style="color:#75715e">#ffd700,stroke:#ff6347,stroke-width:2px</span>
-</span></span><span style="display:flex;"><span>    style Final fill:<span style="color:#75715e">#98fb98,stroke:#228b22,stroke-width:2px</span>
-</span></span><span style="display:flex;"><span>    style Result fill:<span style="color:#75715e">#e1f5fe,stroke:#1976d2,stroke-width:2px</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">graph</span> <span class="n">TD</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Start</span><span class="p">[</span><span class="err">🎯</span> <span class="n">Goal</span><span class="p">:</span> <span class="n">Context</span> <span class="n">Freedom</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">Research</span><span class="p">[</span><span class="err">🔍</span> <span class="n">Research</span> <span class="n">Phase</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">9</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">9</span><span class="p">:</span><span class="mi">30</span> <span class="n">AM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Research</span> <span class="o">--&gt;</span> <span class="n">Install</span><span class="p">[</span><span class="err">⚡</span> <span class="n">Install</span> <span class="n">Ollama</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">9</span><span class="p">:</span><span class="mi">30</span> <span class="n">AM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Install</span> <span class="o">--&gt;</span> <span class="n">First6</span><span class="p">[</span><span class="err">📦</span> <span class="n">First</span> <span class="mi">6</span> <span class="n">Models</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">35</span> <span class="n">AM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Reasoning</span><span class="p">[</span><span class="err">💡</span> <span class="n">DeepSeek</span> <span class="n">R1</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Reasoning</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Fast</span><span class="p">[</span><span class="err">⚡</span> <span class="n">Mistral</span> <span class="mi">7</span><span class="n">B</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">General</span> <span class="n">Purpose</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Code</span><span class="p">[</span><span class="err">💻</span> <span class="n">CodeLlama</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Code</span> <span class="n">Tasks</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Latest</span><span class="p">[</span><span class="err">🆕</span> <span class="n">Llama</span> <span class="mf">3.1</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Meta</span><span class="s1">&#39;s Latest]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Creative</span><span class="p">[</span><span class="err">🎨</span> <span class="n">Nous</span> <span class="n">Hermes</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Creative</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Mini</span><span class="p">[</span><span class="err">⚙️</span> <span class="n">Phi</span><span class="o">-</span><span class="mi">3</span> <span class="n">Mini</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Quick</span> <span class="n">Tasks</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">First6</span> <span class="o">--&gt;</span> <span class="n">Testing</span><span class="p">[</span><span class="err">🧪</span> <span class="n">Testing</span> <span class="n">Phase</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">10</span><span class="p">:</span><span class="mi">35</span><span class="o">-</span><span class="mi">11</span><span class="p">:</span><span class="mi">00</span> <span class="n">AM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Testing</span> <span class="o">--&gt;</span> <span class="n">Decision</span><span class="p">{</span><span class="n">More</span> <span class="n">Models</span><span class="err">?</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Decision</span> <span class="o">--&gt;|</span><span class="n">Yes</span><span class="o">|</span> <span class="n">More11</span><span class="p">[</span><span class="err">📦</span> <span class="o">+</span><span class="mi">11</span> <span class="n">More</span> <span class="n">Models</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">11</span><span class="p">:</span><span class="mi">00</span> <span class="n">AM</span><span class="o">-</span><span class="mi">12</span><span class="p">:</span><span class="mi">00</span> <span class="n">PM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">More11</span> <span class="o">--&gt;</span> <span class="n">Heavy</span><span class="p">[</span><span class="err">🏋️</span> <span class="n">Yi</span><span class="o">-</span><span class="mi">34</span><span class="n">B</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Heavy</span> <span class="n">Lifting</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">More11</span> <span class="o">--&gt;</span> <span class="n">Expert</span><span class="p">[</span><span class="err">🎯</span> <span class="n">Mixtral</span> <span class="mi">8</span><span class="n">x7B</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Mixture</span> <span class="n">of</span> <span class="n">Experts</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">More11</span> <span class="o">--&gt;</span> <span class="n">Plus9</span><span class="p">[</span><span class="o">+</span><span class="mi">9</span> <span class="n">More</span> <span class="n">Specialized</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">More11</span> <span class="o">--&gt;</span> <span class="n">Final</span><span class="p">[</span><span class="err">🎊</span> <span class="mi">17</span> <span class="n">Total</span> <span class="n">Models</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">78</span><span class="n">GB</span> <span class="n">Downloaded</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">By</span> <span class="n">Noon</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Final</span> <span class="o">--&gt;</span> <span class="n">Result</span><span class="p">[</span><span class="err">✅</span> <span class="n">Complete</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Ready</span> <span class="k">for</span> <span class="n">Testing</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Start</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#ffd700,stroke:#ff6347,stroke-width:2px</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Final</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#98fb98,stroke:#228b22,stroke-width:2px</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Result</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#e1f5fe,stroke:#1976d2,stroke-width:2px</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="100-pm---testing-context-persistence">1:00 PM - Testing Context Persistence<a hidden class="anchor" aria-hidden="true" href="#100-pm---testing-context-persistence">#</a></h2>
 <p>Now came the real test: Could I maintain conversation context across sessions?</p>
 <p><strong>Test 1: Long Conversation</strong></p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Start a conversation about network automation</span>
-</span></span><span style="display:flex;"><span>ollama run deepseek-r1:7b
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Talk for 50+ messages (would hit context limit on Claude Code)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Save conversation state</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Resume next day with full context!</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Start a conversation about network automation</span>
+</span></span><span class="line"><span class="cl">ollama run deepseek-r1:7b
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Talk for 50+ messages (would hit context limit on Claude Code)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Save conversation state</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Resume next day with full context!</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Result</strong>: ✅ <strong>No more &ldquo;conversation too long&rdquo; errors!</strong></p>
 <p><strong>Test 2: Context Switching</strong></p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Morning: Work on Python with CodeLlama</span>
-</span></span><span style="display:flex;"><span>ollama run codellama:7b
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Save context: /tmp/python-session.json</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Afternoon: Work on network config with DeepSeek</span>
-</span></span><span style="display:flex;"><span>ollama run deepseek-r1:7b
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Save context: /tmp/network-session.json</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Evening: Resume Python session with ALL previous context</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Load context: /tmp/python-session.json</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Morning: Work on Python with CodeLlama</span>
+</span></span><span class="line"><span class="cl">ollama run codellama:7b
+</span></span><span class="line"><span class="cl"><span class="c1"># Save context: /tmp/python-session.json</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Afternoon: Work on network config with DeepSeek</span>
+</span></span><span class="line"><span class="cl">ollama run deepseek-r1:7b
+</span></span><span class="line"><span class="cl"><span class="c1"># Save context: /tmp/network-session.json</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Evening: Resume Python session with ALL previous context</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Load context: /tmp/python-session.json</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Result</strong>: ✅ <strong>Persistent conversations across sessions!</strong></p>
 <p><strong>Test 3: Large Context Window</strong></p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Test with 10,000 word document</span>
-</span></span><span style="display:flex;"><span>response_time <span style="color:#f92672">=</span> <span style="color:#ae81ff">8.2</span>  <span style="color:#75715e"># seconds</span>
-</span></span><span style="display:flex;"><span>context_retained <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>  <span style="color:#75715e"># Full document in context!</span>
-</span></span><span style="display:flex;"><span>external_service <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>  <span style="color:#75715e"># All local, all private</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Test with 10,000 word document</span>
+</span></span><span class="line"><span class="cl"><span class="n">response_time</span> <span class="o">=</span> <span class="mf">8.2</span>  <span class="c1"># seconds</span>
+</span></span><span class="line"><span class="cl"><span class="n">context_retained</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Full document in context!</span>
+</span></span><span class="line"><span class="cl"><span class="n">external_service</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># All local, all private</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Result</strong>: ✅ <strong>No external limits!</strong></p>
 <h2 id="300-pm---the-freedom-realization">3:00 PM - The Freedom Realization<a hidden class="anchor" aria-hidden="true" href="#300-pm---the-freedom-realization">#</a></h2>
 <p>I ran the same test I&rsquo;d done with Claude Code that triggered this whole journey:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Input: 3-hour debugging session about network automation
-</span></span><span style="display:flex;"><span>Messages: 87 back-and-forth exchanges
-</span></span><span style="display:flex;"><span>Context size: ~50K tokens
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Claude Code result: &#34;Context window overflow. Start new chat?&#34;
-</span></span><span style="display:flex;"><span>Ollama result: &#34;Ready for message 88. Full context retained.&#34;
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Input: 3-hour debugging session about network automation
+</span></span><span class="line"><span class="cl">Messages: 87 back-and-forth exchanges
+</span></span><span class="line"><span class="cl">Context size: ~50K tokens
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Claude Code result: &#34;Context window overflow. Start new chat?&#34;
+</span></span><span class="line"><span class="cl">Ollama result: &#34;Ready for message 88. Full context retained.&#34;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>The breakthrough</strong>: I could continue conversations <strong>indefinitely</strong>.</p>
@@ -762,138 +789,138 @@
 <li>Unlimited experimentation (iterate fearlessly)</li>
 </ul>
 <p><strong>Cost Comparison</strong> (bonus):</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Claude API (if I were using it): $720/year
-</span></span><span style="display:flex;"><span>Ollama (local): $0/year
-</span></span><span style="display:flex;"><span>RTX 4080 (already owned): Already paid for
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Claude API (if I were using it): $720/year
+</span></span><span class="line"><span class="cl">Ollama (local): $0/year
+</span></span><span class="line"><span class="cl">RTX 4080 (already owned): Already paid for
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>But <strong>cost wasn&rsquo;t the driver</strong> - <strong>freedom was</strong>.</p>
 <h2 id="september-19-900-am---the-supervisor-pattern">September 19, 9:00 AM - The Supervisor Pattern<a hidden class="anchor" aria-hidden="true" href="#september-19-900-am---the-supervisor-pattern">#</a></h2>
 <p>With 17 models available, I built an orchestrator to route tasks to the best model:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ModelSupervisor</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>models <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;reasoning&#34;</span>: <span style="color:#e6db74">&#34;deepseek-r1:7b&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;general&#34;</span>: <span style="color:#e6db74">&#34;mistral:7b-instruct&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;codellama:7b&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;fast&#34;</span>: <span style="color:#e6db74">&#34;phi-3:mini&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;creative&#34;</span>: <span style="color:#e6db74">&#34;nous-hermes-2:latest&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;long_context&#34;</span>: <span style="color:#e6db74">&#34;llama3.1:8b&#34;</span>  <span style="color:#75715e"># 128K context!</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">route_task</span>(self, task_type: str, prompt: str) <span style="color:#f92672">-&gt;</span> str:
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Route task to optimal model.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        model <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>get(task_type, self<span style="color:#f92672">.</span>models[<span style="color:#e6db74">&#34;general&#34;</span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;http://localhost:11434/api/generate&#34;</span>,
-</span></span><span style="display:flex;"><span>            json<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;model&#34;</span>: model, <span style="color:#e6db74">&#34;prompt&#34;</span>: prompt}
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#34;response&#34;</span>]
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ModelSupervisor</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;reasoning&#34;</span><span class="p">:</span> <span class="s2">&#34;deepseek-r1:7b&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;general&#34;</span><span class="p">:</span> <span class="s2">&#34;mistral:7b-instruct&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;code&#34;</span><span class="p">:</span> <span class="s2">&#34;codellama:7b&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;fast&#34;</span><span class="p">:</span> <span class="s2">&#34;phi-3:mini&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;creative&#34;</span><span class="p">:</span> <span class="s2">&#34;nous-hermes-2:latest&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;long_context&#34;</span><span class="p">:</span> <span class="s2">&#34;llama3.1:8b&#34;</span>  <span class="c1"># 128K context!</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">route_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Route task to optimal model.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="s2">&#34;general&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;http://localhost:11434/api/generate&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;model&#34;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span> <span class="s2">&#34;prompt&#34;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&#34;response&#34;</span><span class="p">]</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>graph TD
-</span></span><span style="display:flex;"><span>    User[👤 User Request] --&gt; Router{🎯 Task Router&lt;br/&gt;Model Supervisor}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Router --&gt;|&#34;Need reasoning&lt;br/&gt;or analysis&#34;| DeepSeek[🧠 DeepSeek R1 7B&lt;br/&gt;32K context&lt;br/&gt;4.2GB VRAM]
-</span></span><span style="display:flex;"><span>    Router --&gt;|&#34;Code generation&lt;br/&gt;or debugging&#34;| CodeLlama[💻 CodeLlama 7B&lt;br/&gt;16K context&lt;br/&gt;4.3GB VRAM]
-</span></span><span style="display:flex;"><span>    Router --&gt;|&#34;Quick question&lt;br/&gt;fast response&#34;| Mistral[⚡ Mistral 7B&lt;br/&gt;32K context&lt;br/&gt;4.1GB VRAM]
-</span></span><span style="display:flex;"><span>    Router --&gt;|&#34;Long document&lt;br/&gt;large context&#34;| Llama[🆕 Llama 3.1 8B&lt;br/&gt;128K context!&lt;br/&gt;4.8GB VRAM]
-</span></span><span style="display:flex;"><span>    Router --&gt;|&#34;Heavy analysis&lt;br/&gt;complex task&#34;| Yi[🏋️ Yi-34B Quantized&lt;br/&gt;4K context&lt;br/&gt;12.1GB VRAM]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DeepSeek --&gt; Response[📤 Response with&lt;br/&gt;Full Context Retained]
-</span></span><span style="display:flex;"><span>    CodeLlama --&gt; Response
-</span></span><span style="display:flex;"><span>    Mistral --&gt; Response
-</span></span><span style="display:flex;"><span>    Llama --&gt; Response
-</span></span><span style="display:flex;"><span>    Yi --&gt; Response
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px
-</span></span><span style="display:flex;"><span>    style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px
-</span></span><span style="display:flex;"><span>    style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">graph TD
+</span></span><span class="line"><span class="cl">    User[👤 User Request] --&gt; Router{🎯 Task Router&lt;br/&gt;Model Supervisor}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Router --&gt;|&#34;Need reasoning&lt;br/&gt;or analysis&#34;| DeepSeek[🧠 DeepSeek R1 7B&lt;br/&gt;32K context&lt;br/&gt;4.2GB VRAM]
+</span></span><span class="line"><span class="cl">    Router --&gt;|&#34;Code generation&lt;br/&gt;or debugging&#34;| CodeLlama[💻 CodeLlama 7B&lt;br/&gt;16K context&lt;br/&gt;4.3GB VRAM]
+</span></span><span class="line"><span class="cl">    Router --&gt;|&#34;Quick question&lt;br/&gt;fast response&#34;| Mistral[⚡ Mistral 7B&lt;br/&gt;32K context&lt;br/&gt;4.1GB VRAM]
+</span></span><span class="line"><span class="cl">    Router --&gt;|&#34;Long document&lt;br/&gt;large context&#34;| Llama[🆕 Llama 3.1 8B&lt;br/&gt;128K context!&lt;br/&gt;4.8GB VRAM]
+</span></span><span class="line"><span class="cl">    Router --&gt;|&#34;Heavy analysis&lt;br/&gt;complex task&#34;| Yi[🏋️ Yi-34B Quantized&lt;br/&gt;4K context&lt;br/&gt;12.1GB VRAM]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    DeepSeek --&gt; Response[📤 Response with&lt;br/&gt;Full Context Retained]
+</span></span><span class="line"><span class="cl">    CodeLlama --&gt; Response
+</span></span><span class="line"><span class="cl">    Mistral --&gt; Response
+</span></span><span class="line"><span class="cl">    Llama --&gt; Response
+</span></span><span class="line"><span class="cl">    Yi --&gt; Response
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px
+</span></span><span class="line"><span class="cl">    style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px
+</span></span><span class="line"><span class="cl">    style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Usage</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>supervisor <span style="color:#f92672">=</span> ModelSupervisor()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Long context work → Llama 3.1 (128K context)</span>
-</span></span><span style="display:flex;"><span>analysis <span style="color:#f92672">=</span> supervisor<span style="color:#f92672">.</span>route_task(<span style="color:#e6db74">&#34;long_context&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Analyze this entire 100-page document...&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Code task → CodeLlama</span>
-</span></span><span style="display:flex;"><span>code_review <span style="color:#f92672">=</span> supervisor<span style="color:#f92672">.</span>route_task(<span style="color:#e6db74">&#34;code&#34;</span>, <span style="color:#e6db74">&#34;Review this function...&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Quick response → Phi-3 Mini</span>
-</span></span><span style="display:flex;"><span>quick_answer <span style="color:#f92672">=</span> supervisor<span style="color:#f92672">.</span>route_task(<span style="color:#e6db74">&#34;fast&#34;</span>, <span style="color:#e6db74">&#34;What is FastAPI?&#34;</span>)
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">supervisor</span> <span class="o">=</span> <span class="n">ModelSupervisor</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Long context work → Llama 3.1 (128K context)</span>
+</span></span><span class="line"><span class="cl"><span class="n">analysis</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;long_context&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Analyze this entire 100-page document...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Code task → CodeLlama</span>
+</span></span><span class="line"><span class="cl"><span class="n">code_review</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;code&#34;</span><span class="p">,</span> <span class="s2">&#34;Review this function...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Quick response → Phi-3 Mini</span>
+</span></span><span class="line"><span class="cl"><span class="n">quick_answer</span> <span class="o">=</span> <span class="n">supervisor</span><span class="o">.</span><span class="n">route_task</span><span class="p">(</span><span class="s2">&#34;fast&#34;</span><span class="p">,</span> <span class="s2">&#34;What is FastAPI?&#34;</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>The system could now <strong>self-optimize</strong> based on context needs.</p>

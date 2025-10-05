@@ -71,3 +71,7 @@ theme = 'PaperMod'
     guessSyntax = true
     lineNos = true
     style = "monokai"
+    noClasses = false
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

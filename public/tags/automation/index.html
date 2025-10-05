@@ -58,8 +58,9 @@
     </style>
 </noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false,
     theme: 'dark',
     themeVariables: {
       primaryColor: '#BB86FC',
@@ -69,6 +70,32 @@
       secondaryColor: '#03dac6',
       tertiaryColor: '#121212'
     }
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    const mermaidBlocks = document.querySelectorAll('code.language-mermaid, code[data-lang="mermaid"], pre > code:not([class])');
+
+    mermaidBlocks.forEach((block, index) => {
+      
+      const content = block.textContent;
+      if (content.trim().match(/^(graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|journey|gantt|pie|gitGraph|flowchart)/)) {
+        
+        const mermaidDiv = document.createElement('div');
+        mermaidDiv.className = 'mermaid';
+        mermaidDiv.textContent = content;
+
+        
+        const pre = block.closest('pre');
+        if (pre) {
+          pre.parentNode.replaceChild(mermaidDiv, pre);
+        }
+      }
+    });
+
+    
+    mermaid.run();
   });
 </script>
 <meta property="og:url" content="https://blog.rduffy.uk/tags/automation/">

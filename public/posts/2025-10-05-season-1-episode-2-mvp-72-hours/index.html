@@ -57,8 +57,9 @@
     </style>
 </noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false,
     theme: 'dark',
     themeVariables: {
       primaryColor: '#BB86FC',
@@ -68,6 +69,32 @@
       secondaryColor: '#03dac6',
       tertiaryColor: '#121212'
     }
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    const mermaidBlocks = document.querySelectorAll('code.language-mermaid, code[data-lang="mermaid"], pre > code:not([class])');
+
+    mermaidBlocks.forEach((block, index) => {
+      
+      const content = block.textContent;
+      if (content.trim().match(/^(graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|journey|gantt|pie|gitGraph|flowchart)/)) {
+        
+        const mermaidDiv = document.createElement('div');
+        mermaidDiv.className = 'mermaid';
+        mermaidDiv.textContent = content;
+
+        
+        const pre = block.closest('pre');
+        if (pre) {
+          pre.parentNode.replaceChild(mermaidDiv, pre);
+        }
+      }
+    });
+
+    
+    mermaid.run();
   });
 </script>
 <meta property="og:url" content="https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/">
@@ -271,100 +298,100 @@ Upload a conversation file → Get content ideas back.</p>
 <p><strong>Morning</strong>: LibreChat Setup
 <em>Timestamp: September 14, 2025, ~2:30 PM based on GitHub setup conversation</em></p>
 <p>I deployed LibreChat via Docker - a self-hosted ChatGPT alternative that would become my testing ground:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># LibreChat running on :3080</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># MongoDB persistence</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># LM Studio integration for local models</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl"><span class="c1"># LibreChat running on :3080</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># MongoDB persistence</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># LM Studio integration for local models</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Afternoon</strong>: Model Configuration
 Added LM Studio integration so LibreChat could use local models for testing without external dependencies.</p>
 <p><strong>Evening</strong>: Web Search Capability
 Integrated Serper API for web search functionality:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># serper-api-setup.py</span>
-</span></span><span style="display:flex;"><span>SERPER_API_KEY <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;SERPER_API_KEY&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now LibreChat can search the web</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># And ConvoCanvas can analyze those search-enhanced conversations</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># serper-api-setup.py</span>
+</span></span><span class="line"><span class="cl"><span class="n">SERPER_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&#34;SERPER_API_KEY&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Now LibreChat can search the web</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># And ConvoCanvas can analyze those search-enhanced conversations</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>The ecosystem was coming together. 🌐</p>
 <h2 id="-september-15-the-marathon">🏃 September 15: The Marathon<a hidden class="anchor" aria-hidden="true" href="#-september-15-the-marathon">#</a></h2>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>graph LR
-</span></span><span style="display:flex;"><span>    subgraph Before[<span style="color:#e6db74">&#34; &#34;</span>]
-</span></span><span style="display:flex;"><span>        direction TB
-</span></span><span style="display:flex;"><span>        Title1[<span style="color:#960050;background-color:#1e0010">❌</span> Before Refactor <span style="color:#f92672">-</span> Messy MVP]
-</span></span><span style="display:flex;"><span>        style Title1 fill:none,stroke:none,color:<span style="color:#75715e">#ff6347</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Upload1[<span style="color:#960050;background-color:#1e0010">📤</span> Upload] <span style="color:#f92672">--&gt;</span> Monolith[<span style="color:#960050;background-color:#1e0010">🔴</span> Monolithic Function<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span><span style="color:#ae81ff">50</span><span style="color:#f92672">+</span> lines<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>print\(\) error handling]
-</span></span><span style="display:flex;"><span>        Monolith <span style="color:#f92672">--&gt;</span> Return1[<span style="color:#960050;background-color:#1e0010">📦</span> Return ideas]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Title1 <span style="color:#f92672">~~~</span> Upload1
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    subgraph After[<span style="color:#e6db74">&#34; &#34;</span>]
-</span></span><span style="display:flex;"><span>        direction TB
-</span></span><span style="display:flex;"><span>        Title2[<span style="color:#960050;background-color:#1e0010">✅</span> After Refactor <span style="color:#f92672">-</span> Clean Architecture]
-</span></span><span style="display:flex;"><span>        style Title2 fill:none,stroke:none,color:<span style="color:#75715e">#228b22</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Upload2[<span style="color:#960050;background-color:#1e0010">📤</span> Upload] <span style="color:#f92672">--&gt;</span> Parser[<span style="color:#960050;background-color:#1e0010">🔍</span> ConversationParser<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Parse markdown]
-</span></span><span style="display:flex;"><span>        Parser <span style="color:#f92672">--&gt;</span> Analyzer[<span style="color:#960050;background-color:#1e0010">🧠</span> ContentAnalyzer<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Extract insights]
-</span></span><span style="display:flex;"><span>        Analyzer <span style="color:#f92672">--&gt;</span> Response[<span style="color:#960050;background-color:#1e0010">📝</span> ConversationResponse<span style="color:#f92672">&lt;</span>br<span style="color:#f92672">/&gt;</span>Type<span style="color:#f92672">-</span>safe JSON]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Title2 <span style="color:#f92672">~~~</span> Upload2
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Before <span style="color:#f92672">==&gt;|</span><span style="color:#ae81ff">3</span><span style="color:#f92672">-</span>Hour Marathon<span style="color:#f92672">|</span> After
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    style Before fill:<span style="color:#75715e">#ffe4e1,stroke:#ff6347,stroke-width:2px</span>
-</span></span><span style="display:flex;"><span>    style After fill:<span style="color:#75715e">#e1ffe1,stroke:#228b22,stroke-width:2px</span>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">graph</span> <span class="n">LR</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subgraph</span> <span class="n">Before</span><span class="p">[</span><span class="s2">&#34; &#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">direction</span> <span class="n">TB</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Title1</span><span class="p">[</span><span class="err">❌</span> <span class="n">Before</span> <span class="n">Refactor</span> <span class="o">-</span> <span class="n">Messy</span> <span class="n">MVP</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">style</span> <span class="n">Title1</span> <span class="n">fill</span><span class="p">:</span><span class="n">none</span><span class="p">,</span><span class="n">stroke</span><span class="p">:</span><span class="n">none</span><span class="p">,</span><span class="n">color</span><span class="p">:</span><span class="c1">#ff6347</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Upload1</span><span class="p">[</span><span class="err">📤</span> <span class="n">Upload</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">Monolith</span><span class="p">[</span><span class="err">🔴</span> <span class="n">Monolithic</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="mi">50</span><span class="o">+</span> <span class="n">lines</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="nb">print</span>\<span class="p">(</span>\<span class="p">)</span> <span class="n">error</span> <span class="n">handling</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Monolith</span> <span class="o">--&gt;</span> <span class="n">Return1</span><span class="p">[</span><span class="err">📦</span> <span class="n">Return</span> <span class="n">ideas</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Title1</span> <span class="o">~~~</span> <span class="n">Upload1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subgraph</span> <span class="n">After</span><span class="p">[</span><span class="s2">&#34; &#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">direction</span> <span class="n">TB</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Title2</span><span class="p">[</span><span class="err">✅</span> <span class="n">After</span> <span class="n">Refactor</span> <span class="o">-</span> <span class="n">Clean</span> <span class="n">Architecture</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">style</span> <span class="n">Title2</span> <span class="n">fill</span><span class="p">:</span><span class="n">none</span><span class="p">,</span><span class="n">stroke</span><span class="p">:</span><span class="n">none</span><span class="p">,</span><span class="n">color</span><span class="p">:</span><span class="c1">#228b22</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Upload2</span><span class="p">[</span><span class="err">📤</span> <span class="n">Upload</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="err">🔍</span> <span class="n">ConversationParser</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Parse</span> <span class="n">markdown</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Parser</span> <span class="o">--&gt;</span> <span class="n">Analyzer</span><span class="p">[</span><span class="err">🧠</span> <span class="n">ContentAnalyzer</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Extract</span> <span class="n">insights</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Analyzer</span> <span class="o">--&gt;</span> <span class="n">Response</span><span class="p">[</span><span class="err">📝</span> <span class="n">ConversationResponse</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Type</span><span class="o">-</span><span class="n">safe</span> <span class="n">JSON</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Title2</span> <span class="o">~~~</span> <span class="n">Upload2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Before</span> <span class="o">==&gt;|</span><span class="mi">3</span><span class="o">-</span><span class="n">Hour</span> <span class="n">Marathon</span><span class="o">|</span> <span class="n">After</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">Before</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#ffe4e1,stroke:#ff6347,stroke-width:2px</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="n">After</span> <span class="n">fill</span><span class="p">:</span><span class="c1">#e1ffe1,stroke:#228b22,stroke-width:2px</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>11:30 AM - Session Start</strong> ⏰
@@ -383,65 +410,65 @@ Integrated Serper API for web search functionality:</p>
 <p>What followed was a <strong>3-hour refactoring marathon</strong> that transformed prototype code into something deployable.</p>
 <h3 id="hour-1-architecture-decisions-1130-am---1230-pm">Hour 1: Architecture Decisions (11:30 AM - 12:30 PM)<a hidden class="anchor" aria-hidden="true" href="#hour-1-architecture-decisions-1130-am---1230-pm">#</a></h3>
 <p><strong>Before</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/upload&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_conversation</span>(file: UploadFile):
-</span></span><span style="display:flex;"><span>    content <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> file<span style="color:#f92672">.</span>read()
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... 50 lines of parsing logic here</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... error handling with print()</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... content analysis mixed with parsing</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;ideas&#34;</span>: ideas}
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.post</span><span class="p">(</span><span class="s2">&#34;/upload&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">upload_conversation</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">UploadFile</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ... 50 lines of parsing logic here</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ... error handling with print()</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ... content analysis mixed with parsing</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;ideas&#34;</span><span class="p">:</span> <span class="n">ideas</span><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>After</strong>:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/upload&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_conversation</span>(file: UploadFile):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>        parser <span style="color:#f92672">=</span> ConversationParser()
-</span></span><span style="display:flex;"><span>        analyzer <span style="color:#f92672">=</span> ContentAnalyzer()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        content <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> file<span style="color:#f92672">.</span>read()
-</span></span><span style="display:flex;"><span>        conversation <span style="color:#f92672">=</span> parser<span style="color:#f92672">.</span>parse(content)
-</span></span><span style="display:flex;"><span>        ideas <span style="color:#f92672">=</span> analyzer<span style="color:#f92672">.</span>generate_ideas(conversation)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ConversationResponse(
-</span></span><span style="display:flex;"><span>            status<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;success&#34;</span>,
-</span></span><span style="display:flex;"><span>            conversation_id<span style="color:#f92672">=</span>conversation<span style="color:#f92672">.</span>id,
-</span></span><span style="display:flex;"><span>            content_ideas<span style="color:#f92672">=</span>ideas
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> ParseError <span style="color:#66d9ef">as</span> e:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, detail<span style="color:#f92672">=</span>str(e))
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.post</span><span class="p">(</span><span class="s2">&#34;/upload&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">upload_conversation</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">UploadFile</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">parser</span> <span class="o">=</span> <span class="n">ConversationParser</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">analyzer</span> <span class="o">=</span> <span class="n">ContentAnalyzer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">conversation</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ideas</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">generate_ideas</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ConversationResponse</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">status</span><span class="o">=</span><span class="s2">&#34;success&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">conversation_id</span><span class="o">=</span><span class="n">conversation</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">content_ideas</span><span class="o">=</span><span class="n">ideas</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">ParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Clean separation</strong>:</p>
@@ -453,162 +480,162 @@ Integrated Serper API for web search functionality:</p>
 </ul>
 <h3 id="hour-2-the-parsing-breakthrough-1230-pm---130-pm">Hour 2: The Parsing Breakthrough (12:30 PM - 1:30 PM)<a hidden class="anchor" aria-hidden="true" href="#hour-2-the-parsing-breakthrough-1230-pm---130-pm">#</a></h3>
 <p>Save My Chatbot exports conversations as markdown with a predictable structure:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#75715e">## 👤 User
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>[User&#39;s message]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## 🤖 Claude
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>[AI&#39;s response]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>---
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gu">## 👤 User
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>[User&#39;s message]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## 🤖 Claude
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>[AI&#39;s response]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>I built a parser that could handle this reliably:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConversationParser</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse</span>(self, content: str) <span style="color:#f92672">-&gt;</span> Conversation:
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Parse Save My Chatbot markdown format.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        messages <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>        current_role <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>        current_text <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> content<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>):
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> line<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#39;## 👤 User&#39;</span>):
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> current_role:
-</span></span><span style="display:flex;"><span>                    messages<span style="color:#f92672">.</span>append(Message(
-</span></span><span style="display:flex;"><span>                        role<span style="color:#f92672">=</span>current_role,
-</span></span><span style="display:flex;"><span>                        content<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(current_text)
-</span></span><span style="display:flex;"><span>                    ))
-</span></span><span style="display:flex;"><span>                current_role <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;user&#39;</span>
-</span></span><span style="display:flex;"><span>                current_text <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> line<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#39;## 🤖&#39;</span>):
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> current_role:
-</span></span><span style="display:flex;"><span>                    messages<span style="color:#f92672">.</span>append(Message(
-</span></span><span style="display:flex;"><span>                        role<span style="color:#f92672">=</span>current_role,
-</span></span><span style="display:flex;"><span>                        content<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(current_text)
-</span></span><span style="display:flex;"><span>                    ))
-</span></span><span style="display:flex;"><span>                current_role <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;assistant&#39;</span>
-</span></span><span style="display:flex;"><span>                current_text <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> line <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;---&#39;</span>:
-</span></span><span style="display:flex;"><span>                current_text<span style="color:#f92672">.</span>append(line)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Conversation(messages<span style="color:#f92672">=</span>messages)
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ConversationParser</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Conversation</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Parse Save My Chatbot markdown format.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">current_role</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">        <span class="n">current_text</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;## 👤 User&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">current_role</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Message</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">role</span><span class="o">=</span><span class="n">current_role</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">content</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="n">current_role</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">current_text</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;## 🤖&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">current_role</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Message</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">role</span><span class="o">=</span><span class="n">current_role</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">content</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="n">current_role</span> <span class="o">=</span> <span class="s1">&#39;assistant&#39;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">current_text</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;---&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">current_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">Conversation</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Simple. Robust. <strong>It worked</strong>.</p>
 <h3 id="hour-3-content-analysis-130-pm---230-pm">Hour 3: Content Analysis (1:30 PM - 2:30 PM)<a hidden class="anchor" aria-hidden="true" href="#hour-3-content-analysis-130-pm---230-pm">#</a></h3>
 <p>Parsing was solved. Now for the value extraction:</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ContentAnalyzer</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_ideas</span>(self, conversation: Conversation) <span style="color:#f92672">-&gt;</span> List[ContentIdea]:
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Extract content opportunities from conversation.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        ideas <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Extract technical concepts</span>
-</span></span><span style="display:flex;"><span>        technical_terms <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_extract_technical_concepts(conversation)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Identify teaching moments</span>
-</span></span><span style="display:flex;"><span>        explanations <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_find_explanations(conversation)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Find code snippets</span>
-</span></span><span style="display:flex;"><span>        code_blocks <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_extract_code(conversation)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Generate LinkedIn post ideas</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> term <span style="color:#f92672">in</span> technical_terms:
-</span></span><span style="display:flex;"><span>            ideas<span style="color:#f92672">.</span>append(ContentIdea(
-</span></span><span style="display:flex;"><span>                type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linkedin&#34;</span>,
-</span></span><span style="display:flex;"><span>                topic<span style="color:#f92672">=</span><span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Explaining </span><span style="color:#e6db74">{</span>term<span style="color:#e6db74">}</span><span style="color:#e6db74"> in simple terms&#34;</span>,
-</span></span><span style="display:flex;"><span>                confidence<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>
-</span></span><span style="display:flex;"><span>            ))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Generate blog ideas</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(code_blocks) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">3</span>:
-</span></span><span style="display:flex;"><span>            ideas<span style="color:#f92672">.</span>append(ContentIdea(
-</span></span><span style="display:flex;"><span>                type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;blog&#34;</span>,
-</span></span><span style="display:flex;"><span>                topic<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Tutorial: &#34;</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_infer_topic(code_blocks),
-</span></span><span style="display:flex;"><span>                confidence<span style="color:#f92672">=</span><span style="color:#ae81ff">0.8</span>
-</span></span><span style="display:flex;"><span>            ))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ideas
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ContentAnalyzer</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">generate_ideas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conversation</span><span class="p">:</span> <span class="n">Conversation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ContentIdea</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Extract content opportunities from conversation.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ideas</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Extract technical concepts</span>
+</span></span><span class="line"><span class="cl">        <span class="n">technical_terms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_technical_concepts</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Identify teaching moments</span>
+</span></span><span class="line"><span class="cl">        <span class="n">explanations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_explanations</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Find code snippets</span>
+</span></span><span class="line"><span class="cl">        <span class="n">code_blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_code</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Generate LinkedIn post ideas</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">technical_terms</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ideas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ContentIdea</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">type</span><span class="o">=</span><span class="s2">&#34;linkedin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">topic</span><span class="o">=</span><span class="sa">f</span><span class="s2">&#34;Explaining </span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2"> in simple terms&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">confidence</span><span class="o">=</span><span class="mf">0.7</span>
+</span></span><span class="line"><span class="cl">            <span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Generate blog ideas</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_blocks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ideas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ContentIdea</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">type</span><span class="o">=</span><span class="s2">&#34;blog&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">topic</span><span class="o">=</span><span class="s2">&#34;Tutorial: &#34;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_infer_topic</span><span class="p">(</span><span class="n">code_blocks</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">confidence</span><span class="o">=</span><span class="mf">0.8</span>
+</span></span><span class="line"><span class="cl">            <span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ideas</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Was it sophisticated? No.
@@ -618,82 +645,82 @@ Did it work? <strong>Yes.</strong></p>
 <p><strong>Input</strong>: 90-minute conversation (3,200 words)
 <strong>Processing Time</strong>: 0.4 seconds
 <strong>Output</strong>: 6 content ideas</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;success&#34;</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;conversation_id&#34;</span>: <span style="color:#e6db74">&#34;conv_20250911_2006&#34;</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;content_ideas&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;linkedin&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;Why I&#39;m building ConvoCanvas: Turning AI conversations into content&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.9</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;linkedin&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;The context window problem every AI user faces&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.8</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;blog&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;Designing an Obsidian vault structure for AI conversations&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.85</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;blog&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;Building a FastAPI backend in 72 hours&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.7</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;blog&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;Save My Chatbot: Automating conversation exports&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.75</span>
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;tutorial&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;How to structure folders and tags for knowledge management&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.8</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
-</span></span><span style="display:flex;"><span>}
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;success&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;conversation_id&#34;</span><span class="p">:</span> <span class="s2">&#34;conv_20250911_2006&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;content_ideas&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;linkedin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;Why I&#39;m building ConvoCanvas: Turning AI conversations into content&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.9</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;linkedin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;The context window problem every AI user faces&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.8</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;blog&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;Designing an Obsidian vault structure for AI conversations&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.85</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;blog&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;Building a FastAPI backend in 72 hours&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.7</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;blog&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;Save My Chatbot: Automating conversation exports&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.75</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;tutorial&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;How to structure folders and tags for knowledge management&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;confidence&#34;</span><span class="p">:</span> <span class="mf">0.8</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>IT WORKED.</strong></p>
