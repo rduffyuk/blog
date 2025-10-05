@@ -75,7 +75,7 @@ graph TB
 
     style Vision fill:#ffd700,stroke:#ff6347,stroke-width:3px
     style Future fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style DayZero fill:#f0f8ff,stroke:#4682b4,stroke-width:2px
+    style DayZero fill:none,stroke:#4682b4,stroke-width:2px
 ```
 
 
