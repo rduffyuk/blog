@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>https://blog.rduffy.uk/</link>
-    <description>Recent content on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
+    <title>Architecture on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
+    <link>https://blog.rduffy.uk/tags/architecture/</link>
+    <description>Recent content in Architecture on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.rduffy.uk/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Welcome to My AI Infrastructure Journey</title>
-      <link>https://blog.rduffy.uk/posts/welcome/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/welcome/</guid>
-      <description>&lt;h2 id=&#34;why-this-blog-exists&#34;&gt;Why This Blog Exists&lt;/h2&gt;
-&lt;p&gt;After months of building a local AI infrastructure stack, I kept encountering the same problem: &lt;strong&gt;most AI content online is either too theoretical or too enterprise-focused&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;I wanted to share what actually works when you&amp;rsquo;re running LLMs on a consumer GPU - the real performance numbers, the gotchas, the configuration tweaks that made the difference.&lt;/p&gt;
-&lt;h2 id=&#34;what-ive-built-so-far&#34;&gt;What I&amp;rsquo;ve Built So Far&lt;/h2&gt;
-&lt;p&gt;Here&amp;rsquo;s my current setup (as of October 2025):&lt;/p&gt;</description>
-    </item>
+    <atom:link href="https://blog.rduffy.uk/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Architecture Diagram v0.1.0 (Mermaid Architecture)</title>
       <link>https://blog.rduffy.uk/diagrams/architecture-v0/</link>
@@ -160,53 +149,6 @@
 &lt;hr&gt;
 &lt;p&gt;&lt;em&gt;This diagram uses Mermaid&amp;rsquo;s new architecture diagram syntax.&lt;/em&gt;&lt;br&gt;
 &lt;em&gt;Preview with VSCode Mermaid extension or GitHub.&lt;/em&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Building the Foundation: MVP in 72 Hours</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
-      <description>From vault design to working code in 72 hours. The 3-hour refactoring marathon, the first successful parse, and 6 content ideas from 1 conversation.</description>
-    </item>
-    <item>
-      <title>Day Zero: The ConvoCanvas Vision</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/</guid>
-      <description>The context window overflow error that sparked a 25-day process from idea to fully automated infrastructure. Looking back, this is how it all began.</description>
-    </item>
-    <item>
-      <title>The AI Awakening: Breaking Free from Context Limits</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
-      <description>From context window frustration to local control. A 15-hour implementation marathon installing 17 local models on an RTX 4080 for persistent, private conversations.</description>
-    </item>
-    <item>
-      <title>Testing My New Blog Publishing System</title>
-      <link>https://blog.rduffy.uk/posts/test-post/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/test-post/</guid>
-      <description>First test of the Obsidian → Hugo → Cloudflare automated blog pipeline</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>https://blog.rduffy.uk/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/about/</guid>
-      <description>&lt;h1 id=&#34;about-this-blog&#34;&gt;About This Blog&lt;/h1&gt;
-&lt;p&gt;Hi, I&amp;rsquo;m &lt;strong&gt;Ryan Duffy&lt;/strong&gt;, and this is my digital garden where I document my journey building a production-grade AI infrastructure on consumer hardware.&lt;/p&gt;
-&lt;h2 id=&#34;what-im-building&#34;&gt;What I&amp;rsquo;m Building&lt;/h2&gt;
-&lt;p&gt;I run a complete local AI stack on an RTX 4080:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;11 local LLM models&lt;/strong&gt; via Ollama (Mistral, Qwen, DeepSeek)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;vLLM server&lt;/strong&gt; for high-performance inference&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Kubernetes observability&lt;/strong&gt; (Jaeger, OpenTelemetry, Kafka)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ChromaDB semantic search&lt;/strong&gt; with 504 indexed documents&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Automated workflows&lt;/strong&gt; using Prefect&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;why-this-blog&#34;&gt;Why This Blog?&lt;/h2&gt;
-&lt;p&gt;Most AI content is either:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
