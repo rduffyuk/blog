@@ -1,0 +1,47 @@
+{{- define "main" }}
+
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>Season 1 - The Journey Begins</h1>
+    </header>
+    <div class="entry-content">
+        <p>
+            25 days building AI infrastructure through human + AI collaboration.
+            From context window overflow to automated self-documenting systems.
+        </p>
+        <p style="margin-top: 1em; font-style: italic; color: var(--secondary);">
+            September 11 - October 5, 2025 • 8 Episodes • 15,550 words
+        </p>
+    </div>
+</article>
+
+{{- $season1Posts := slice }}
+{{- range where .Site.RegularPages "Section" "posts" }}
+    {{- if eq .Params.series "Season 1: From Zero to Automated Infrastructure" }}
+        {{- $season1Posts = $season1Posts | append . }}
+    {{- end }}
+{{- end }}
+
+{{- $sortedPosts := sort $season1Posts "Params.episode" "asc" }}
+
+<div class="post-list">
+    {{- range $sortedPosts }}
+    <article class="post-entry">
+        <header class="entry-header">
+            <h2>
+                <a href="{{ .RelPermalink }}">
+                    Episode {{ .Params.episode }}: {{ .Title }}
+                </a>
+            </h2>
+        </header>
+        <div class="entry-content">
+            <p>{{ .Summary }}</p>
+        </div>
+        <footer class="entry-footer">
+            <span>{{ .Params.reading_time }} • {{ .Date.Format "January 2, 2006" }}</span>
+        </footer>
+    </article>
+    {{- end }}
+</div>
+
+{{- end }}

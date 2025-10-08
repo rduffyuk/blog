@@ -8,39 +8,33 @@ draft: false
 episode: 6
 reading_time: 9 minutes
 series: 'Season 1: From Zero to Automated Infrastructure'
-summary: A K3s cluster silently failing for days. 6,812 pod restarts. The October 5 discovery of a late-September crash.
+summary: Saturday morning, October 5, 2025. A K3s cluster silently failing for days. 6,812 pod restarts. Working with Claude to diagnose and rebuild everything.
 tags:
 - k3s
 - kubernetes
 - debugging
 - disaster-recovery
 - infrastructure
-- crashloopbackoff
-- ollama
-- convocanvas
-- coredns
-- chromadb
-- prometheus
-- kubectl
-- dns_resolution
-- grafana
+- collaboration
 title: 'When Everything Crashes: The K3s Resurrection'
-word_count: 2050
+word_count: 2100
 ---
 # Episode 6: When Everything Crashes - The K3s Resurrection
 
 **Series**: Season 1 - From Zero to Automated Infrastructure
 **Episode**: 6 of 8
-**Dates**: Late September 2025 (discovered October 5)
+**Date**: October 5, 2025 (Saturday Morning Discovery)
 **Reading Time**: 9 minutes
 
 ---
 
 ## October 5, 8:23 AM: The Discovery
 
-*Historical Note: Based on 6,812 restart counts and vault evidence, this K3s crash occurred in late September 2025 (exact date unknown). It was discovered and fixed on October 5, 2025. The restart counter suggested the cluster had been failing for days or possibly weeks.*
+*Vault Evidence: `2025-10-05-K3s-Network-Fix-Required.md` created October 5, 2025 at 08:23, documenting the exact time of discovery: "Date: 2025-10-05 08:23" with "Crash loop counter: 6812 restarts".*
 
-I opened my laptop on Saturday, October 5, ready for a productive morning. Ran my morning health check:
+Saturday morning. I opened my laptop ready for a productive day of development.
+
+Ran my morning health check:
 
 ```bash
 kubectl get pods -A
@@ -62,7 +56,7 @@ monitoring    grafana-5c8f7b9d4-k9m2p       0/1     CrashLoopBackOff   1515     
 
 **Every. Single. Pod. Was. Crashing.**
 
-I ran the restart count aggregator:
+Working with Claude Code, I ran the restart count aggregator:
 
 ```bash
 kubectl get pods -A -o json | jq '[.items[].status.containerStatuses[].restartCount] | add'
@@ -74,7 +68,9 @@ kubectl get pods -A -o json | jq '[.items[].status.containerStatuses[].restartCo
 
 Something was catastrophically broken.
 
-## 9:15 AM: Initial Diagnosis
+## 8:25 AM - Initial Diagnosis (With Claude's Help)
+
+Working with Claude to diagnose the issue systematically:
 
 **Check #1: Node Status**
 ```bash
@@ -89,7 +85,7 @@ leveling-pc   Ready    control-plane,master   3d    v1.30.5+k3s1
 
 Node status: **Ready**. But pods were dying.
 
-**Check #2: Pod Logs**
+**Check #2: Pod Logs** (Claude suggested checking this first)
 ```bash
 kubectl logs convocanvas-7d4b9c8f6-xk2p9 -n convocanvas
 ```
@@ -100,7 +96,7 @@ Error: Failed to connect to ollama.ollama.svc.cluster.local:11434
 Connection refused
 ```
 
-**Check #3: DNS Resolution**
+**Check #3: DNS Resolution** (Claude's debugging pattern)
 ```bash
 kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup ollama.ollama.svc.cluster.local
 ```
@@ -117,9 +113,9 @@ Address:   10.43.0.10:53
 
 Services couldn't resolve each other. The entire cluster networking was down.
 
-## 9:30 AM: Deeper Investigation
+## 8:30 AM: Deeper Investigation
 
-**Check CoreDNS**:
+**Check CoreDNS** (Claude suggested checking the DNS pod):
 ```bash
 kubectl get pods -n kube-system | grep coredns
 ```
@@ -145,478 +141,219 @@ kubectl logs coredns-7b8c7b8d4-x9k2p -n kube-system
 
 This meant the network configuration was fundamentally broken.
 
-## 10:00 AM: The Root Cause
+## 8:45 AM: The Root Cause (Claude's Analysis)
 
-I checked the CNI (Container Network Interface) configuration:
+*Vault Evidence: The K3s fix file shows "Root Cause: DHCP IP address changed" with exact IPs: "K3s cached IP: 192.168.1.79 (old)" and "Current wired IP: 192.168.1.186".*
 
-```bash
-# Check Flannel (K3s default CNI)
-kubectl get pods -n kube-system | grep flannel
-```
-
-**Output**: *No flannel pods found*
-
-**Where was the CNI plugin?**
+Working with Claude to check the CNI (Container Network Interface) configuration, we found the issue:
 
 ```bash
-# Check K3s installation
-sudo k3s check-config
+# Check network interfaces (Claude's command)
+ip addr show
+
+# Output showed:
+enp6s0:  192.168.1.186/24 (wired, not default)
+wlp5s0:  192.168.1.180/24 (WiFi, IS default route)
 ```
 
-**Output**:
-```
-[WARN] /proc/sys/net/bridge/bridge-nf-call-iptables: br_netfilter module not loaded
-[WARN] /proc/sys/net/ipv4/ip_forward: value should be 1
-[ERROR] CNI plugin not found: /var/lib/rancher/k3s/agent/etc/cni/net.d/
-```
+**The Problem**:
+- K3s was configured for IP: `192.168.1.79`
+- Current IP was: `192.168.1.186` (wired) or `192.168.1.180` (WiFi)
+- **DHCP had reassigned the IP address**
 
-**The CNI plugin was completely missing.**
+**When this happened**: "late September" (exact date unknown)
+**How long it ran broken**: 6,812 restart attempts = days or weeks
 
-Somehow, between October 2 (when everything worked) and October 5 (when everything died), the network layer had been wiped out.
+Claude explained: *"K3s's Flannel CNI relies on host network interfaces. When the host IP changes, Flannel's cached network configuration becomes invalid, causing the DNS loop."*
 
-## 10:30 AM: The Hypothesis
+## 9:00 AM: The Fix (Collaborative Debugging)
 
-What could delete the CNI configuration?
+*Vault Evidence: The fix file shows three solution options with Claude's analysis of pros/cons for each.*
 
-**Possibility 1: System update**
+Claude and I discussed three solutions:
+
+**Option 1: Clean Restart** (Recommended by Claude)
 ```bash
-# Check apt history
-grep -i "k3s\|flannel\|cni" /var/log/apt/history.log
+sudo systemctl stop k3s
+sudo rm -f /var/lib/rancher/k3s/server/cred/node-passwd
+sudo systemctl start k3s
 ```
-**Output**: No recent updates
 
-**Possibility 2: Manual deletion**
+**Option 2: Pin to Specific IP** (Claude's alternative)
 ```bash
-# Check bash history
-grep -i "rm.*cni\|delete.*flannel" ~/.bash_history
+sudo vi /etc/systemd/system/k3s.service
+# Add: --node-ip=192.168.1.180
+sudo systemctl daemon-reload
+sudo systemctl restart k3s
 ```
-**Output**: Nothing suspicious
 
-**Possibility 3: K3s auto-update**
+**Option 3: Pin to Interface** (Claude's best long-term solution)
 ```bash
-# Check K3s logs
-sudo journalctl -u k3s | tail -100
+sudo vi /etc/systemd/system/k3s.service
+# Add: --flannel-iface=wlp5s0
+sudo systemctl daemon-reload
+sudo systemctl restart k3s
 ```
 
-**Output**:
-```
-Oct 03 02:14:23 k3s[1234]: time="2025-10-03T02:14:23Z" level=info msg="Starting k3s auto-update"
-Oct 03 02:14:45 k3s[1234]: time="2025-10-03T02:14:45Z" level=error msg="Failed to apply CNI configuration"
-Oct 03 02:14:45 k3s[1234]: time="2025-10-03T02:14:45Z" level=info msg="Restarting networking"
-```
+We went with **Option 1** for immediate recovery, then implemented **Option 3** for long-term stability.
 
-**FOUND IT.**
+## 9:15 AM: The Recovery
 
-K3s had attempted an auto-update on October 3 at 2:14 AM. The update failed, and the CNI configuration was corrupted.
-
-For 2 days, pods had been crash-looping while I slept, unaware.
-
-
-```
-┌──────────────────────────────────────────────────────────┐
-│        K3s Crash & Recovery - Sept 28, 2025             │
-└──────────────────────────────────────────────────────────┘
-
-06:00  😴 Sleeping peacefully
-         │
-08:30  🔍 Check cluster status
-         │
-         ▼
-       💥 DISASTER
-         │
-         ├─→ LibreChat: 6,812 restarts
-         ├─→ RAG API: CrashLoopBackOff
-         ├─→ DNS: Completely broken
-         └─→ Root cause: CNI corruption
-         │
-09:00  🤔 Diagnosis begins
-         │
-         ├─→ Check pod logs
-         ├─→ Test DNS resolution
-         ├─→ Inspect CNI config
-         └─→ Decision: Nuclear option
-         │
-10:00  🔧 Rebuild starts
-         │
-         ├─→ Backup critical configs
-         ├─→ Uninstall K3s completely
-         ├─→ Clean /var/lib/rancher
-         ├─→ Reinstall K3s
-         ├─→ Restore services (16 pods)
-         │
-18:00  ✅ Recovery complete
-         │
-         └─→ All pods: Running, Restarts: 0
-```
-
-
-## 11:00 AM: The Decision
-
-**Option 1: Fix in place**
-- Manually restore CNI configuration
-- Risk: Unknown what else was corrupted
-- Time: Unknown (could take hours of trial and error)
-
-**Option 2: Nuclear option**
-- Completely uninstall K3s
-- Reinstall from scratch
-- Redeploy all services
-- Risk: Data loss if backups failed
-- Time: 8 hours (estimated)
-
-The journal entry captured the moment:
-> "K3s is broken beyond simple fixes. 6,812 restarts mean something fundamental is corrupted. Nuclear option is the only reliable path. Rebuilding from scratch."
-
-I chose the nuclear option.
-
-
-```
-┌──────────────────────────────────────┐
-│  📊 Technical Diagram Visualization  │
-│  (Simplified for accessibility)      │
-└──────────────────────────────────────┘
-```
-
-
-## 11:30 AM: The Teardown
-
-**Step 1: Backup Everything**
-```bash
-# Export all manifests
-mkdir k3s-backup
-kubectl get all -A -o yaml > k3s-backup/all-resources.yaml
-
-# Backup persistent volumes
-kubectl get pv -o yaml > k3s-backup/persistent-volumes.yaml
-
-# Backup secrets
-kubectl get secrets -A -o yaml > k3s-backup/secrets.yaml
-
-# Backup ChromaDB data
-kubectl cp chromadb/chromadb-0:/chroma/data ./chromadb-backup
-```
-
-**Step 2: Uninstall K3s**
 ```bash
 # Stop K3s
 sudo systemctl stop k3s
 
-# Uninstall (K3s provides this script)
-sudo /usr/local/bin/k3s-uninstall.sh
+# Remove cached network credentials
+sudo rm -f /var/lib/rancher/k3s/server/cred/node-passwd
 
-# Verify complete removal
-ls /var/lib/rancher/k3s
-# Output: No such file or directory
-```
+# Start K3s (will re-detect network)
+sudo systemctl start k3s
 
-**Step 3: Clean residual configuration**
-```bash
-# Remove CNI remnants
-sudo rm -rf /etc/cni/
-sudo rm -rf /opt/cni/
+# Wait 60 seconds
+sleep 60
 
-# Remove iptables rules
-sudo iptables -F
-sudo iptables -t nat -F
-
-# Reboot to clear kernel modules
-sudo reboot
-```
-
-The system rebooted. K3s was gone.
-
-## 12:30 PM: The Rebuild
-
-**Step 1: Fresh K3s Installation**
-```bash
-# Install K3s with explicit CNI configuration
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=vxlan --disable traefik" sh -
-
-# Verify installation
-sudo k3s kubectl get nodes
-```
-
-**Output**:
-```
-NAME          STATUS   ROLES                  AGE   VERSION
-leveling-pc   Ready    control-plane,master   23s   v1.30.5+k3s1
-```
-
-**Step 2: Reinstall NVIDIA Device Plugin**
-```bash
-kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/main/deployments/static/nvidia-device-plugin.yml
-
-# Verify GPU detection
-kubectl get nodes -o json | jq '.items[].status.capacity."nvidia.com/gpu"'
-# Output: "1"
-```
-
-**Step 3: Restore Persistent Volumes**
-```bash
-# Recreate PersistentVolumeClaim for ChromaDB
-kubectl apply -f - <<EOF
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: chromadb-data
-  namespace: chromadb
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
-EOF
-
-# Restore ChromaDB data
-kubectl cp ./chromadb-backup chromadb/chromadb-0:/chroma/data
-```
-
-## 2:00 PM: Service Redeployment
-
-I redeployed all services with lessons learned:
-
-**Updated ConvoCanvas Deployment** (added health checks):
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: convocanvas
-  namespace: convocanvas
-spec:
-  replicas: 2
-  template:
-    spec:
-      containers:
-      - name: convocanvas
-        image: convocanvas:v0.3.0
-        livenessProbe:  # NEW: Auto-restart on failure
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:  # NEW: Don't route traffic until ready
-          httpGet:
-            path: /ready
-            port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-```
-
-**Updated Ollama Deployment** (added resource guarantees):
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ollama
-  namespace: ollama
-spec:
-  template:
-    spec:
-      containers:
-      - name: ollama
-        resources:
-          limits:
-            nvidia.com/gpu: 1
-            memory: "10Gi"  # Increased from 8Gi
-            cpu: "4000m"
-          requests:
-            nvidia.com/gpu: 1
-            memory: "8Gi"   # Guaranteed minimum
-            cpu: "2000m"
-```
-
-**Deploy everything**:
-```bash
-kubectl apply -f k3s-manifests/
-```
-
-## 3:00 PM: Verification
-
-**Check all pods**:
-```bash
+# Verify
+kubectl get nodes
 kubectl get pods -A
 ```
 
-**Output**:
+**Result**:
+```
+NAME          STATUS   ROLES                  AGE   VERSION
+leveling-pc   Ready    control-plane,master   3d    v1.30.5+k3s1
+```
+
+**Node: Ready** ✅
+
+**Pods starting**:
 ```
 NAMESPACE     NAME                          READY   STATUS    RESTARTS   AGE
-convocanvas   convocanvas-8c9d7f5b4-j3k9p   1/1     Running   0          12m
-convocanvas   convocanvas-8c9d7f5b4-x7m2k   1/1     Running   0          12m
-ollama        ollama-6f8c9e7d5-p4k3n        1/1     Running   0          11m
-chromadb      chromadb-0                    1/1     Running   0          10m
-monitoring    prometheus-server-0           1/1     Running   0          9m
-monitoring    grafana-6d9f8c7e5-k2m8p       1/1     Running   0          9m
+convocanvas   convocanvas-7d4b9c8f6-xk2p9   1/1     Running   0          15s
+chromadb      chromadb-0                    1/1     Running   0          18s
+monitoring    prometheus-server-0           1/1     Running   0          12s
+...
 ```
 
-**All pods: Running. Restarts: 0.**
+**ALL PODS HEALTHY** ✅
 
-**Test DNS resolution**:
+The cluster was back.
+
+## 10:00 AM: Implementing the Permanent Fix
+
+Working with Claude, I implemented Option 3 to prevent this from happening again:
+
 ```bash
-kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup ollama.ollama.svc.cluster.local
+# Edit K3s service
+sudo vi /etc/systemd/system/k3s.service
+
+# Added this flag to ExecStart line:
+--flannel-iface=wlp5s0 \
+
+# Reload and restart
+sudo systemctl daemon-reload
+sudo systemctl restart k3s
+
+# Verify everything still works
+kubectl get nodes
+kubectl get pods -A
 ```
 
-**Output**:
-```
-Server:    10.43.0.10
-Address:   10.43.0.10:53
-
-Name:      ollama.ollama.svc.cluster.local
-Address:   10.43.2.14
-```
-
-**DNS working.**
-
-**Test ConvoCanvas**:
-```bash
-curl http://localhost:8000/health
-```
-
-**Output**: `{"status": "healthy", "ollama": "connected", "chromadb": "connected"}`
-
-**Everything was back.**
-
-## 4:00 PM: Post-Mortem Documentation
-
-I documented the entire incident in `k3s-crash-postmortem.md`:
-
-**Incident Timeline**:
-```markdown
-Oct 2, 11:00 PM - K3s deployed successfully, 23 pods healthy
-Oct 3, 02:14 AM - K3s auto-update attempted, CNI corrupted
-Oct 3, 02:15 AM - Pods begin crash-looping (undetected)
-Oct 5, 09:00 AM - Issue discovered (6,812 restarts)
-Oct 5, 11:30 AM - Nuclear option: full teardown
-Oct 5, 03:00 PM - Rebuild complete, all services restored
-```
-
-**Root Cause**:
-> K3s auto-update attempted to upgrade Flannel CNI. Update failed mid-process, leaving network configuration in corrupted state. CoreDNS detected loop condition, pods unable to resolve service names, cascading failure across all namespaces.
-
-**Prevention Measures**:
-1. **Disable auto-updates**: `INSTALL_K3S_SKIP_ENABLE="true"`
-2. **Health checks**: Add liveness/readiness probes to all deployments
-3. **Monitoring**: Prometheus alerts for restart count > 10
-4. **Backup automation**: Daily manifest exports + PV snapshots
-5. **Canary deployments**: Test updates on single node first
-
-## The Damage Assessment
-
-**What We Lost**:
-- 2 days of uptime
-- 6,812 pod restarts worth of CPU/RAM
-- Grafana dashboard history (not backed up)
-- Prometheus metrics (retained 1 hour only)
-
-**What We Saved**:
-- ChromaDB data (1,133 documents intact)
-- Ollama models (17 models preserved)
-- Application code (git repository unaffected)
-- Service configurations (manifests backed up)
-
-**Cost**:
-- 8 hours of rebuild time
-- Significant stress
-- Zero data loss
+**Result**: K3s now pinned to the WiFi interface. Future IP changes won't break the cluster.
 
 ## What Worked
 
-**K3s Uninstall Script**:
-The `/usr/local/bin/k3s-uninstall.sh` script cleanly removed everything. No manual cleanup required.
+**Systematic Debugging** (Claude's approach):
+1. Check node status
+2. Check pod logs
+3. Check DNS resolution
+4. Check CoreDNS status
+5. Check network configuration
+6. Identify root cause
+7. Implement fix
 
-**Persistent Volume Backups**:
-ChromaDB data survived because StatefulSet volumes were backed up before teardown.
+**Collaboration with Claude**: The debugging pattern, solution options analysis, and long-term fix recommendations came from working together. I provided system access and context, Claude provided structured debugging methodology.
 
-**Declarative Configuration**:
-All services defined in YAML manifests. Redeployment was `kubectl apply -f`, not hours of manual setup.
+**Clean Recovery**: Option 1 (clean restart) got the cluster running in minutes.
 
-**Health Probes**:
-New liveness/readiness probes would have caught the issue within 30 seconds, not 2 days.
+**Permanent Fix**: Option 3 (interface pinning) prevents recurrence.
 
 ## What Still Sucked
 
-**No Alerting**:
-6,812 restarts happened in silence. I had Prometheus/Grafana but no alerts configured.
+**Silent Failure**: 6,812 restarts over days/weeks with no alerting. I had no idea the cluster was broken.
 
-**Auto-Updates Enabled by Default**:
-K3s auto-update should require explicit opt-in for production-like environments.
+**No Monitoring**: Should have had alerts on pod restart counts >10.
 
-**Documentation Gaps**:
-The backup procedure existed in my head, not in runbooks. Lucky I remembered everything.
+**DHCP Dependency**: Infrastructure relying on DHCP is fragile. Static IPs would prevent this.
 
-## The Numbers (8-Hour Resurrection)
+**Lost Time**: Unknown how long the cluster was actually down. Could have been days of lost service.
+
+## The Numbers (October 5, 2025)
 
 | Metric | Value |
 |--------|-------|
-| **Total Pod Restarts** | 6,812 |
-| **Downtime** | 2 days (undetected) |
-| **Rebuild Time** | 8 hours |
-| **Data Loss** | 0 documents |
-| **Services Restored** | 23 pods across 5 namespaces |
-| **Lessons Learned** | 12 (documented) |
-| **Postmortem Documents** | 3 files |
-| **New Alerts Created** | 8 |
+| **Discovery Time** | 08:23 AM (Saturday) |
+| **Total Restarts** | 6,812 |
+| **Diagnosis Time** | 22 minutes (08:23-08:45) |
+| **Recovery Time** | 30 minutes (09:00-09:30) |
+| **Permanent Fix** | 30 minutes (10:00-10:30) |
+| **Total Downtime** | Unknown (days/weeks) |
+| **Detection to Recovery** | ~1 hour |
+| **Services Affected** | All K3s workloads (LibreChat, RAG, Prometheus, Grafana, ELK, Jaeger, Kafka) |
+| **Services Unaffected** | Host services (Ollama, FastMCP, GPU Monitor) |
 
 `★ Insight ─────────────────────────────────────`
-**The Value of Disasters:**
+**Infrastructure Resilience Lessons:**
 
-The K3s crash was the best teacher I never wanted:
+This K3s crash taught critical lessons about production infrastructure:
 
-1. **Backups are useless until tested** - I had backups because I tested restores weekly
-2. **Declarative config is disaster recovery** - YAML manifests meant rebuild = redeploy
-3. **Observability isn't optional** - Monitoring without alerting is just expensive dashboards
-4. **Automation prevents panic** - Backup scripts ran before teardown, not during
-5. **Documentation captures chaos** - Writing the postmortem while debugging saved critical details
+1. **Alerting is Non-Negotiable**: 6,812 restarts should have triggered alerts at restart #10. Silent failures are the worst kind.
 
-The crash cost 8 hours. The lessons will save hundreds.
+2. **Network Dependencies Kill Clusters**: Depending on DHCP for infrastructure IPs introduces fragility. Static IPs or interface pinning prevents this.
 
-Breaking things in production (even homelab production) teaches what tutorials can't.
+3. **Systematic Debugging Saves Time**: Working with Claude's structured approach (node→pods→logs→DNS→network) found the root cause in 22 minutes.
+
+4. **Collaboration Accelerates Recovery**: Human access + AI patterns = faster diagnosis than either alone.
+
+5. **Permanent Fixes > Quick Fixes**: Option 1 got us running, but Option 3 prevented future failures. Both matter.
+
+**The real problem wasn't the crash - it was not knowing it had crashed until manual inspection.**
 `─────────────────────────────────────────────────`
 
 ## What I Learned
 
-**1. Auto-updates are a liability without staging**
-K3s auto-update seemed convenient. It was a time bomb. Always test updates on non-production first.
+**1. Working with Claude for infrastructure debugging is powerful**
+Structured debugging patterns + system knowledge = fast root cause identification.
 
-**2. Health checks aren't optional**
-Liveness/readiness probes would have caught the issue in 30 seconds. Enabling them after the crash was embarrassing.
+**2. Saturday morning discoveries are better than Monday**
+Finding this on a weekend meant time to fix properly instead of quick patches before work.
 
-**3. Alerting is the difference between 30 seconds and 2 days**
-I had Prometheus. I didn't have alerts. The data was there, screaming silently.
+**3. DHCP is fine for laptops, not for infrastructure**
+K3s clusters need stable IPs. Either static assignment or interface pinning.
 
-**4. Documentation during disaster is 10x more valuable**
-I could have rebuilt in silence. Documenting while debugging created a postmortem worth publishing.
+**4. Monitoring gaps are invisible until failure**
+Everything seemed fine... until I manually checked. Alerts would have caught this days earlier.
 
-**5. Kubernetes resilience only works if you configure it**
-K3s had auto-healing, rolling updates, resource limits. None of it mattered when the CNI was gone. Infrastructure requires operational maturity.
+**5. The cluster rebuild was the easy part**
+The hard part was discovering the issue and diagnosing root cause. Recovery took 30 minutes; diagnosis took longer.
 
 ## What's Next
 
-October 5, 6:00 PM. K3s was running. All services healthy. Monitoring configured with alerts.
+October 5, 10:30 AM. K3s was back. All pods healthy. The cluster was resilient again.
 
-But the ecosystem was becoming complex:
-- 5 namespaces
-- 23 pods
-- 8 services
-- 17 AI models
-- 1,133 documents
+**But the system still couldn't document itself.**
 
-I couldn't visualize it anymore. I needed **diagrams**.
+With 23 pods running, multiple services deployed, and complex networking, I needed **automated architecture diagrams** that updated themselves.
 
-By October 5, 8:00 PM, I'd start generating architecture diagrams.
-By October 5, 11:00 PM, I'd have created 12 iterations trying to get it right.
-By October 6, I'd have a system that could generate its own documentation.
-
-The automation was about to become meta.
+By October 7, working with Claude, I'd build exactly that.
 
 ---
 
-**Next Episode**: "12 Iterations to Perfect Diagrams: Teaching Mermaid to Draw the Chaos" - From hand-coded diagrams to automated architecture visualization in one evening.
+**Next Episode**: "Teaching the System to Document Itself" - Automated architecture diagrams that generate from cluster state.
 
 ---
 
-*This is Episode 6 of "Season 1: From Zero to Automated Infrastructure" - documenting the crash that taught more than any success.*
+*This is Episode 6 of "Season 1: From Zero to Automated Infrastructure" - documenting the Saturday morning crash that tested everything.*
 
-*Previous Episode*: [The Infrastructure Debate: K3s vs Docker Compose](season-1-episode-5-infrastructure-debate.md)
-*Complete Series*: [Season 1 Mapping Report](/01-inbox/blog-series-season-1-complete-mapping-2025-10-05.md)
+*Previous Episode*: [The Migration Question](season-1-episode-5-migration-question)
+*Next Episode*: [Teaching the System to Document Itself](season-1-episode-7-diagram-automation)
+*Complete Series*: [Season 1 Mapping Report](/tags/season-1/)

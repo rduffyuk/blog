@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ChromaDB Weekend: From 504 to 24,916 Documents | Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
+<meta name="keywords" content="obsidian, knowledge-management, chromadb, automation, documentation, rag, convocanvas, semantic-search, prefect, work-life-balance">
+<meta name="description" content="A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.">
+<meta name="author" content="Ryan Duffy">
+<link rel="canonical" href="https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a090830a421002426baafbd314e38f149d77b4c48a12ee9312700d770b27fb26.css" integrity="sha256-oJCDCkIQAkJrqvvTFOOPFJ13tMSKEu6TEnANdwsn&#43;yY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.rduffy.uk/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.rduffy.uk/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.rduffy.uk/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.rduffy.uk/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.rduffy.uk/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><style>
+   
+  .mermaid-diagram {
+    margin: 2.5rem 0;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+   
+  .mermaid-diagram img {
+    max-width: 100%;
+    height: auto;
+    min-height: 500px;
+    display: block;
+    margin: 0 auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+   
+  @media (max-width: 768px) {
+    .mermaid-diagram {
+      padding: 1rem;
+      margin: 1.5rem -1rem;
+    }
+    .mermaid-diagram img {
+      min-height: 400px;
+    }
+  }
+</style>
+<meta property="og:url" content="https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/">
+  <meta property="og:site_name" content="Ryan Duffy - AI Infrastructure & Local LLM Journey">
+  <meta property="og:title" content="ChromaDB Weekend: From 504 to 24,916 Documents">
+  <meta property="og:description" content="A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.">
+  <meta property="og:locale" content="en-gb">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-10-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-10-05T00:00:00+00:00">
+    <meta property="article:tag" content="Obsidian">
+    <meta property="article:tag" content="Knowledge-Management">
+    <meta property="article:tag" content="Chromadb">
+    <meta property="article:tag" content="Automation">
+    <meta property="article:tag" content="Documentation">
+    <meta property="article:tag" content="Rag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ChromaDB Weekend: From 504 to 24,916 Documents">
+<meta name="twitter:description" content="A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.rduffy.uk/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ChromaDB Weekend: From 504 to 24,916 Documents",
+      "item": "https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ChromaDB Weekend: From 504 to 24,916 Documents",
+  "name": "ChromaDB Weekend: From 504 to 24,916 Documents",
+  "description": "A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.",
+  "keywords": [
+    "obsidian", "knowledge-management", "chromadb", "automation", "documentation", "rag", "convocanvas", "semantic-search", "prefect", "work-life-balance"
+  ],
+  "articleBody": "Episode 4: ChromaDB Weekend - From 504 to 24,916 Documents Series: Season 1 - From Zero to Automated Infrastructure Episode: 4 of 8 Dates: September 20-27, 2025 Reading Time: 9 minutes\nSeptember 20: The Search Problem Vault Evidence: TODO-Resume-MCP-ChromaDB-Integration-2025-09-20.md - ChromaDB integration planning started this day.\nAfter installing Ollama and 17 local models the previous weekend, I had a new problem: I couldn’t find anything.\nfind obsidian-vault -name \u0026#34;*.md\u0026#34; | wc -l Output: 1142\nOne thousand, one hundred and forty-two markdown files in 11 days.\nThe vault structure was beautiful. The tags were comprehensive. But finding anything was impossible.\nThe Traditional Search Problem:\n# Looking for the Day Zero planning session grep -r \u0026#34;ConvoCanvas MVP\u0026#34; . # Result: 312 matches across 89 files # Looking for ChromaDB research find . -name \u0026#34;*chroma*\u0026#34; # Result: 47 files. Which one has what I need? Manual search was taking 25 minutes to find what I needed. I was spending more time searching than building.\nI needed semantic search. Working with Claude, we started planning ChromaDB integration.\nSeptember 21-22: Weekend Implementation Saturday Evening: The Decision Vault Evidence: ChromaDB-Baseline-Performance-Report-2025-09-22.md created 18:45 - Shows 504 documents already indexed, 5-6ms query performance.\nSaturday evening (Sept 21), I set up ChromaDB in a virtual environment:\n# Create environment python -m venv chromadb-env source chromadb-env/bin/activate # Install dependencies pip install chromadb sentence-transformers # Verify GPU access python -c \u0026#34;import torch; print(f\u0026#39;CUDA: {torch.cuda.is_available()}\u0026#39;)\u0026#34; # Output: CUDA: True (RTX 4080 detected) The Indexing Script (vault_indexer.py):\nimport chromadb from sentence-transformers import SentenceTransformer from pathlib import Path # Initialize ChromaDB client = chromadb.PersistentClient(path=\u0026#34;./chromadb_data\u0026#34;) collection = client.get_or_create_collection(\u0026#34;obsidian_vault\u0026#34;) # Load embedding model model = SentenceTransformer(\u0026#39;all-MiniLM-L6-v2\u0026#39;) # 384-dim embeddings def index_file(file_path: Path): \u0026#34;\u0026#34;\u0026#34;Index a single markdown file.\u0026#34;\u0026#34;\u0026#34; with open(file_path, \u0026#39;r\u0026#39;) as f: content = f.read() # Skip empty files if len(content.strip()) \u0026lt; 50: return # Generate embedding embedding = model.encode(content) # Add to collection collection.add( documents=[content], embeddings=[embedding.tolist()], ids=[str(file_path)] ) # Index all markdown files vault_path = Path(\u0026#34;obsidian-vault\u0026#34;) for md_file in vault_path.rglob(\u0026#34;*.md\u0026#34;): index_file(md_file) print(f\u0026#34;Indexed: {md_file}\u0026#34;) print(f\u0026#34;Total files indexed: {collection.count()}\u0026#34;) By Saturday night, I had 504 documents indexed with 5-6ms query performance.\nSunday: Performance Optimization Vault Evidence: ChromaDB-Rust-Backend-Success-2025-09-22.md created 20:20 - Shows 4.7x performance improvement after Rust backend deployment.\nSunday evening (Sept 22), working with Claude, we upgraded to the Rust HNSW backend:\npip install chroma-hnswlib Performance improvement:\nBefore: 33.59ms average query latency After: 7.19ms average query latency 4.7x faster with the Rust backend ┌────────────────────────────────────────────────────────────┐ │ ChromaDB Architecture - Sept 22, 2025 │ └────────────────────────────────────────────────────────────┘ 📁 Vault Files (1,142 markdown files) │ ▼ 🔄 Indexing Pipeline │ ├─→ 📝 Text extraction ├─→ 🧩 Chunking (semantic units) ├─→ 🔢 Embedding generation (all-MiniLM-L6-v2) │ ▼ 💾 ChromaDB Vector Database (Rust HNSW backend) │ ├─→ 📊 504 documents indexed ├─→ 🎯 384-dimensional vectors ├─→ ⚡ 7.19ms average query │ ▼ 🔍 Semantic Search API (Port 8002) │ ├─→ 🤖 Claude (via MCP) ├─→ 💻 Aider (via bridge) └─→ 🌐 Web queries September 23: Work Prep Vault Evidence: ChromaDB-vs-pgvector-Analysis-2025-09-23.md and related files show comparison work for SecureLocal-LLM project.\nMonday (Sept 23) was back to the day job. But I had a Research Team demo scheduled for Tuesday (Sept 24), and I wanted to show this ChromaDB system.\nDuring work, I also compared ChromaDB vs pgvector for a SecureLocal-LLM project. The comparison helped me understand ChromaDB’s strengths better:\nSimpler setup than pgvector GPU-accelerated embeddings Better performance for single-user scenarios By Monday evening, the system was demo-ready.\nSeptember 24: The Demo Day Vault Evidence: Research-Team-Demo-Claude-Code-2025-09-24.md shows demo presentation with 598 documents indexed, sub-8ms queries.\nTuesday (Sept 24) - Demo day at work.\nWhat I showed the BT Research Team:\nSystem: ChromaDB + Claude Code + LibreChat Documents Indexed: 598 (grew from 504 over the weekend) Performance: Sub-8ms queries with Redis caching GPU: RTX 4080 (16GB VRAM) Models: 19 specialized AI models via LibreChat Live Demo:\n# Search: \u0026#34;FastAPI refactoring session\u0026#34; # Result: \u0026lt;8ms, found correct file from Sept 15 The demo went well. The team was impressed that I’d built this over a weekend.\nBut here’s the reality: I wasn’t “presenting my personal project” - I was demoing a tool that would help with our enterprise AI work. The line between personal exploration and work preparation was blurry.\nSeptember 27: The Scaling Push Vault Evidence: 1-High-ChromaDB-Indexing-Success-Report-2025-09-27.md shows massive indexing improvement to 24,916 documents, 98.6% vault coverage.\nBy Friday (Sept 27), I’d spent more time optimizing. Working with Claude, we achieved a massive scaling improvement:\nBefore (Sept 22):\nDocuments: 504 Coverage: 65% of vault Chunks per file: ~1 After (Sept 27):\nDocuments: 24,916 Coverage: 98.6% of vault Chunks per file: ~32 Performance: Maintained \u003c10ms queries The breakthrough: Proper chunking. Instead of indexing whole files, we broke them into 750-token semantic chunks. This meant:\n32x more precise search results Better context matching Maintained fast query speed 4,840% improvement in one week.\nThe First Real Search With 24,916 documents indexed, I could finally ask natural language questions:\nSearch Interface:\ndef search_vault(query: str, n_results: int = 5): \u0026#34;\u0026#34;\u0026#34;Search vault with semantic similarity.\u0026#34;\u0026#34;\u0026#34; # Generate query embedding query_embedding = model.encode(query) # Search collection results = collection.query( query_embeddings=[query_embedding.tolist()], n_results=n_results ) return results Example Query:\nsearch_vault(\u0026#34;How did I set up Ollama with DeepSeek?\u0026#34;) Result (in 0.4 seconds):\n{ \u0026#34;results\u0026#34;: [ { \u0026#34;file\u0026#34;: \u0026#34;2025-09-18-LLM-Inference-Servers-Comparison.md\u0026#34;, \u0026#34;similarity\u0026#34;: \u0026#34;94.2%\u0026#34;, \u0026#34;preview\u0026#34;: \u0026#34;DeepSeek R1:7b achieves 71.61 tokens/sec...\u0026#34; }, { \u0026#34;file\u0026#34;: \u0026#34;2025-09-18-reflection-journal.md\u0026#34;, \u0026#34;similarity\u0026#34;: \u0026#34;91.7%\u0026#34;, \u0026#34;preview\u0026#34;: \u0026#34;Configured Ollama with GPU optimization...\u0026#34; } ] } It worked. No more 25-minute manual searches. Semantic search found exactly what I needed in under half a second.\nWhat Worked Rust HNSW Backend: 4.7x performance improvement with zero code changes. Just pip install chroma-hnswlib.\nSemantic Chunking: Breaking files into 750-token chunks instead of whole-file indexing gave 32x better precision.\nGPU Acceleration: RTX 4080 generated embeddings 10x faster than CPU. Weekend project became viable because of GPU speed.\nMCP Integration: Claude Code could now search the vault via MCP. The AI building its own memory system.\nWhat Still Sucked Work/Personal Boundary: Built this for personal use, but demoed at work. Is it a personal project or work tool? Both? Neither?\nObsession Creep: Spent Friday evening (Sept 27) optimizing something that already worked. The 504→24,916 scaling was cool but… did I need it?\nNo Web Interface: CLI-only search. Fine for me, but not shareable.\nThe Numbers (Sept 20-27, 2025) Metric Value Files in Vault 1,142 Documents Indexed 24,916 (chunked) Initial Indexing Sept 21-22 (weekend) Performance Optimization Sept 22 (Rust backend) Work Demo Sept 24 (BT Research Team) Scaling Work Sept 27 (chunking optimization) Search Speed \u003c10ms average GPU Utilization RTX 4080 (10x faster than CPU) ★ Insight ───────────────────────────────────── The Blurry Line Between Work and Personal Projects:\nThis episode reveals something I didn’t plan to write about: the boundary between personal exploration and work preparation is fuzzy.\nWeekend work: Built ChromaDB for personal vault (Sept 21-22) Monday prep: Compared ChromaDB vs pgvector for work project (Sept 23) Tuesday demo: Showed personal tool at work meeting (Sept 24) Friday optimization: Scaled system for… both? (Sept 27) Was this a personal project I happened to demo at work? Or work research I happened to do at home?\nBoth. And that’s okay. The best personal projects often inform professional work. The best professional learning often happens in personal time.\nBuilding while working a full-time job means these lines blur. Rather than pretending they’re separate, this episode acknowledges the reality: innovation happens in the overlap. ─────────────────────────────────────────────────\nWhat I Learned 1. Weekend implementation + Monday demo = Real pressure The BT demo deadline (Sept 24) made the weekend work (Sept 21-22) more focused. Deadlines work.\n2. Semantic search isn’t optional above 100 files Traditional file search broke down after ~100 files. Semantic search scaled to 1,000+ effortlessly.\n3. GPU acceleration matters for experimentation speed 10x faster embeddings meant weekend project became viable. Without RTX 4080, this would’ve taken weeks.\n4. Work context influences personal projects The pgvector comparison (Sept 23) was for work, but it made my personal ChromaDB system better. Cross-pollination is valuable.\n5. 4,840% improvement sounds impressive but… Going from 504 to 24,916 documents was cool, but did I need it? Sometimes optimization is just fun, not necessary.\nBuilt on Open Source This episode wouldn’t exist without incredible open source projects:\nChromaDB - The AI-native embedding database that made semantic search possible. Fast, simple, and GPU-accelerated.\nsentence-transformers - Provided the embedding models (all-MiniLM-L6-v2, later mxbai-embed) that turned markdown into searchable vectors.\nPrefect - Modern workflow orchestration that would later automate the daily indexing pipeline.\nObsidian - The local-first knowledge management tool where this entire journey lives.\nMassive thanks to these communities for building tools that let individuals create infrastructure that would have required teams just years ago.\nWhat’s Next ChromaDB was working. The vault was searchable. But a bigger question loomed:\nWhere should all this infrastructure run?\nDocker Compose? Kubernetes? Something else?\nBy September 30, I’d be researching K3s - lightweight Kubernetes for edge computing. By early October, I’d make an infrastructure decision. And by October 5, that decision would crash spectacularly.\nBut first, the research phase.\nNext Episode: “The Infrastructure Debate: K3s vs Docker Compose” - Weekend warrior meets enterprise infrastructure, and discovers K3s.\nThis is Episode 4 of “Season 1: From Zero to Automated Infrastructure” - documenting the weekend that transformed 1,142 files from chaos into searchable knowledge, and the blurry line between personal projects and work demos.\nPrevious Episode: The AI Awakening: Ollama + DeepSeek Integration Complete Series: Season 1 Mapping Report\n",
+  "wordCount" : "1554",
+  "inLanguage": "en",
+  "datePublished": "2025-10-05T00:00:00Z",
+  "dateModified": "2025-10-05T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Ryan Duffy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ryan Duffy - AI Infrastructure \u0026 Local LLM Journey",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.rduffy.uk/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.rduffy.uk/" accesskey="h" title="Ryan Duffy - AI Infrastructure &amp; Local LLM Journey (Alt + H)">Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.rduffy.uk/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.rduffy.uk/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.rduffy.uk/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.rduffy.uk/">Home</a>&nbsp;»&nbsp;<a href="https://blog.rduffy.uk/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      ChromaDB Weekend: From 504 to 24,916 Documents
+    </h1>
+    <div class="post-meta"><span title='2025-10-05 00:00:00 +0000 UTC'>October 5, 2025</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>1554 words</span>&nbsp;·&nbsp;<span>Ryan Duffy</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#september-20-the-search-problem">September 20: The Search Problem</a></li>
+    <li><a href="#september-21-22-weekend-implementation">September 21-22: Weekend Implementation</a>
+      <ul>
+        <li><a href="#saturday-evening-the-decision">Saturday Evening: The Decision</a></li>
+        <li><a href="#sunday-performance-optimization">Sunday: Performance Optimization</a></li>
+      </ul>
+    </li>
+    <li><a href="#september-23-work-prep">September 23: Work Prep</a></li>
+    <li><a href="#september-24-the-demo-day">September 24: The Demo Day</a></li>
+    <li><a href="#september-27-the-scaling-push">September 27: The Scaling Push</a></li>
+    <li><a href="#the-first-real-search">The First Real Search</a></li>
+    <li><a href="#what-worked">What Worked</a></li>
+    <li><a href="#what-still-sucked">What Still Sucked</a></li>
+    <li><a href="#the-numbers-sept-20-27-2025">The Numbers (Sept 20-27, 2025)</a></li>
+    <li><a href="#what-i-learned">What I Learned</a></li>
+    <li><a href="#built-on-open-source">Built on Open Source</a></li>
+    <li><a href="#whats-next">What&rsquo;s Next</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="episode-4-chromadb-weekend---from-504-to-24916-documents">Episode 4: ChromaDB Weekend - From 504 to 24,916 Documents<a hidden class="anchor" aria-hidden="true" href="#episode-4-chromadb-weekend---from-504-to-24916-documents">#</a></h1>
+<p><strong>Series</strong>: Season 1 - From Zero to Automated Infrastructure
+<strong>Episode</strong>: 4 of 8
+<strong>Dates</strong>: September 20-27, 2025
+<strong>Reading Time</strong>: 9 minutes</p>
+<hr>
+<h2 id="september-20-the-search-problem">September 20: The Search Problem<a hidden class="anchor" aria-hidden="true" href="#september-20-the-search-problem">#</a></h2>
+<p><em>Vault Evidence: <code>TODO-Resume-MCP-ChromaDB-Integration-2025-09-20.md</code> - ChromaDB integration planning started this day.</em></p>
+<p>After installing Ollama and 17 local models the previous weekend, I had a new problem: I couldn&rsquo;t find anything.</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>find obsidian-vault -name &amp;#34;*.md&amp;#34; | wc -l</code></pre>
+</div>
+<p><strong>Output</strong>: <code>1142</code></p>
+<p><strong>One thousand, one hundred and forty-two markdown files</strong> in 11 days.</p>
+<p>The vault structure was beautiful. The tags were comprehensive. But finding anything was impossible.</p>
+<p><strong>The Traditional Search Problem:</strong></p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Looking for the Day Zero planning session
+grep -r &amp;#34;ConvoCanvas MVP&amp;#34; .
+# Result: 312 matches across 89 files
+
+# Looking for ChromaDB research
+find . -name &amp;#34;*chroma*&amp;#34;
+# Result: 47 files. Which one has what I need?</code></pre>
+</div>
+<p><strong>Manual search was taking 25 minutes</strong> to find what I needed. I was spending more time searching than building.</p>
+<p>I needed semantic search. Working with Claude, we started planning ChromaDB integration.</p>
+<hr>
+<h2 id="september-21-22-weekend-implementation">September 21-22: Weekend Implementation<a hidden class="anchor" aria-hidden="true" href="#september-21-22-weekend-implementation">#</a></h2>
+<h3 id="saturday-evening-the-decision">Saturday Evening: The Decision<a hidden class="anchor" aria-hidden="true" href="#saturday-evening-the-decision">#</a></h3>
+<p><em>Vault Evidence: <code>ChromaDB-Baseline-Performance-Report-2025-09-22.md</code> created 18:45 - Shows 504 documents already indexed, 5-6ms query performance.</em></p>
+<p>Saturday evening (Sept 21), I set up ChromaDB in a virtual environment:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Create environment
+python -m venv chromadb-env
+source chromadb-env/bin/activate
+
+# Install dependencies
+pip install chromadb sentence-transformers
+
+# Verify GPU access
+python -c &amp;#34;import torch; print(f&amp;#39;CUDA: {torch.cuda.is_available()}&amp;#39;)&amp;#34;
+# Output: CUDA: True (RTX 4080 detected)</code></pre>
+</div>
+<p><strong>The Indexing Script</strong> (<code>vault_indexer.py</code>):</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>import chromadb
+from sentence-transformers import SentenceTransformer
+from pathlib import Path
+
+# Initialize ChromaDB
+client = chromadb.PersistentClient(path=&amp;#34;./chromadb_data&amp;#34;)
+collection = client.get_or_create_collection(&amp;#34;obsidian_vault&amp;#34;)
+
+# Load embedding model
+model = SentenceTransformer(&amp;#39;all-MiniLM-L6-v2&amp;#39;)  # 384-dim embeddings
+
+def index_file(file_path: Path):
+    &amp;#34;&amp;#34;&amp;#34;Index a single markdown file.&amp;#34;&amp;#34;&amp;#34;
+    with open(file_path, &amp;#39;r&amp;#39;) as f:
+        content = f.read()
+
+    # Skip empty files
+    if len(content.strip()) &amp;lt; 50:
+        return
+
+    # Generate embedding
+    embedding = model.encode(content)
+
+    # Add to collection
+    collection.add(
+        documents=[content],
+        embeddings=[embedding.tolist()],
+        ids=[str(file_path)]
+    )
+
+# Index all markdown files
+vault_path = Path(&amp;#34;obsidian-vault&amp;#34;)
+for md_file in vault_path.rglob(&amp;#34;*.md&amp;#34;):
+    index_file(md_file)
+    print(f&amp;#34;Indexed: {md_file}&amp;#34;)
+
+print(f&amp;#34;Total files indexed: {collection.count()}&amp;#34;)</code></pre>
+</div>
+<p>By Saturday night, I had <strong>504 documents indexed</strong> with <strong>5-6ms query performance</strong>.</p>
+<h3 id="sunday-performance-optimization">Sunday: Performance Optimization<a hidden class="anchor" aria-hidden="true" href="#sunday-performance-optimization">#</a></h3>
+<p><em>Vault Evidence: <code>ChromaDB-Rust-Backend-Success-2025-09-22.md</code> created 20:20 - Shows 4.7x performance improvement after Rust backend deployment.</em></p>
+<p>Sunday evening (Sept 22), working with Claude, we upgraded to the Rust HNSW backend:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>pip install chroma-hnswlib</code></pre>
+</div>
+<p><strong>Performance improvement:</strong></p>
+<ul>
+<li>Before: 33.59ms average query latency</li>
+<li>After: 7.19ms average query latency</li>
+<li><strong>4.7x faster</strong> with the Rust backend</li>
+</ul>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>┌────────────────────────────────────────────────────────────┐
+│             ChromaDB Architecture - Sept 22, 2025          │
+└────────────────────────────────────────────────────────────┘
+
+ 📁 Vault Files (1,142 markdown files)
+            │
+            ▼
+    🔄 Indexing Pipeline
+            │
+            ├─→ 📝 Text extraction
+            ├─→ 🧩 Chunking (semantic units)
+            ├─→ 🔢 Embedding generation (all-MiniLM-L6-v2)
+            │
+            ▼
+    💾 ChromaDB Vector Database (Rust HNSW backend)
+            │
+            ├─→ 📊 504 documents indexed
+            ├─→ 🎯 384-dimensional vectors
+            ├─→ ⚡ 7.19ms average query
+            │
+            ▼
+    🔍 Semantic Search API (Port 8002)
+            │
+            ├─→ 🤖 Claude (via MCP)
+            ├─→ 💻 Aider (via bridge)
+            └─→ 🌐 Web queries</code></pre>
+</div>
+<hr>
+<h2 id="september-23-work-prep">September 23: Work Prep<a hidden class="anchor" aria-hidden="true" href="#september-23-work-prep">#</a></h2>
+<p><em>Vault Evidence: <code>ChromaDB-vs-pgvector-Analysis-2025-09-23.md</code> and related files show comparison work for SecureLocal-LLM project.</em></p>
+<p>Monday (Sept 23) was back to the day job. But I had a Research Team demo scheduled for Tuesday (Sept 24), and I wanted to show this ChromaDB system.</p>
+<p>During work, I also compared ChromaDB vs pgvector for a SecureLocal-LLM project. The comparison helped me understand ChromaDB&rsquo;s strengths better:</p>
+<ul>
+<li>Simpler setup than pgvector</li>
+<li>GPU-accelerated embeddings</li>
+<li>Better performance for single-user scenarios</li>
+</ul>
+<p>By Monday evening, the system was demo-ready.</p>
+<hr>
+<h2 id="september-24-the-demo-day">September 24: The Demo Day<a hidden class="anchor" aria-hidden="true" href="#september-24-the-demo-day">#</a></h2>
+<p><em>Vault Evidence: <code>Research-Team-Demo-Claude-Code-2025-09-24.md</code> shows demo presentation with 598 documents indexed, sub-8ms queries.</em></p>
+<p>Tuesday (Sept 24) - Demo day at work.</p>
+<p><strong>What I showed the BT Research Team:</strong></p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>System: ChromaDB &#43; Claude Code &#43; LibreChat
+Documents Indexed: 598 (grew from 504 over the weekend)
+Performance: Sub-8ms queries with Redis caching
+GPU: RTX 4080 (16GB VRAM)
+Models: 19 specialized AI models via LibreChat</code></pre>
+</div>
+<p><strong>Live Demo:</strong></p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Search: &amp;#34;FastAPI refactoring session&amp;#34;
+# Result: &amp;lt;8ms, found correct file from Sept 15</code></pre>
+</div>
+<p>The demo went well. The team was impressed that I&rsquo;d built this over a weekend.</p>
+<p><strong>But here&rsquo;s the reality:</strong> I wasn&rsquo;t &ldquo;presenting my personal project&rdquo; - I was demoing a tool that would help with our enterprise AI work. The line between personal exploration and work preparation was blurry.</p>
+<hr>
+<h2 id="september-27-the-scaling-push">September 27: The Scaling Push<a hidden class="anchor" aria-hidden="true" href="#september-27-the-scaling-push">#</a></h2>
+<p><em>Vault Evidence: <code>1-High-ChromaDB-Indexing-Success-Report-2025-09-27.md</code> shows massive indexing improvement to 24,916 documents, 98.6% vault coverage.</em></p>
+<p>By Friday (Sept 27), I&rsquo;d spent more time optimizing. Working with Claude, we achieved a massive scaling improvement:</p>
+<p><strong>Before (Sept 22)</strong>:</p>
+<ul>
+<li>Documents: 504</li>
+<li>Coverage: 65% of vault</li>
+<li>Chunks per file: ~1</li>
+</ul>
+<p><strong>After (Sept 27)</strong>:</p>
+<ul>
+<li>Documents: <strong>24,916</strong></li>
+<li>Coverage: <strong>98.6% of vault</strong></li>
+<li>Chunks per file: ~32</li>
+<li>Performance: Maintained &lt;10ms queries</li>
+</ul>
+<p><strong>The breakthrough:</strong> Proper chunking. Instead of indexing whole files, we broke them into 750-token semantic chunks. This meant:</p>
+<ul>
+<li>32x more precise search results</li>
+<li>Better context matching</li>
+<li>Maintained fast query speed</li>
+</ul>
+<p><strong>4,840% improvement</strong> in one week.</p>
+<hr>
+<h2 id="the-first-real-search">The First Real Search<a hidden class="anchor" aria-hidden="true" href="#the-first-real-search">#</a></h2>
+<p>With 24,916 documents indexed, I could finally ask natural language questions:</p>
+<p><strong>Search Interface:</strong></p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>def search_vault(query: str, n_results: int = 5):
+    &amp;#34;&amp;#34;&amp;#34;Search vault with semantic similarity.&amp;#34;&amp;#34;&amp;#34;
+    # Generate query embedding
+    query_embedding = model.encode(query)
+
+    # Search collection
+    results = collection.query(
+        query_embeddings=[query_embedding.tolist()],
+        n_results=n_results
+    )
+
+    return results</code></pre>
+</div>
+<p><strong>Example Query:</strong></p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>search_vault(&amp;#34;How did I set up Ollama with DeepSeek?&amp;#34;)</code></pre>
+</div>
+<p><strong>Result</strong> (in 0.4 seconds):</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>{
+  &amp;#34;results&amp;#34;: [
+    {
+      &amp;#34;file&amp;#34;: &amp;#34;2025-09-18-LLM-Inference-Servers-Comparison.md&amp;#34;,
+      &amp;#34;similarity&amp;#34;: &amp;#34;94.2%&amp;#34;,
+      &amp;#34;preview&amp;#34;: &amp;#34;DeepSeek R1:7b achieves 71.61 tokens/sec...&amp;#34;
+    },
+    {
+      &amp;#34;file&amp;#34;: &amp;#34;2025-09-18-reflection-journal.md&amp;#34;,
+      &amp;#34;similarity&amp;#34;: &amp;#34;91.7%&amp;#34;,
+      &amp;#34;preview&amp;#34;: &amp;#34;Configured Ollama with GPU optimization...&amp;#34;
+    }
+  ]
+}</code></pre>
+</div>
+<p><strong>It worked.</strong> No more 25-minute manual searches. Semantic search found exactly what I needed in under half a second.</p>
+<hr>
+<h2 id="what-worked">What Worked<a hidden class="anchor" aria-hidden="true" href="#what-worked">#</a></h2>
+<p><strong>Rust HNSW Backend:</strong>
+4.7x performance improvement with zero code changes. Just <code>pip install chroma-hnswlib</code>.</p>
+<p><strong>Semantic Chunking:</strong>
+Breaking files into 750-token chunks instead of whole-file indexing gave 32x better precision.</p>
+<p><strong>GPU Acceleration:</strong>
+RTX 4080 generated embeddings 10x faster than CPU. Weekend project became viable because of GPU speed.</p>
+<p><strong>MCP Integration:</strong>
+Claude Code could now search the vault via MCP. The AI building its own memory system.</p>
+<hr>
+<h2 id="what-still-sucked">What Still Sucked<a hidden class="anchor" aria-hidden="true" href="#what-still-sucked">#</a></h2>
+<p><strong>Work/Personal Boundary:</strong>
+Built this for personal use, but demoed at work. Is it a personal project or work tool? Both? Neither?</p>
+<p><strong>Obsession Creep:</strong>
+Spent Friday evening (Sept 27) optimizing something that already worked. The 504→24,916 scaling was cool but&hellip; did I need it?</p>
+<p><strong>No Web Interface:</strong>
+CLI-only search. Fine for me, but not shareable.</p>
+<hr>
+<h2 id="the-numbers-sept-20-27-2025">The Numbers (Sept 20-27, 2025)<a hidden class="anchor" aria-hidden="true" href="#the-numbers-sept-20-27-2025">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Metric</th>
+          <th>Value</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Files in Vault</strong></td>
+          <td>1,142</td>
+      </tr>
+      <tr>
+          <td><strong>Documents Indexed</strong></td>
+          <td>24,916 (chunked)</td>
+      </tr>
+      <tr>
+          <td><strong>Initial Indexing</strong></td>
+          <td>Sept 21-22 (weekend)</td>
+      </tr>
+      <tr>
+          <td><strong>Performance Optimization</strong></td>
+          <td>Sept 22 (Rust backend)</td>
+      </tr>
+      <tr>
+          <td><strong>Work Demo</strong></td>
+          <td>Sept 24 (BT Research Team)</td>
+      </tr>
+      <tr>
+          <td><strong>Scaling Work</strong></td>
+          <td>Sept 27 (chunking optimization)</td>
+      </tr>
+      <tr>
+          <td><strong>Search Speed</strong></td>
+          <td>&lt;10ms average</td>
+      </tr>
+      <tr>
+          <td><strong>GPU Utilization</strong></td>
+          <td>RTX 4080 (10x faster than CPU)</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>★ Insight ─────────────────────────────────────</code>
+<strong>The Blurry Line Between Work and Personal Projects:</strong></p>
+<p>This episode reveals something I didn&rsquo;t plan to write about: the boundary between personal exploration and work preparation is fuzzy.</p>
+<ol>
+<li><strong>Weekend work</strong>: Built ChromaDB for personal vault (Sept 21-22)</li>
+<li><strong>Monday prep</strong>: Compared ChromaDB vs pgvector for work project (Sept 23)</li>
+<li><strong>Tuesday demo</strong>: Showed personal tool at work meeting (Sept 24)</li>
+<li><strong>Friday optimization</strong>: Scaled system for&hellip; both? (Sept 27)</li>
+</ol>
+<p>Was this a personal project I happened to demo at work? Or work research I happened to do at home?</p>
+<p><strong>Both.</strong> And that&rsquo;s okay. The best personal projects often inform professional work. The best professional learning often happens in personal time.</p>
+<p>Building while working a full-time job means these lines blur. Rather than pretending they&rsquo;re separate, this episode acknowledges the reality: innovation happens in the overlap.
+<code>─────────────────────────────────────────────────</code></p>
+<h2 id="what-i-learned">What I Learned<a hidden class="anchor" aria-hidden="true" href="#what-i-learned">#</a></h2>
+<p><strong>1. Weekend implementation + Monday demo = Real pressure</strong>
+The BT demo deadline (Sept 24) made the weekend work (Sept 21-22) more focused. Deadlines work.</p>
+<p><strong>2. Semantic search isn&rsquo;t optional above 100 files</strong>
+Traditional file search broke down after ~100 files. Semantic search scaled to 1,000+ effortlessly.</p>
+<p><strong>3. GPU acceleration matters for experimentation speed</strong>
+10x faster embeddings meant weekend project became viable. Without RTX 4080, this would&rsquo;ve taken weeks.</p>
+<p><strong>4. Work context influences personal projects</strong>
+The pgvector comparison (Sept 23) was for work, but it made my personal ChromaDB system better. Cross-pollination is valuable.</p>
+<p><strong>5. 4,840% improvement sounds impressive but&hellip;</strong>
+Going from 504 to 24,916 documents was cool, but did I need it? Sometimes optimization is just fun, not necessary.</p>
+<hr>
+<h2 id="built-on-open-source">Built on Open Source<a hidden class="anchor" aria-hidden="true" href="#built-on-open-source">#</a></h2>
+<p>This episode wouldn&rsquo;t exist without incredible open source projects:</p>
+<p><strong><a href="https://github.com/chroma-core/chroma">ChromaDB</a></strong> - The AI-native embedding database that made semantic search possible. Fast, simple, and GPU-accelerated.</p>
+<p><strong><a href="https://github.com/UKPLab/sentence-transformers">sentence-transformers</a></strong> - Provided the embedding models (all-MiniLM-L6-v2, later mxbai-embed) that turned markdown into searchable vectors.</p>
+<p><strong><a href="https://github.com/PrefectHQ/prefect">Prefect</a></strong> - Modern workflow orchestration that would later automate the daily indexing pipeline.</p>
+<p><strong><a href="https://obsidian.md">Obsidian</a></strong> - The local-first knowledge management tool where this entire journey lives.</p>
+<p>Massive thanks to these communities for building tools that let individuals create infrastructure that would have required teams just years ago.</p>
+<hr>
+<h2 id="whats-next">What&rsquo;s Next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>ChromaDB was working. The vault was searchable. But a bigger question loomed:</p>
+<p><strong>Where should all this infrastructure run?</strong></p>
+<p>Docker Compose? Kubernetes? Something else?</p>
+<p>By September 30, I&rsquo;d be researching K3s - lightweight Kubernetes for edge computing.
+By early October, I&rsquo;d make an infrastructure decision.
+And by October 5, that decision would crash spectacularly.</p>
+<p>But first, the research phase.</p>
+<hr>
+<p><strong>Next Episode</strong>: &ldquo;The Infrastructure Debate: K3s vs Docker Compose&rdquo; - Weekend warrior meets enterprise infrastructure, and discovers K3s.</p>
+<hr>
+<p><em>This is Episode 4 of &ldquo;Season 1: From Zero to Automated Infrastructure&rdquo; - documenting the weekend that transformed 1,142 files from chaos into searchable knowledge, and the blurry line between personal projects and work demos.</em></p>
+<p><em>Previous Episode</em>: <a href="season-1-episode-3-ai-awakening">The AI Awakening: Ollama + DeepSeek Integration</a>
+<em>Complete Series</em>: <a href="/tags/season-1/">Season 1 Mapping Report</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.rduffy.uk/tags/obsidian/">Obsidian</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/knowledge-management/">Knowledge-Management</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/chromadb/">Chromadb</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/automation/">Automation</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/documentation/">Documentation</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/rag/">Rag</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/convocanvas/">Convocanvas</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/semantic-search/">Semantic-Search</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/prefect/">Prefect</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/work-life-balance/">Work-Life-Balance</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.rduffy.uk/posts/season-1-episode-2-mvp/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Building the Foundation: Vault Creation to MVP</span>
+  </a>
+  <a class="next" href="https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Day Zero: The ConvoCanvas Vision</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on x"
+            href="https://x.com/intent/tweet/?text=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f&amp;hashtags=obsidian%2cknowledge-management%2cchromadb%2cautomation%2cdocumentation%2crag%2cconvocanvas%2csemantic-search%2cprefect%2cwork-life-balance">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f&amp;title=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents&amp;summary=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents&amp;source=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f&title=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on whatsapp"
+            href="https://api.whatsapp.com/send?text=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents%20-%20https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on telegram"
+            href="https://telegram.me/share/url?text=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ChromaDB Weekend: From 504 to 24,916 Documents on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=ChromaDB%20Weekend%3a%20From%20504%20to%2024%2c916%20Documents&u=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-4-documentation-overload%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.rduffy.uk/">Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

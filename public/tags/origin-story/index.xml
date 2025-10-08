@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Origin-Story on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>http://localhost:1313/tags/origin-story/</link>
+    <link>https://blog.rduffy.uk/tags/origin-story/</link>
     <description>Recent content in Origin-Story on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/origin-story/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.rduffy.uk/tags/origin-story/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Day Zero: The ConvoCanvas Vision</title>
-      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</link>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</guid>
-      <description>The context window overflow error that sparked a 25-day process from idea to fully automated infrastructure. Looking back, this is how it all began.</description>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/</guid>
+      <description>The context window error that sparked everything. September 11, 2025 - an evening planning session with Claude that would shape 25 days of building.</description>
     </item>
   </channel>
 </rss>

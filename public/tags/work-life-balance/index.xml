@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Work-Life-Balance on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
+    <link>https://blog.rduffy.uk/tags/work-life-balance/</link>
+    <description>Recent content in Work-Life-Balance on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
+    <generator>Hugo -- 0.146.4</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.rduffy.uk/tags/work-life-balance/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ChromaDB Weekend: From 504 to 24,916 Documents</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/</guid>
+      <description>A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.</description>
+    </item>
+  </channel>
+</rss>

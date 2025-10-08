@@ -2,32 +2,67 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Season 1 on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>http://localhost:1313/categories/season-1/</link>
+    <link>https://blog.rduffy.uk/categories/season-1/</link>
     <description>Recent content in Season 1 on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/season-1/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.rduffy.uk/categories/season-1/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Building the Foundation: MVP in 72 Hours</title>
-      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
+      <title>Building the Foundation: Vault Creation to MVP</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-2-mvp/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
-      <description>From vault design to working code in 72 hours. The 3-hour refactoring marathon, the first successful parse, and 6 content ideas from 1 conversation.</description>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-2-mvp/</guid>
+      <description>From vault design to working code. September 14-15, 2025 - vault creation, LibreChat deployment, and the first FastAPI backend that could parse conversations and generate content ideas.</description>
+    </item>
+    <item>
+      <title>ChromaDB Weekend: From 504 to 24,916 Documents</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/</guid>
+      <description>A weekend implementing ChromaDB, a Monday demoing it at work, and discovering that 1,142 files need more than folders - they need semantic search.</description>
     </item>
     <item>
       <title>Day Zero: The ConvoCanvas Vision</title>
-      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</link>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</guid>
-      <description>The context window overflow error that sparked a 25-day process from idea to fully automated infrastructure. Looking back, this is how it all began.</description>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/</guid>
+      <description>The context window error that sparked everything. September 11, 2025 - an evening planning session with Claude that would shape 25 days of building.</description>
+    </item>
+    <item>
+      <title>Teaching the System to Blog About Itself: The Ultimate Meta-Project</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</guid>
+      <description>The final episode: Working with Claude to analyze 1,133 documents, review 200+ conversations, and collaboratively write the story of the system&amp;rsquo;s creation. When AI and human document infrastructure together.</description>
+    </item>
+    <item>
+      <title>Teaching the System to Document Itself: Automated Architecture Diagrams</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/</guid>
+      <description>From hand-coded Mermaid diagrams to automated architecture visualization. An evening working with Claude to teach the system to document itself.</description>
     </item>
     <item>
       <title>The AI Awakening: Breaking Free from Context Limits</title>
-      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
-      <description>From context window frustration to local control. A 15-hour implementation marathon installing 17 local models on an RTX 4080 for persistent, private conversations.</description>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/</guid>
+      <description>From context window frustration to local control. September 18-19, 2025 - a weekend working with Claude Code to install 17 local models, discovering what it means to own your AI conversations while working a full-time job.</description>
+    </item>
+    <item>
+      <title>The Migration Question: When K3s Meets Reality</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-5-migration-question/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-5-migration-question/</guid>
+      <description>K3s was already running. The question wasn&amp;rsquo;t whether to use it - it was whether to migrate everything to it. A day of deep research revealed the hidden cost of containerization.</description>
+    </item>
+    <item>
+      <title>When Everything Crashes: The K3s Resurrection</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-6-k3s-crash-resurrection/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-6-k3s-crash-resurrection/</guid>
+      <description>Saturday morning, October 5, 2025. A K3s cluster silently failing for days. 6,812 pod restarts. Working with Claude to diagnose and rebuild everything.</description>
     </item>
   </channel>
 </rss>

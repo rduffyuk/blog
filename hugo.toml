@@ -36,10 +36,6 @@ theme = 'PaperMod'
   """
 
 [[params.socialIcons]]
-  name = "github"
-  url = "https://github.com/rduffyuk"
-
-[[params.socialIcons]]
   name = "rss"
   url = "/index.xml"
 

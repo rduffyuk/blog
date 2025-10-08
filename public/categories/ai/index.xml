@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AI on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
+    <link>https://blog.rduffy.uk/categories/ai/</link>
+    <description>Recent content in AI on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
+    <generator>Hugo -- 0.146.4</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.rduffy.uk/categories/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Teaching the System to Blog About Itself: The Ultimate Meta-Project</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</guid>
+      <description>The final episode: Working with Claude to analyze 1,133 documents, review 200+ conversations, and collaboratively write the story of the system&amp;rsquo;s creation. When AI and human document infrastructure together.</description>
+    </item>
+  </channel>
+</rss>

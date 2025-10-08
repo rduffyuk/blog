@@ -2,18 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Fastapi on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>http://localhost:1313/tags/fastapi/</link>
+    <link>https://blog.rduffy.uk/tags/fastapi/</link>
     <description>Recent content in Fastapi on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/fastapi/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.rduffy.uk/tags/fastapi/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Building the Foundation: MVP in 72 Hours</title>
-      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
+      <title>Building the Foundation: Vault Creation to MVP</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-2-mvp/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
-      <description>From vault design to working code in 72 hours. The 3-hour refactoring marathon, the first successful parse, and 6 content ideas from 1 conversation.</description>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-2-mvp/</guid>
+      <description>From vault design to working code. September 14-15, 2025 - vault creation, LibreChat deployment, and the first FastAPI backend that could parse conversations and generate content ideas.</description>
+    </item>
+    <item>
+      <title>Teaching the System to Blog About Itself: The Ultimate Meta-Project</title>
+      <link>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</guid>
+      <description>The final episode: Working with Claude to analyze 1,133 documents, review 200+ conversations, and collaboratively write the story of the system&amp;rsquo;s creation. When AI and human document infrastructure together.</description>
     </item>
   </channel>
 </rss>

@@ -2,135 +2,249 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/posts/welcome/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/ai-infrastructure/</loc>
+    <loc>https://blog.rduffy.uk/tags/ai/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ai-conversations/</loc>
+    <loc>https://blog.rduffy.uk/categories/ai/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ai-infrastructure/</loc>
+    <loc>https://blog.rduffy.uk/categories/ai-infrastructure/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/architecture/</loc>
+    <loc>https://blog.rduffy.uk/tags/ai-conversations/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/diagrams/architecture-v0/</loc>
+    <loc>https://blog.rduffy.uk/tags/ai-infrastructure/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/architecture-beta/</loc>
+    <loc>https://blog.rduffy.uk/tags/ai/ml/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/auto-generated/</loc>
+    <loc>https://blog.rduffy.uk/tags/architecture/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</loc>
+    <loc>https://blog.rduffy.uk/diagrams/architecture-v0/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://blog.rduffy.uk/tags/architecture-beta/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/context-windows/</loc>
+    <loc>https://blog.rduffy.uk/tags/ascii-art/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/convocanvas/</loc>
+    <loc>https://blog.rduffy.uk/tags/auto-generated/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/convocanvas/</loc>
+    <loc>https://blog.rduffy.uk/categories/automation/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</loc>
+    <loc>https://blog.rduffy.uk/tags/automation/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/deepseek/</loc>
+    <loc>https://blog.rduffy.uk/tags/blogging/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/development/</loc>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-2-mvp/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/development/</loc>
+    <loc>https://blog.rduffy.uk/categories/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/diagrams/</loc>
+    <loc>https://blog.rduffy.uk/tags/chromadb/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/fastapi/</loc>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-4-documentation-overload/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/local-llm/</loc>
+    <loc>https://blog.rduffy.uk/tags/claude/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/mermaid/</loc>
+    <loc>https://blog.rduffy.uk/tags/collaboration/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/mvp/</loc>
+    <loc>https://blog.rduffy.uk/tags/containerization/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/obsidian/</loc>
+    <loc>https://blog.rduffy.uk/tags/context-windows/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ollama/</loc>
+    <loc>https://blog.rduffy.uk/tags/convocanvas/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/origin-story/</loc>
+    <loc>https://blog.rduffy.uk/categories/convocanvas/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/planning/</loc>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/planning/</loc>
+    <loc>https://blog.rduffy.uk/categories/debugging/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://blog.rduffy.uk/tags/debugging/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/python/</loc>
+    <loc>https://blog.rduffy.uk/tags/decision-making/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/refactoring/</loc>
+    <loc>https://blog.rduffy.uk/tags/deepseek/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/rtx-4080/</loc>
+    <loc>https://blog.rduffy.uk/categories/development/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://blog.rduffy.uk/tags/development/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/season-1/</loc>
+    <loc>https://blog.rduffy.uk/categories/devops/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://blog.rduffy.uk/diagrams/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</loc>
+    <loc>https://blog.rduffy.uk/tags/diagrams/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ai/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/disaster-recovery/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/automation/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/docker/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/infrastructure/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/categories/documentation/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/introduction/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/documentation/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/meta/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/embeddings/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/meta/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/fastapi/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/technical/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/gpu-operator/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/test-post/</loc>
-    <lastmod>2025-10-02T00:00:00+00:00</lastmod>
+    <loc>https://blog.rduffy.uk/tags/helm-charts/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>https://blog.rduffy.uk/tags/hybrid-architecture/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/categories/infrastructure/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/infrastructure/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/k3s/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/categories/knowledge-management/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/knowledge-management/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/kubernetes/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/librechat/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/local-llm/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/mcp/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/mermaid/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/categories/meta/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/meta/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/migration/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/mvp/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/obsidian/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/ollama/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/origin-story/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/categories/planning/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/planning/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/prefect/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/pydantic/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/python/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/rag/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/rtx-4080/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/categories/season-1/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/semantic-search/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-8-meta/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-5-migration-question/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/update-velocity/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/vault-design/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/vllm/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/posts/season-1-episode-6-k3s-crash-resurrection/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/tags/work-life-balance/</loc>
+    <lastmod>2025-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.rduffy.uk/about/</loc>
   </url>
 </urlset>

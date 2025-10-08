@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Architecture-Beta on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>http://localhost:1313/tags/architecture-beta/</link>
+    <link>https://blog.rduffy.uk/tags/architecture-beta/</link>
     <description>Recent content in Architecture-Beta on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/architecture-beta/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.rduffy.uk/tags/architecture-beta/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Architecture Diagram v0.1.0 (Mermaid Architecture)</title>
-      <link>http://localhost:1313/diagrams/architecture-v0/</link>
+      <link>https://blog.rduffy.uk/diagrams/architecture-v0/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/diagrams/architecture-v0/</guid>
+      <guid>https://blog.rduffy.uk/diagrams/architecture-v0/</guid>
       <description>&lt;h1 id=&#34;leveling-life-ecosystem-architecture-v010&#34;&gt;Leveling-Life Ecosystem Architecture v0.1.0&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Generated&lt;/strong&gt;: 2025-10-05 19:32:19&lt;br&gt;
 &lt;strong&gt;Format&lt;/strong&gt;: Mermaid architecture-beta (New syntax)&lt;br&gt;
@@ -21,7 +21,7 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;architecture-diagram&#34;&gt;Architecture Diagram&lt;/h2&gt;
 &lt;div class=&#34;mermaid-diagram&#34;&gt;
-  &lt;img src=&#34;http://localhost:1313/posts/Architecture-v0.1.0-mermaid-arch-3.svg&#34;
+  &lt;img src=&#34;https://blog.rduffy.uk/posts/Architecture-v0.1.0-mermaid-arch-3.svg&#34;
        alt=&#34;Diagram 3&#34;
        loading=&#34;lazy&#34;
        style=&#34;max-width: 100%; height: auto; display: block; margin: 2rem auto;&#34;&gt;

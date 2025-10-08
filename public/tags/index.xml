@@ -2,185 +2,388 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://blog.rduffy.uk/tags/</link>
     <description>Recent content in Tags on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.rduffy.uk/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ai</title>
+      <link>https://blog.rduffy.uk/tags/ai/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/ai/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Ai-Conversations</title>
-      <link>http://localhost:1313/tags/ai-conversations/</link>
+      <link>https://blog.rduffy.uk/tags/ai-conversations/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ai-conversations/</guid>
+      <guid>https://blog.rduffy.uk/tags/ai-conversations/</guid>
       <description></description>
     </item>
     <item>
       <title>Ai-Infrastructure</title>
-      <link>http://localhost:1313/tags/ai-infrastructure/</link>
+      <link>https://blog.rduffy.uk/tags/ai-infrastructure/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ai-infrastructure/</guid>
+      <guid>https://blog.rduffy.uk/tags/ai-infrastructure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai/Ml</title>
+      <link>https://blog.rduffy.uk/tags/ai/ml/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/ai/ml/</guid>
       <description></description>
     </item>
     <item>
       <title>Architecture</title>
-      <link>http://localhost:1313/tags/architecture/</link>
+      <link>https://blog.rduffy.uk/tags/architecture/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/architecture/</guid>
+      <guid>https://blog.rduffy.uk/tags/architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>Architecture-Beta</title>
-      <link>http://localhost:1313/tags/architecture-beta/</link>
+      <link>https://blog.rduffy.uk/tags/architecture-beta/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/architecture-beta/</guid>
+      <guid>https://blog.rduffy.uk/tags/architecture-beta/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ascii-Art</title>
+      <link>https://blog.rduffy.uk/tags/ascii-art/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/ascii-art/</guid>
       <description></description>
     </item>
     <item>
       <title>Auto-Generated</title>
-      <link>http://localhost:1313/tags/auto-generated/</link>
+      <link>https://blog.rduffy.uk/tags/auto-generated/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/auto-generated/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Context-Windows</title>
-      <link>http://localhost:1313/tags/context-windows/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/context-windows/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Convocanvas</title>
-      <link>http://localhost:1313/tags/convocanvas/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/convocanvas/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Deepseek</title>
-      <link>http://localhost:1313/tags/deepseek/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/deepseek/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Development</title>
-      <link>http://localhost:1313/tags/development/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/development/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fastapi</title>
-      <link>http://localhost:1313/tags/fastapi/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/fastapi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Local-Llm</title>
-      <link>http://localhost:1313/tags/local-llm/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/local-llm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Mermaid</title>
-      <link>http://localhost:1313/tags/mermaid/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/mermaid/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Mvp</title>
-      <link>http://localhost:1313/tags/mvp/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/mvp/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Obsidian</title>
-      <link>http://localhost:1313/tags/obsidian/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/obsidian/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ollama</title>
-      <link>http://localhost:1313/tags/ollama/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ollama/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Origin-Story</title>
-      <link>http://localhost:1313/tags/origin-story/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/origin-story/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Planning</title>
-      <link>http://localhost:1313/tags/planning/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/planning/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>http://localhost:1313/tags/python/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Refactoring</title>
-      <link>http://localhost:1313/tags/refactoring/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/refactoring/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rtx-4080</title>
-      <link>http://localhost:1313/tags/rtx-4080/</link>
-      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/rtx-4080/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ai</title>
-      <link>http://localhost:1313/tags/ai/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ai/</guid>
+      <guid>https://blog.rduffy.uk/tags/auto-generated/</guid>
       <description></description>
     </item>
     <item>
       <title>Automation</title>
-      <link>http://localhost:1313/tags/automation/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/automation/</guid>
+      <link>https://blog.rduffy.uk/tags/automation/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/automation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Blogging</title>
+      <link>https://blog.rduffy.uk/tags/blogging/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/blogging/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Chromadb</title>
+      <link>https://blog.rduffy.uk/tags/chromadb/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/chromadb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Claude</title>
+      <link>https://blog.rduffy.uk/tags/claude/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/claude/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Collaboration</title>
+      <link>https://blog.rduffy.uk/tags/collaboration/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/collaboration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Containerization</title>
+      <link>https://blog.rduffy.uk/tags/containerization/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/containerization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Context-Windows</title>
+      <link>https://blog.rduffy.uk/tags/context-windows/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/context-windows/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Convocanvas</title>
+      <link>https://blog.rduffy.uk/tags/convocanvas/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/convocanvas/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Debugging</title>
+      <link>https://blog.rduffy.uk/tags/debugging/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/debugging/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Decision-Making</title>
+      <link>https://blog.rduffy.uk/tags/decision-making/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/decision-making/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Deepseek</title>
+      <link>https://blog.rduffy.uk/tags/deepseek/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/deepseek/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Development</title>
+      <link>https://blog.rduffy.uk/tags/development/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/development/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Diagrams</title>
+      <link>https://blog.rduffy.uk/tags/diagrams/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/diagrams/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Disaster-Recovery</title>
+      <link>https://blog.rduffy.uk/tags/disaster-recovery/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/disaster-recovery/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker</title>
+      <link>https://blog.rduffy.uk/tags/docker/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Documentation</title>
+      <link>https://blog.rduffy.uk/tags/documentation/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/documentation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embeddings</title>
+      <link>https://blog.rduffy.uk/tags/embeddings/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/embeddings/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fastapi</title>
+      <link>https://blog.rduffy.uk/tags/fastapi/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/fastapi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gpu-Operator</title>
+      <link>https://blog.rduffy.uk/tags/gpu-operator/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/gpu-operator/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Helm-Charts</title>
+      <link>https://blog.rduffy.uk/tags/helm-charts/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/helm-charts/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hybrid-Architecture</title>
+      <link>https://blog.rduffy.uk/tags/hybrid-architecture/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/hybrid-architecture/</guid>
       <description></description>
     </item>
     <item>
       <title>Infrastructure</title>
-      <link>http://localhost:1313/tags/infrastructure/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/infrastructure/</guid>
+      <link>https://blog.rduffy.uk/tags/infrastructure/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/infrastructure/</guid>
       <description></description>
     </item>
     <item>
-      <title>Introduction</title>
-      <link>http://localhost:1313/tags/introduction/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/introduction/</guid>
+      <title>K3s</title>
+      <link>https://blog.rduffy.uk/tags/k3s/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/k3s/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Knowledge-Management</title>
+      <link>https://blog.rduffy.uk/tags/knowledge-management/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/knowledge-management/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kubernetes</title>
+      <link>https://blog.rduffy.uk/tags/kubernetes/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Librechat</title>
+      <link>https://blog.rduffy.uk/tags/librechat/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/librechat/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Local-Llm</title>
+      <link>https://blog.rduffy.uk/tags/local-llm/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/local-llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mcp</title>
+      <link>https://blog.rduffy.uk/tags/mcp/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/mcp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mermaid</title>
+      <link>https://blog.rduffy.uk/tags/mermaid/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/mermaid/</guid>
       <description></description>
     </item>
     <item>
       <title>Meta</title>
-      <link>http://localhost:1313/tags/meta/</link>
-      <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/meta/</guid>
+      <link>https://blog.rduffy.uk/tags/meta/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/meta/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Migration</title>
+      <link>https://blog.rduffy.uk/tags/migration/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/migration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mvp</title>
+      <link>https://blog.rduffy.uk/tags/mvp/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/mvp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Obsidian</title>
+      <link>https://blog.rduffy.uk/tags/obsidian/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/obsidian/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ollama</title>
+      <link>https://blog.rduffy.uk/tags/ollama/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/ollama/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Origin-Story</title>
+      <link>https://blog.rduffy.uk/tags/origin-story/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/origin-story/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Planning</title>
+      <link>https://blog.rduffy.uk/tags/planning/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/planning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Prefect</title>
+      <link>https://blog.rduffy.uk/tags/prefect/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/prefect/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pydantic</title>
+      <link>https://blog.rduffy.uk/tags/pydantic/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/pydantic/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://blog.rduffy.uk/tags/python/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rag</title>
+      <link>https://blog.rduffy.uk/tags/rag/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rtx-4080</title>
+      <link>https://blog.rduffy.uk/tags/rtx-4080/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/rtx-4080/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Semantic-Search</title>
+      <link>https://blog.rduffy.uk/tags/semantic-search/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/semantic-search/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Update-Velocity</title>
+      <link>https://blog.rduffy.uk/tags/update-velocity/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/update-velocity/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vault-Design</title>
+      <link>https://blog.rduffy.uk/tags/vault-design/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/vault-design/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vllm</title>
+      <link>https://blog.rduffy.uk/tags/vllm/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/vllm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Work-Life-Balance</title>
+      <link>https://blog.rduffy.uk/tags/work-life-balance/</link>
+      <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.rduffy.uk/tags/work-life-balance/</guid>
       <description></description>
     </item>
   </channel>

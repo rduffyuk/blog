@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Teaching the System to Document Itself: Automated Architecture Diagrams | Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
+<meta name="keywords" content="ascii-art, diagrams, automation, documentation, architecture, prefect, kubernetes, k3s, convocanvas, ollama, chromadb">
+<meta name="description" content="From hand-coded Mermaid diagrams to automated architecture visualization. An evening working with Claude to teach the system to document itself.">
+<meta name="author" content="Ryan Duffy">
+<link rel="canonical" href="https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a090830a421002426baafbd314e38f149d77b4c48a12ee9312700d770b27fb26.css" integrity="sha256-oJCDCkIQAkJrqvvTFOOPFJ13tMSKEu6TEnANdwsn&#43;yY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.rduffy.uk/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.rduffy.uk/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.rduffy.uk/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.rduffy.uk/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.rduffy.uk/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><link rel="icon" type="image/svg+xml" href="/favicon.svg"><style>
+   
+  .mermaid-diagram {
+    margin: 2.5rem 0;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+   
+  .mermaid-diagram img {
+    max-width: 100%;
+    height: auto;
+    min-height: 500px;
+    display: block;
+    margin: 0 auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+   
+  @media (max-width: 768px) {
+    .mermaid-diagram {
+      padding: 1rem;
+      margin: 1.5rem -1rem;
+    }
+    .mermaid-diagram img {
+      min-height: 400px;
+    }
+  }
+</style>
+<meta property="og:url" content="https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/">
+  <meta property="og:site_name" content="Ryan Duffy - AI Infrastructure & Local LLM Journey">
+  <meta property="og:title" content="Teaching the System to Document Itself: Automated Architecture Diagrams">
+  <meta property="og:description" content="From hand-coded Mermaid diagrams to automated architecture visualization. An evening working with Claude to teach the system to document itself.">
+  <meta property="og:locale" content="en-gb">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-10-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-10-05T00:00:00+00:00">
+    <meta property="article:tag" content="Ascii-Art">
+    <meta property="article:tag" content="Diagrams">
+    <meta property="article:tag" content="Automation">
+    <meta property="article:tag" content="Documentation">
+    <meta property="article:tag" content="Architecture">
+    <meta property="article:tag" content="Prefect">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Teaching the System to Document Itself: Automated Architecture Diagrams">
+<meta name="twitter:description" content="From hand-coded Mermaid diagrams to automated architecture visualization. An evening working with Claude to teach the system to document itself.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.rduffy.uk/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Teaching the System to Document Itself: Automated Architecture Diagrams",
+      "item": "https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Teaching the System to Document Itself: Automated Architecture Diagrams",
+  "name": "Teaching the System to Document Itself: Automated Architecture Diagrams",
+  "description": "From hand-coded Mermaid diagrams to automated architecture visualization. An evening working with Claude to teach the system to document itself.",
+  "keywords": [
+    "ascii-art", "diagrams", "automation", "documentation", "architecture", "prefect", "kubernetes", "k3s", "convocanvas", "ollama", "chromadb"
+  ],
+  "articleBody": "Episode 7: Teaching the System to Document Itself - Automated Architecture Diagrams Series: Season 1 - From Zero to Automated Infrastructure Episode: 7 of 8 Date: October 7, 2025 (Evening) Reading Time: 8 minutes\nOctober 7, Evening: The Visualization Gap Vault Evidence: All architecture diagram files (2025-10-07-185113-Architecture-v010-layered.md through 2025-10-07-185121-Architecture-v0012-mermaid.md) created October 7, 2025 at 18:51 (6:51 PM), documenting multiple iterations of diagram automation development.\nTwo days after rebuilding K3s, I couldn’t visualize the architecture anymore.\nThe Mental Model Was Breaking Down:\nkubectl get pods -A --no-headers | wc -l # Output: 23 pods kubectl get namespaces --no-headers | wc -l # Output: 7 namespaces 7 namespaces 23 pods across those namespaces 17 AI models in Ollama 12 monitoring components 6 network policies 4 persistent volumes I needed diagrams. Not static images - living documentation that updates itself from the actual cluster state.\nWorking with Claude Code that evening, we built an automated architecture visualization system.\nThe Challenge: Complexity Hidden in kubectl The infrastructure was complex, but it was all queryable:\n# Get all services kubectl get svc -A # Get pod relationships kubectl get pods -A -o json | jq \u0026#39;.items[].spec.containers[].env\u0026#39; # Get network policies kubectl get networkpolicies -A # Get persistent volumes kubectl get pvc -A The data was there. But kubectl output doesn’t explain relationships. It doesn’t show:\nWhich services talk to which other services How data flows through the system What external dependencies exist Which components are critical path We needed to transform cluster state into visual architecture.\nThe ASCII Diagram Solution ASCII diagrams are text-based and render everywhere:\nConvoCanvas ──→ Ollama │ └─────→ ChromaDB Benefits:\nPure text (version controllable) Renders everywhere (terminal, markdown, Hugo) Can be generated programmatically Zero dependencies or renderers required The Plan: Query K3s → Parse relationships → Generate ASCII diagrams → Auto-commit to git\nBuilding the Generator Working with Claude, we iterated through multiple approaches.\nIteration 1: Pod List First attempt: Just list all pods\nkubectl get pods -A -o json | jq -r \u0026#39;.items[] | \u0026#34;\\(.metadata.namespace)/\\(.metadata.name)\u0026#34;\u0026#39; Result: A flat list with no relationships. Not useful.\nIteration 2: Extract Service Dependencies Parse environment variables to find service connections:\n#!/bin/bash get_service_deps() { local namespace=$1 local pod=$2 kubectl get pod \u0026#34;$pod\u0026#34; -n \u0026#34;$namespace\u0026#34; -o json | \\ jq -r \u0026#39;.spec.containers[].env[]? | select(.name | contains(\u0026#34;URL\u0026#34;) or contains(\u0026#34;HOST\u0026#34;)) | .value\u0026#39; } Result: Found relationships like OLLAMA_URL=http://ollama:11434, but many implicit connections missed.\nIteration 3: Namespace Grouping Use ASCII box grouping to organize by namespace:\n┌─────────────────────────────┐ │ librechat namespace │ │ │ │ ┌──────────┐ ┌─────────┐ │ │ │LibreChat │ │ MongoDB │ │ │ └────┬─────┘ └─────────┘ │ │ │ │ │ ┌────▼────┐ │ │ │ RAG API │ │ │ └────┬────┘ │ └───────┼─────────────────────┘ │ ▼ ┌───────────────────────┐ │ ai-inference namespace│ │ │ │ ┌────────┐ │ │ │ Ollama │ │ │ └────────┘ │ └───────────────────────┘ Result: Much clearer! Namespaces provided natural architectural boundaries.\nThe Final Pattern: Three Diagram Types We realized one diagram couldn’t serve all needs. We created three:\n1. High-Level Architecture - Business/product view\n┌──────┐ │ User │ └───┬──┘ │ ▼ ┌───────────┐ │ LibreChat │ └─────┬─────┘ │ ├────────────────┐ │ │ ▼ ▼ ┌─────────────┐ ┌──────────────────┐ │ 17 AI Models│ │ Semantic Search │ │ (Ollama) │ │ (RAG) │ └─────────────┘ └────────┬─────────┘ │ ▼ ┌──────────────┐ │ 24K Documents│ │ (ChromaDB) │ └──────────────┘ 2. Deployment Diagram - Infrastructure view\n┌─────────────────────────────────────────────┐ │ K3s Cluster │ │ │ │ ┌─────────────────────────────────┐ │ │ │ librechat namespace │ │ │ │ ┌──────┐ ┌──────┐ ┌─────┐ │ │ │ │ │ LC │ │Mongo │ │ RAG │ │ │ │ │ └──────┘ └──────┘ └─────┘ │ │ │ └─────────────────────────────────┘ │ │ │ │ ┌─────────────────────────────────┐ │ │ │ monitoring namespace │ │ │ │ ┌──────────┐ ┌────────┐ │ │ │ │ │Prometheus│ │ Grafana│ │ │ │ │ └──────────┘ └────────┘ │ │ │ └─────────────────────────────────┘ │ └─────────────────────────────────────────────┘ 3. Data Flow Diagram - How requests traverse the system\nUser LibreChat Ollama RAG ChromaDB │ │ │ │ │ │─ Query ───────────→ │ │ │ │ │ │ │ │ │ │ │─ LLM Request ───→│ │ │ │ │ │ │ │ │ │─ Semantic Search ───────────────→ │ │ │ │ │ │ │ │ │ │ │─ Vector Query ───→│ │ │ │ │ │ │ │ │ │←─── Results ──────│ │ │ │ │ │ │ │←─ Context ──────────────────────── │ │ │ │ │ │ │ │ │←─ Response ──────│ │ │ │ │ │ │ │ │←─ Answer ───────────│ │ │ │ Automation: Daily Diagram Generation We built a Prefect workflow to auto-generate diagrams daily:\ndiagram_automation_flow.py:\nfrom prefect import flow, task from datetime import datetime import subprocess @task def generate_diagrams(): \u0026#34;\u0026#34;\u0026#34;Generate ASCII architecture diagrams from K3s cluster state.\u0026#34;\u0026#34;\u0026#34; result = subprocess.run( [\u0026#34;./generate_ecosystem_diagrams.sh\u0026#34;], capture_output=True, text=True ) if result.returncode != 0: raise Exception(f\u0026#34;Diagram generation failed: {result.stderr}\u0026#34;) return result.stdout @task def commit_to_git(diagram_output: str): \u0026#34;\u0026#34;\u0026#34;Commit generated diagrams to git.\u0026#34;\u0026#34;\u0026#34; subprocess.run([\u0026#34;git\u0026#34;, \u0026#34;add\u0026#34;, \u0026#34;architecture-*.md\u0026#34;], check=True) subprocess.run([ \u0026#34;git\u0026#34;, \u0026#34;commit\u0026#34;, \u0026#34;-m\u0026#34;, f\u0026#34;docs: auto-update architecture diagrams {datetime.now().isoformat()}\u0026#34; ], check=True) return \u0026#34;Diagrams committed to git\u0026#34; @flow(name=\u0026#34;diagram-automation\u0026#34;) def diagram_automation_flow(): \u0026#34;\u0026#34;\u0026#34;Daily diagram generation workflow.\u0026#34;\u0026#34;\u0026#34; output = generate_diagrams() commit_to_git(output) return \u0026#34;Architecture diagrams updated\u0026#34; # Schedule: Daily at 3 AM (after vault indexing completes) if __name__ == \u0026#34;__main__\u0026#34;: diagram_automation_flow.serve( name=\u0026#34;diagram-automation\u0026#34;, cron=\u0026#34;0 3 * * *\u0026#34; ) Deploy:\npython-enhancement-env/bin/python diagram_automation_flow.py Result: Every morning at 3 AM:\nScript queries K3s cluster Generates 3 ASCII diagrams Commits to git automatically Obsidian vault gets updated diagrams The system was documenting itself.\nThe Diagram Files (October 7, 18:51) Vault timestamps show the actual work:\nls -la architecture-automation-pipeline/diagrams/ # All files created: Oct 7 18:51 2025-10-07-185113-Architecture-v010-layered.md 2025-10-07-185115-Architecture-v011-layered.md 2025-10-07-185116-Architecture-v010-sequence.md 2025-10-07-185118-Architecture-v0011-mermaid.md 2025-10-07-185119-Architecture-v011-sequence.md 2025-10-07-185121-Architecture-v0012-mermaid.md Multiple iterations in one evening session, each refining the approach.\nWhat Worked ASCII’s Pure Text Format:\nVersion control shows diagram evolution git diff on diagrams shows architectural changes Renders everywhere (terminal, markdown, Hugo, no dependencies) Easy to generate programmatically No rendering issues with static site generators Three-Diagram Strategy:\nHigh-level: Shows business value (LibreChat → 17 AI Models) Deployment: Shows infrastructure (K3s namespaces, pods, services) Data flow: Shows request paths (sequence-style) Different audiences need different views. Three specialized diagrams beat one complex diagram.\nDaily Automation:\nDiagrams never out of date Git history becomes architectural history Zero manual maintenance required Captures infrastructure evolution automatically What Still Sucked Implicit Relationships Missed: Environment variables captured explicit service URLs, but missed:\nNetwork policies allowing traffic Implicit service mesh connections ConfigMap/Secret dependencies Static External Services: GitHub, Cloudflare, external APIs were hardcoded. No way to auto-detect what external services the system depends on.\nManual Layout Required: ASCII diagrams require careful manual layout. Complex systems with many connections can get messy quickly.\nThe Meta Loop This diagram automation system is itself part of the infrastructure:\n┌─────────────┐ │ K3s Cluster │ └──────┬──────┘ │ ▼ ┌──────────────┐ │kubectl query │ └──────┬───────┘ │ ▼ ┌─────────────────┐ │Diagram Generator│ └───────┬─────────┘ │ ▼ ┌──────────────┐ │ ASCII Files │ └──────┬───────┘ │ ▼ ┌──────────────┐ │ Git Repo │ └──────┬───────┘ │ ▼ ┌────────────────┐ │ Obsidian Vault │ └───────┬────────┘ │ ▼ ┌───────────────────┐ │ ChromaDB Indexing │ └────────┬──────────┘ │ ▼ ┌──────────────────┐ │ Semantic Search │ └──────────────────┘ The system:\nQueries its own infrastructure Generates diagrams describing itself Commits them to git Indexes them in ChromaDB Makes them searchable Self-documenting infrastructure.\nThe Numbers (October 7 Evening) Metric Value Work Date October 7, 2025 (evening) Diagram Types 3 (high-level, deployment, data-flow) Diagram Iterations 6+ files created Automation Prefect flow (daily 3 AM) Components Visualized 23 pods across 7 namespaces External Services 5 (GitHub, Cloudflare, Tailscale, etc.) ASCII Lines ~40-60 per diagram ★ Insight ───────────────────────────────────── The Documentation Decay Problem:\nManual documentation has a fatal flaw: it decays the moment you write it.\nAdd one service → All diagrams out of date Remove one pod → Documentation now lies Change one connection → Diagrams show wrong architecture The traditional solutions fail:\n“Update docs in every PR” → Forgotten 50% of the time “Quarterly doc review” → 3 months of staleness guaranteed “Assign doc owner” → Creates bottleneck, still lags The only solution that works: Automation\nGenerate documentation from source of truth (cluster state) automatically. Then:\nDocs can never be out of date (regenerate daily) Git history shows architectural evolution Zero discipline required (it just happens) When your documentation requires human discipline, you don’t have a people problem - you have an automation problem. ─────────────────────────────────────────────────\nWhat I Learned 1. Working with Claude, not replacing myself This wasn’t “AI writes diagrams while I watch.” It was back-and-forth: I understood the architecture, Claude suggested Mermaid syntax, I validated output, Claude refined approach. Collaboration, not replacement.\n2. One diagram can’t show everything Tried building “the ultimate architecture diagram” showing all layers. Failed. Three specialized ASCII diagrams (high-level, deployment, data-flow) served different needs better.\n3. Automation justifies complexity Writing diagram generator was more work than hand-coding one diagram. But it runs daily forever, compounding value. One-time cost, permanent benefit.\n4. Git history for diagrams = architectural archaeology Looking at diagram diffs shows exactly when services were added, removed, or reconfigured. Better than documentation - it’s the actual evolution.\n5. Self-documenting systems are achievable Not science fiction. Query cluster state → Generate markdown → Commit to git. The system describes itself because we taught it how.\nBuilt on Open Source This automation wouldn’t exist without:\nASCII Art Tradition - Text-based diagramming that works everywhere without dependencies. Terminal-native, version-controllable, and renders in any context.\nPrefect - Modern workflow orchestration that made daily automation trivial to deploy and monitor.\njq - JSON processor that made parsing kubectl output possible in bash scripts.\nK3s - Lightweight Kubernetes that made querying cluster state via kubectl both possible and practical.\nThanks to these projects for building tools that enable self-documenting infrastructure.\nWhat’s Next October 7 evening ended with automated diagram generation running.\nThe system could now:\nParse conversations (ConvoCanvas) Generate content with local LLMs (Ollama) Search semantically (ChromaDB) Run reliably (K3s, rebuilt from crash) Monitor itself (Prometheus/Grafana) Document itself (automated diagrams) There was one thing left to automate: Writing the blog series documenting its own creation.\nCould the AI that built this infrastructure also write the story of building it?\nBy early October, working with Claude, I’d find out.\nNext Episode: “Teaching AI to Blog About Itself: The Ultimate Meta-Project” - When ConvoCanvas becomes its own case study, and Season 1 writes itself.\nThis is Episode 7 of “Season 1: From Zero to Automated Infrastructure” - documenting the evening we taught the system to document itself.\nPrevious Episode: When Everything Crashes: The K3s Resurrection Complete Series: Season 1 Mapping Report\n",
+  "wordCount" : "1717",
+  "inLanguage": "en",
+  "datePublished": "2025-10-05T00:00:00Z",
+  "dateModified": "2025-10-05T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Ryan Duffy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.rduffy.uk/posts/season-1-episode-7-diagram-automation/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ryan Duffy - AI Infrastructure \u0026 Local LLM Journey",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.rduffy.uk/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.rduffy.uk/" accesskey="h" title="Ryan Duffy - AI Infrastructure &amp; Local LLM Journey (Alt + H)">Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.rduffy.uk/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.rduffy.uk/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.rduffy.uk/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.rduffy.uk/">Home</a>&nbsp;»&nbsp;<a href="https://blog.rduffy.uk/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Teaching the System to Document Itself: Automated Architecture Diagrams
+    </h1>
+    <div class="post-meta"><span title='2025-10-05 00:00:00 +0000 UTC'>October 5, 2025</span>&nbsp;·&nbsp;<span>9 min</span>&nbsp;·&nbsp;<span>1717 words</span>&nbsp;·&nbsp;<span>Ryan Duffy</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#october-7-evening-the-visualization-gap">October 7, Evening: The Visualization Gap</a></li>
+    <li><a href="#the-challenge-complexity-hidden-in-kubectl">The Challenge: Complexity Hidden in kubectl</a></li>
+    <li><a href="#the-ascii-diagram-solution">The ASCII Diagram Solution</a></li>
+    <li><a href="#building-the-generator">Building the Generator</a>
+      <ul>
+        <li><a href="#iteration-1-pod-list">Iteration 1: Pod List</a></li>
+        <li><a href="#iteration-2-extract-service-dependencies">Iteration 2: Extract Service Dependencies</a></li>
+        <li><a href="#iteration-3-namespace-grouping">Iteration 3: Namespace Grouping</a></li>
+        <li><a href="#the-final-pattern-three-diagram-types">The Final Pattern: Three Diagram Types</a></li>
+      </ul>
+    </li>
+    <li><a href="#automation-daily-diagram-generation">Automation: Daily Diagram Generation</a></li>
+    <li><a href="#the-diagram-files-october-7-1851">The Diagram Files (October 7, 18:51)</a></li>
+    <li><a href="#what-worked">What Worked</a></li>
+    <li><a href="#what-still-sucked">What Still Sucked</a></li>
+    <li><a href="#the-meta-loop">The Meta Loop</a></li>
+    <li><a href="#the-numbers-october-7-evening">The Numbers (October 7 Evening)</a></li>
+    <li><a href="#what-i-learned">What I Learned</a></li>
+    <li><a href="#built-on-open-source">Built on Open Source</a></li>
+    <li><a href="#whats-next">What&rsquo;s Next</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="episode-7-teaching-the-system-to-document-itself---automated-architecture-diagrams">Episode 7: Teaching the System to Document Itself - Automated Architecture Diagrams<a hidden class="anchor" aria-hidden="true" href="#episode-7-teaching-the-system-to-document-itself---automated-architecture-diagrams">#</a></h1>
+<p><strong>Series</strong>: Season 1 - From Zero to Automated Infrastructure
+<strong>Episode</strong>: 7 of 8
+<strong>Date</strong>: October 7, 2025 (Evening)
+<strong>Reading Time</strong>: 8 minutes</p>
+<hr>
+<h2 id="october-7-evening-the-visualization-gap">October 7, Evening: The Visualization Gap<a hidden class="anchor" aria-hidden="true" href="#october-7-evening-the-visualization-gap">#</a></h2>
+<p><em>Vault Evidence: All architecture diagram files (<code>2025-10-07-185113-Architecture-v010-layered.md</code> through <code>2025-10-07-185121-Architecture-v0012-mermaid.md</code>) created October 7, 2025 at 18:51 (6:51 PM), documenting multiple iterations of diagram automation development.</em></p>
+<p>Two days after rebuilding K3s, I couldn&rsquo;t visualize the architecture anymore.</p>
+<p><strong>The Mental Model Was Breaking Down</strong>:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>kubectl get pods -A --no-headers | wc -l
+# Output: 23 pods
+
+kubectl get namespaces --no-headers | wc -l
+# Output: 7 namespaces</code></pre>
+</div>
+<ul>
+<li>7 namespaces</li>
+<li>23 pods across those namespaces</li>
+<li>17 AI models in Ollama</li>
+<li>12 monitoring components</li>
+<li>6 network policies</li>
+<li>4 persistent volumes</li>
+</ul>
+<p>I needed diagrams. Not static images - <strong>living documentation that updates itself</strong> from the actual cluster state.</p>
+<p>Working with Claude Code that evening, we built an automated architecture visualization system.</p>
+<h2 id="the-challenge-complexity-hidden-in-kubectl">The Challenge: Complexity Hidden in kubectl<a hidden class="anchor" aria-hidden="true" href="#the-challenge-complexity-hidden-in-kubectl">#</a></h2>
+<p>The infrastructure was complex, but it was all queryable:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code># Get all services
+kubectl get svc -A
+
+# Get pod relationships
+kubectl get pods -A -o json | jq &amp;#39;.items[].spec.containers[].env&amp;#39;
+
+# Get network policies
+kubectl get networkpolicies -A
+
+# Get persistent volumes
+kubectl get pvc -A</code></pre>
+</div>
+<p>The data was there. But <strong>kubectl output doesn&rsquo;t explain relationships</strong>. It doesn&rsquo;t show:</p>
+<ul>
+<li>Which services talk to which other services</li>
+<li>How data flows through the system</li>
+<li>What external dependencies exist</li>
+<li>Which components are critical path</li>
+</ul>
+<p>We needed to transform cluster state into visual architecture.</p>
+<h2 id="the-ascii-diagram-solution">The ASCII Diagram Solution<a hidden class="anchor" aria-hidden="true" href="#the-ascii-diagram-solution">#</a></h2>
+<p>ASCII diagrams are text-based and render everywhere:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>ConvoCanvas ──→ Ollama
+     │
+     └─────→ ChromaDB</code></pre>
+</div>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Pure text (version controllable)</li>
+<li>Renders everywhere (terminal, markdown, Hugo)</li>
+<li>Can be generated programmatically</li>
+<li>Zero dependencies or renderers required</li>
+</ul>
+<p><strong>The Plan</strong>: Query K3s → Parse relationships → Generate ASCII diagrams → Auto-commit to git</p>
+<h2 id="building-the-generator">Building the Generator<a hidden class="anchor" aria-hidden="true" href="#building-the-generator">#</a></h2>
+<p>Working with Claude, we iterated through multiple approaches.</p>
+<h3 id="iteration-1-pod-list">Iteration 1: Pod List<a hidden class="anchor" aria-hidden="true" href="#iteration-1-pod-list">#</a></h3>
+<p>First attempt: Just list all pods</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>kubectl get pods -A -o json | jq -r &amp;#39;.items[] | &amp;#34;\(.metadata.namespace)/\(.metadata.name)&amp;#34;&amp;#39;</code></pre>
+</div>
+<p><strong>Result</strong>: A flat list with no relationships. Not useful.</p>
+<h3 id="iteration-2-extract-service-dependencies">Iteration 2: Extract Service Dependencies<a hidden class="anchor" aria-hidden="true" href="#iteration-2-extract-service-dependencies">#</a></h3>
+<p>Parse environment variables to find service connections:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>#!/bin/bash
+
+get_service_deps() {
+    local namespace=$1
+    local pod=$2
+
+    kubectl get pod &amp;#34;$pod&amp;#34; -n &amp;#34;$namespace&amp;#34; -o json | \
+        jq -r &amp;#39;.spec.containers[].env[]? |
+               select(.name | contains(&amp;#34;URL&amp;#34;) or contains(&amp;#34;HOST&amp;#34;)) |
+               .value&amp;#39;
+}</code></pre>
+</div>
+<p><strong>Result</strong>: Found relationships like <code>OLLAMA_URL=http://ollama:11434</code>, but many implicit connections missed.</p>
+<h3 id="iteration-3-namespace-grouping">Iteration 3: Namespace Grouping<a hidden class="anchor" aria-hidden="true" href="#iteration-3-namespace-grouping">#</a></h3>
+<p>Use ASCII box grouping to organize by namespace:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>┌─────────────────────────────┐
+│   librechat namespace       │
+│                             │
+│  ┌──────────┐  ┌─────────┐ │
+│  │LibreChat │  │ MongoDB │ │
+│  └────┬─────┘  └─────────┘ │
+│       │                     │
+│  ┌────▼────┐                │
+│  │ RAG API │                │
+│  └────┬────┘                │
+└───────┼─────────────────────┘
+        │
+        ▼
+┌───────────────────────┐
+│ ai-inference namespace│
+│                       │
+│    ┌────────┐         │
+│    │ Ollama │         │
+│    └────────┘         │
+└───────────────────────┘</code></pre>
+</div>
+<p><strong>Result</strong>: Much clearer! Namespaces provided natural architectural boundaries.</p>
+<h3 id="the-final-pattern-three-diagram-types">The Final Pattern: Three Diagram Types<a hidden class="anchor" aria-hidden="true" href="#the-final-pattern-three-diagram-types">#</a></h3>
+<p>We realized one diagram couldn&rsquo;t serve all needs. We created three:</p>
+<p><strong>1. High-Level Architecture</strong> - Business/product view</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>┌──────┐
+│ User │
+└───┬──┘
+    │
+    ▼
+┌───────────┐
+│ LibreChat │
+└─────┬─────┘
+      │
+      ├────────────────┐
+      │                │
+      ▼                ▼
+┌─────────────┐  ┌──────────────────┐
+│ 17 AI Models│  │ Semantic Search  │
+│  (Ollama)   │  │     (RAG)        │
+└─────────────┘  └────────┬─────────┘
+                          │
+                          ▼
+                    ┌──────────────┐
+                    │ 24K Documents│
+                    │  (ChromaDB)  │
+                    └──────────────┘</code></pre>
+</div>
+<p><strong>2. Deployment Diagram</strong> - Infrastructure view</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>┌─────────────────────────────────────────────┐
+│              K3s Cluster                    │
+│                                             │
+│  ┌─────────────────────────────────┐       │
+│  │   librechat namespace           │       │
+│  │  ┌──────┐ ┌──────┐ ┌─────┐     │       │
+│  │  │ LC   │ │Mongo │ │ RAG │     │       │
+│  │  └──────┘ └──────┘ └─────┘     │       │
+│  └─────────────────────────────────┘       │
+│                                             │
+│  ┌─────────────────────────────────┐       │
+│  │   monitoring namespace          │       │
+│  │  ┌──────────┐ ┌────────┐       │       │
+│  │  │Prometheus│ │ Grafana│       │       │
+│  │  └──────────┘ └────────┘       │       │
+│  └─────────────────────────────────┘       │
+└─────────────────────────────────────────────┘</code></pre>
+</div>
+<p><strong>3. Data Flow Diagram</strong> - How requests traverse the system</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>User                LibreChat           Ollama            RAG               ChromaDB
+  │                     │                  │                │                   │
+  │─ Query ───────────→ │                  │                │                   │
+  │                     │                  │                │                   │
+  │                     │─ LLM Request ───→│                │                   │
+  │                     │                  │                │                   │
+  │                     │─ Semantic Search ───────────────→ │                   │
+  │                     │                  │                │                   │
+  │                     │                  │                │─ Vector Query ───→│
+  │                     │                  │                │                   │
+  │                     │                  │                │←─── Results ──────│
+  │                     │                  │                │                   │
+  │                     │←─ Context ──────────────────────── │                   │
+  │                     │                  │                │                   │
+  │                     │←─ Response ──────│                │                   │
+  │                     │                  │                │                   │
+  │←─ Answer ───────────│                  │                │                   │</code></pre>
+</div>
+<h2 id="automation-daily-diagram-generation">Automation: Daily Diagram Generation<a hidden class="anchor" aria-hidden="true" href="#automation-daily-diagram-generation">#</a></h2>
+<p>We built a Prefect workflow to auto-generate diagrams daily:</p>
+<p><strong><code>diagram_automation_flow.py</code></strong>:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>from prefect import flow, task
+from datetime import datetime
+import subprocess
+
+@task
+def generate_diagrams():
+    &amp;#34;&amp;#34;&amp;#34;Generate ASCII architecture diagrams from K3s cluster state.&amp;#34;&amp;#34;&amp;#34;
+    result = subprocess.run(
+        [&amp;#34;./generate_ecosystem_diagrams.sh&amp;#34;],
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode != 0:
+        raise Exception(f&amp;#34;Diagram generation failed: {result.stderr}&amp;#34;)
+
+    return result.stdout
+
+@task
+def commit_to_git(diagram_output: str):
+    &amp;#34;&amp;#34;&amp;#34;Commit generated diagrams to git.&amp;#34;&amp;#34;&amp;#34;
+    subprocess.run([&amp;#34;git&amp;#34;, &amp;#34;add&amp;#34;, &amp;#34;architecture-*.md&amp;#34;], check=True)
+    subprocess.run([
+        &amp;#34;git&amp;#34;, &amp;#34;commit&amp;#34;, &amp;#34;-m&amp;#34;,
+        f&amp;#34;docs: auto-update architecture diagrams {datetime.now().isoformat()}&amp;#34;
+    ], check=True)
+
+    return &amp;#34;Diagrams committed to git&amp;#34;
+
+@flow(name=&amp;#34;diagram-automation&amp;#34;)
+def diagram_automation_flow():
+    &amp;#34;&amp;#34;&amp;#34;Daily diagram generation workflow.&amp;#34;&amp;#34;&amp;#34;
+    output = generate_diagrams()
+    commit_to_git(output)
+    return &amp;#34;Architecture diagrams updated&amp;#34;
+
+# Schedule: Daily at 3 AM (after vault indexing completes)
+if __name__ == &amp;#34;__main__&amp;#34;:
+    diagram_automation_flow.serve(
+        name=&amp;#34;diagram-automation&amp;#34;,
+        cron=&amp;#34;0 3 * * *&amp;#34;
+    )</code></pre>
+</div>
+<p><strong>Deploy</strong>:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>python-enhancement-env/bin/python diagram_automation_flow.py</code></pre>
+</div>
+<p><strong>Result</strong>: Every morning at 3 AM:</p>
+<ol>
+<li>Script queries K3s cluster</li>
+<li>Generates 3 ASCII diagrams</li>
+<li>Commits to git automatically</li>
+<li>Obsidian vault gets updated diagrams</li>
+</ol>
+<p><strong>The system was documenting itself.</strong></p>
+<h2 id="the-diagram-files-october-7-1851">The Diagram Files (October 7, 18:51)<a hidden class="anchor" aria-hidden="true" href="#the-diagram-files-october-7-1851">#</a></h2>
+<p>Vault timestamps show the actual work:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>ls -la architecture-automation-pipeline/diagrams/
+
+# All files created: Oct 7 18:51
+2025-10-07-185113-Architecture-v010-layered.md
+2025-10-07-185115-Architecture-v011-layered.md
+2025-10-07-185116-Architecture-v010-sequence.md
+2025-10-07-185118-Architecture-v0011-mermaid.md
+2025-10-07-185119-Architecture-v011-sequence.md
+2025-10-07-185121-Architecture-v0012-mermaid.md</code></pre>
+</div>
+<p>Multiple iterations in one evening session, each refining the approach.</p>
+<h2 id="what-worked">What Worked<a hidden class="anchor" aria-hidden="true" href="#what-worked">#</a></h2>
+<p><strong>ASCII&rsquo;s Pure Text Format</strong>:</p>
+<ul>
+<li>Version control shows diagram evolution</li>
+<li><code>git diff</code> on diagrams shows architectural changes</li>
+<li>Renders everywhere (terminal, markdown, Hugo, no dependencies)</li>
+<li>Easy to generate programmatically</li>
+<li>No rendering issues with static site generators</li>
+</ul>
+<p><strong>Three-Diagram Strategy</strong>:</p>
+<ul>
+<li>High-level: Shows business value (LibreChat → 17 AI Models)</li>
+<li>Deployment: Shows infrastructure (K3s namespaces, pods, services)</li>
+<li>Data flow: Shows request paths (sequence-style)</li>
+</ul>
+<p>Different audiences need different views. Three specialized diagrams beat one complex diagram.</p>
+<p><strong>Daily Automation</strong>:</p>
+<ul>
+<li>Diagrams never out of date</li>
+<li>Git history becomes architectural history</li>
+<li>Zero manual maintenance required</li>
+<li>Captures infrastructure evolution automatically</li>
+</ul>
+<h2 id="what-still-sucked">What Still Sucked<a hidden class="anchor" aria-hidden="true" href="#what-still-sucked">#</a></h2>
+<p><strong>Implicit Relationships Missed</strong>:
+Environment variables captured explicit service URLs, but missed:</p>
+<ul>
+<li>Network policies allowing traffic</li>
+<li>Implicit service mesh connections</li>
+<li>ConfigMap/Secret dependencies</li>
+</ul>
+<p><strong>Static External Services</strong>:
+GitHub, Cloudflare, external APIs were hardcoded. No way to auto-detect what external services the system depends on.</p>
+<p><strong>Manual Layout Required</strong>:
+ASCII diagrams require careful manual layout. Complex systems with many connections can get messy quickly.</p>
+<h2 id="the-meta-loop">The Meta Loop<a hidden class="anchor" aria-hidden="true" href="#the-meta-loop">#</a></h2>
+<p>This diagram automation system is itself part of the infrastructure:</p>
+<div class="highlight">
+  <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code>┌─────────────┐
+│ K3s Cluster │
+└──────┬──────┘
+       │
+       ▼
+┌──────────────┐
+│kubectl query │
+└──────┬───────┘
+       │
+       ▼
+┌─────────────────┐
+│Diagram Generator│
+└───────┬─────────┘
+        │
+        ▼
+┌──────────────┐
+│ ASCII Files  │
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│  Git Repo    │
+└──────┬───────┘
+       │
+       ▼
+┌────────────────┐
+│ Obsidian Vault │
+└───────┬────────┘
+        │
+        ▼
+┌───────────────────┐
+│ ChromaDB Indexing │
+└────────┬──────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Semantic Search  │
+└──────────────────┘</code></pre>
+</div>
+<p>The system:</p>
+<ol>
+<li>Queries its own infrastructure</li>
+<li>Generates diagrams describing itself</li>
+<li>Commits them to git</li>
+<li>Indexes them in ChromaDB</li>
+<li>Makes them searchable</li>
+</ol>
+<p><strong>Self-documenting infrastructure.</strong></p>
+<h2 id="the-numbers-october-7-evening">The Numbers (October 7 Evening)<a hidden class="anchor" aria-hidden="true" href="#the-numbers-october-7-evening">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Metric</th>
+          <th>Value</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Work Date</strong></td>
+          <td>October 7, 2025 (evening)</td>
+      </tr>
+      <tr>
+          <td><strong>Diagram Types</strong></td>
+          <td>3 (high-level, deployment, data-flow)</td>
+      </tr>
+      <tr>
+          <td><strong>Diagram Iterations</strong></td>
+          <td>6+ files created</td>
+      </tr>
+      <tr>
+          <td><strong>Automation</strong></td>
+          <td>Prefect flow (daily 3 AM)</td>
+      </tr>
+      <tr>
+          <td><strong>Components Visualized</strong></td>
+          <td>23 pods across 7 namespaces</td>
+      </tr>
+      <tr>
+          <td><strong>External Services</strong></td>
+          <td>5 (GitHub, Cloudflare, Tailscale, etc.)</td>
+      </tr>
+      <tr>
+          <td><strong>ASCII Lines</strong></td>
+          <td>~40-60 per diagram</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>★ Insight ─────────────────────────────────────</code>
+<strong>The Documentation Decay Problem:</strong></p>
+<p>Manual documentation has a fatal flaw: <strong>it decays the moment you write it</strong>.</p>
+<ul>
+<li>Add one service → All diagrams out of date</li>
+<li>Remove one pod → Documentation now lies</li>
+<li>Change one connection → Diagrams show wrong architecture</li>
+</ul>
+<p><strong>The traditional solutions fail:</strong></p>
+<ul>
+<li>&ldquo;Update docs in every PR&rdquo; → Forgotten 50% of the time</li>
+<li>&ldquo;Quarterly doc review&rdquo; → 3 months of staleness guaranteed</li>
+<li>&ldquo;Assign doc owner&rdquo; → Creates bottleneck, still lags</li>
+</ul>
+<p><strong>The only solution that works: Automation</strong></p>
+<p>Generate documentation from source of truth (cluster state) automatically. Then:</p>
+<ul>
+<li>Docs can never be out of date (regenerate daily)</li>
+<li>Git history shows architectural evolution</li>
+<li>Zero discipline required (it just happens)</li>
+</ul>
+<p>When your documentation requires human discipline, you don&rsquo;t have a people problem - you have an automation problem.
+<code>─────────────────────────────────────────────────</code></p>
+<h2 id="what-i-learned">What I Learned<a hidden class="anchor" aria-hidden="true" href="#what-i-learned">#</a></h2>
+<p><strong>1. Working with Claude, not replacing myself</strong>
+This wasn&rsquo;t &ldquo;AI writes diagrams while I watch.&rdquo; It was back-and-forth: I understood the architecture, Claude suggested Mermaid syntax, I validated output, Claude refined approach. Collaboration, not replacement.</p>
+<p><strong>2. One diagram can&rsquo;t show everything</strong>
+Tried building &ldquo;the ultimate architecture diagram&rdquo; showing all layers. Failed. Three specialized ASCII diagrams (high-level, deployment, data-flow) served different needs better.</p>
+<p><strong>3. Automation justifies complexity</strong>
+Writing diagram generator was more work than hand-coding one diagram. But it runs daily forever, compounding value. One-time cost, permanent benefit.</p>
+<p><strong>4. Git history for diagrams = architectural archaeology</strong>
+Looking at diagram diffs shows exactly when services were added, removed, or reconfigured. Better than documentation - it&rsquo;s the actual evolution.</p>
+<p><strong>5. Self-documenting systems are achievable</strong>
+Not science fiction. Query cluster state → Generate markdown → Commit to git. The system describes itself because we taught it how.</p>
+<h2 id="built-on-open-source">Built on Open Source<a hidden class="anchor" aria-hidden="true" href="#built-on-open-source">#</a></h2>
+<p>This automation wouldn&rsquo;t exist without:</p>
+<p><strong>ASCII Art Tradition</strong> - Text-based diagramming that works everywhere without dependencies. Terminal-native, version-controllable, and renders in any context.</p>
+<p><strong><a href="https://github.com/PrefectHQ/prefect">Prefect</a></strong> - Modern workflow orchestration that made daily automation trivial to deploy and monitor.</p>
+<p><strong><a href="https://github.com/jqlang/jq">jq</a></strong> - JSON processor that made parsing <code>kubectl</code> output possible in bash scripts.</p>
+<p><strong><a href="https://k3s.io">K3s</a></strong> - Lightweight Kubernetes that made querying cluster state via <code>kubectl</code> both possible and practical.</p>
+<p>Thanks to these projects for building tools that enable self-documenting infrastructure.</p>
+<h2 id="whats-next">What&rsquo;s Next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>October 7 evening ended with automated diagram generation running.</p>
+<p>The system could now:</p>
+<ul>
+<li>Parse conversations (ConvoCanvas)</li>
+<li>Generate content with local LLMs (Ollama)</li>
+<li>Search semantically (ChromaDB)</li>
+<li>Run reliably (K3s, rebuilt from crash)</li>
+<li>Monitor itself (Prometheus/Grafana)</li>
+<li><strong>Document itself</strong> (automated diagrams)</li>
+</ul>
+<p>There was one thing left to automate: <strong>Writing the blog series documenting its own creation</strong>.</p>
+<p>Could the AI that built this infrastructure also write the story of building it?</p>
+<p>By early October, working with Claude, I&rsquo;d find out.</p>
+<hr>
+<p><strong>Next Episode</strong>: &ldquo;Teaching AI to Blog About Itself: The Ultimate Meta-Project&rdquo; - When ConvoCanvas becomes its own case study, and Season 1 writes itself.</p>
+<hr>
+<p><em>This is Episode 7 of &ldquo;Season 1: From Zero to Automated Infrastructure&rdquo; - documenting the evening we taught the system to document itself.</em></p>
+<p><em>Previous Episode</em>: <a href="season-1-episode-6-k3s-crash-resurrection">When Everything Crashes: The K3s Resurrection</a>
+<em>Complete Series</em>: <a href="/tags/season-1/">Season 1 Mapping Report</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.rduffy.uk/tags/ascii-art/">Ascii-Art</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/diagrams/">Diagrams</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/automation/">Automation</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/documentation/">Documentation</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/architecture/">Architecture</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/prefect/">Prefect</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/k3s/">K3s</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/convocanvas/">Convocanvas</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/ollama/">Ollama</a></li>
+      <li><a href="https://blog.rduffy.uk/tags/chromadb/">Chromadb</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.rduffy.uk/posts/season-1-episode-8-meta/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Teaching the System to Blog About Itself: The Ultimate Meta-Project</span>
+  </a>
+  <a class="next" href="https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/">
+    <span class="title">Next »</span>
+    <br>
+    <span>The AI Awakening: Breaking Free from Context Limits</span>
+  </a>
+</nav>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on x"
+            href="https://x.com/intent/tweet/?text=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f&amp;hashtags=ascii-art%2cdiagrams%2cautomation%2cdocumentation%2carchitecture%2cprefect%2ckubernetes%2ck3s%2cconvocanvas%2collama%2cchromadb">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f&amp;title=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams&amp;summary=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams&amp;source=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on reddit"
+            href="https://reddit.com/submit?url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f&title=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on whatsapp"
+            href="https://api.whatsapp.com/send?text=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams%20-%20https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on telegram"
+            href="https://telegram.me/share/url?text=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams&amp;url=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Teaching the System to Document Itself: Automated Architecture Diagrams on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Teaching%20the%20System%20to%20Document%20Itself%3a%20Automated%20Architecture%20Diagrams&u=https%3a%2f%2fblog.rduffy.uk%2fposts%2fseason-1-episode-7-diagram-automation%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.rduffy.uk/">Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
