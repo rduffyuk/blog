@@ -389,8 +389,8 @@ By September 18-19, I'd be installing Ollama and 17 local models. The context wi
 
 *This is Episode 2 of "Season 1: From Zero to Automated Infrastructure" - documenting the weekend that turned vault design into working code.*
 
-*Previous Episode*: [Day Zero: The ConvoCanvas Vision](season-1-episode-1-day-zero)
-*Next Episode*: [The AI Awakening: Breaking Free from Context Limits](season-1-episode-3-ai-awakening)
+*Previous Episode*: [Day Zero: The ConvoCanvas Vision](/posts/season-1-episode-1-day-zero)
+*Next Episode*: [The AI Awakening: Breaking Free from Context Limits](/posts/season-1-episode-3-ai-awakening)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
 
 ---

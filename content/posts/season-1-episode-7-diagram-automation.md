@@ -498,8 +498,8 @@ By early October, working with Claude, I'd find out.
 
 *This is Episode 7 of "Season 1: From Zero to Automated Infrastructure" - documenting the evening we taught the system to document itself.*
 
-*Previous Episode*: [When Everything Crashes: The K3s Resurrection](season-1-episode-6-k3s-crash-resurrection)
-*Next Episode*: [Teaching the System to Blog About Itself](season-1-episode-8-meta)
+*Previous Episode*: [When Everything Crashes: The K3s Resurrection](/posts/season-1-episode-6-k3s-crash-resurrection)
+*Next Episode*: [Teaching the System to Blog About Itself](/posts/season-1-episode-8-meta)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
 
 ---

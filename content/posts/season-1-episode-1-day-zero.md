@@ -291,7 +291,7 @@ The blueprint was ready. Now it was time to build.
 
 ---
 
-**Next Episode**: [Building the Foundation: Vault Creation to MVP](season-1-episode-2-mvp)
+**Next Episode**: [Building the Foundation: Vault Creation to MVP](/posts/season-1-episode-2-mvp)
 
 ---
 

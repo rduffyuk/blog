@@ -489,13 +489,13 @@ ConvoCanvas isn't "done." It's on pause, being rethought. That's the reality of 
 
 ## Season 1: Complete
 
-**Episode 1**: [Day Zero - The ConvoCanvas Vision](season-1-episode-1-day-zero)
-**Episode 2**: [Building the Foundation - Vault Creation to MVP](season-1-episode-2-mvp)
-**Episode 3**: [The AI Awakening - Breaking Free from Context Limits](season-1-episode-3-ai-awakening)
-**Episode 4**: [ChromaDB Weekend](season-1-episode-4-documentation-overload)
-**Episode 5**: [The Migration Question](season-1-episode-5-migration-question)
-**Episode 6**: [When Everything Crashes](season-1-episode-6-k3s-crash-resurrection)
-**Episode 7**: [Teaching the System to Document Itself](season-1-episode-7-diagram-automation)
+**Episode 1**: [Day Zero - The ConvoCanvas Vision](/posts/season-1-episode-1-day-zero)
+**Episode 2**: [Building the Foundation - Vault Creation to MVP](/posts/season-1-episode-2-mvp)
+**Episode 3**: [The AI Awakening - Breaking Free from Context Limits](/posts/season-1-episode-3-ai-awakening)
+**Episode 4**: [ChromaDB Weekend](/posts/season-1-episode-4-documentation-overload)
+**Episode 5**: [The Migration Question](/posts/season-1-episode-5-migration-question)
+**Episode 6**: [When Everything Crashes](/posts/season-1-episode-6-k3s-crash-resurrection)
+**Episode 7**: [Teaching the System to Document Itself](/posts/season-1-episode-7-diagram-automation)
 **Episode 8**: Teaching the System to Blog About Itself ← *You are here*
 
 **Total**: 15,550 words documenting 25 days of human + AI collaborative development
@@ -587,7 +587,7 @@ Season 1 proved that's possible. What comes next? We'll find out together.
 
 *This is the final episode of "Season 1: From Zero to Automated Infrastructure" - The story of a human + AI collaboration that learned to document its own existence.*
 
-*Previous Episode*: [Teaching the System to Document Itself](season-1-episode-7-diagram-automation)
+*Previous Episode*: [Teaching the System to Document Itself](/posts/season-1-episode-7-diagram-automation)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
 
 ---

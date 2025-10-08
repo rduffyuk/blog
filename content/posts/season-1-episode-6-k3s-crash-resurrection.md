@@ -350,8 +350,8 @@ By October 7, working with Claude, I'd build exactly that.
 
 *This is Episode 6 of "Season 1: From Zero to Automated Infrastructure" - documenting the Saturday morning crash that tested everything.*
 
-*Previous Episode*: [The Migration Question](season-1-episode-5-migration-question)
-*Next Episode*: [Teaching the System to Document Itself](season-1-episode-7-diagram-automation)
+*Previous Episode*: [The Migration Question](/posts/season-1-episode-5-migration-question)
+*Next Episode*: [Teaching the System to Document Itself](/posts/season-1-episode-7-diagram-automation)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
 
 ---

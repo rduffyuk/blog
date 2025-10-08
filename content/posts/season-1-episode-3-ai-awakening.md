@@ -395,8 +395,8 @@ That's when ChromaDB and semantic search would enter the picture.
 
 *This is Episode 3 of "Season 1: From Zero to Automated Infrastructure" - documenting the weekend that solved the context window problem with local AI.*
 
-*Previous Episode*: [Building the Foundation: Vault Creation to MVP](season-1-episode-2-mvp)
-*Next Episode*: [ChromaDB Weekend: From 504 to 24,916 Documents](season-1-episode-4-documentation-overload)
+*Previous Episode*: [Building the Foundation: Vault Creation to MVP](/posts/season-1-episode-2-mvp)
+*Next Episode*: [ChromaDB Weekend: From 504 to 24,916 Documents](/posts/season-1-episode-4-documentation-overload)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
 
 ---
