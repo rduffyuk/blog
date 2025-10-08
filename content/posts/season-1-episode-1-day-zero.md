@@ -291,7 +291,7 @@ The blueprint was ready. Now it was time to build.
 
 ---
 
-**Next Episode**: "Building the Foundation: MVP in 72 Hours" - From vault design to working FastAPI backend. The weekend that made ConvoCanvas real.
+**Next Episode**: [Building the Foundation: Vault Creation to MVP](season-1-episode-2-mvp)
 
 ---
 

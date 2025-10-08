@@ -400,11 +400,10 @@ But first, the research phase.
 
 ---
 
-**Next Episode**: "The Infrastructure Debate: K3s vs Docker Compose" - Weekend warrior meets enterprise infrastructure, and discovers K3s.
-
----
-
 *This is Episode 4 of "Season 1: From Zero to Automated Infrastructure" - documenting the weekend that transformed 1,142 files from chaos into searchable knowledge, and the blurry line between personal projects and work demos.*
 
 *Previous Episode*: [The AI Awakening: Ollama + DeepSeek Integration](season-1-episode-3-ai-awakening)
+*Next Episode*: [The Migration Question: When K3s Meets Reality](season-1-episode-5-migration-question)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
+
+---

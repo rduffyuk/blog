@@ -393,11 +393,10 @@ The hybrid architecture decision was sound. But the infrastructure beneath it wa
 
 ---
 
-**Next Episode**: "When Everything Crashes: The K3s Resurrection" - 6,812 pod restarts, a broken CNI plugin, and the day that tested every decision from Episode 5.
-
----
-
 *This is Episode 5 of "Season 1: From Zero to Automated Infrastructure" - documenting the research that revealed containerization's hidden costs.*
 
 *Previous Episode*: [ChromaDB Weekend: From 504 to 24,916 Documents](season-1-episode-4-documentation-overload)
+*Next Episode*: [When Everything Crashes: The K3s Resurrection](season-1-episode-6-k3s-crash-resurrection)
 *Complete Series*: [Season 1 Mapping Report](/tags/season-1/)
+
+---
