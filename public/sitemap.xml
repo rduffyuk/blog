@@ -2,135 +2,135 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.rduffy.uk/posts/welcome/</loc>
+    <loc>http://localhost:1313/posts/welcome/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/ai-infrastructure/</loc>
+    <loc>http://localhost:1313/categories/ai-infrastructure/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/ai-conversations/</loc>
+    <loc>http://localhost:1313/tags/ai-conversations/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/ai-infrastructure/</loc>
+    <loc>http://localhost:1313/tags/ai-infrastructure/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/architecture/</loc>
+    <loc>http://localhost:1313/tags/architecture/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/diagrams/architecture-v0/</loc>
+    <loc>http://localhost:1313/diagrams/architecture-v0/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/architecture-beta/</loc>
+    <loc>http://localhost:1313/tags/architecture-beta/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/auto-generated/</loc>
+    <loc>http://localhost:1313/tags/auto-generated/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</loc>
+    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/context-windows/</loc>
+    <loc>http://localhost:1313/tags/context-windows/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/convocanvas/</loc>
+    <loc>http://localhost:1313/tags/convocanvas/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/convocanvas/</loc>
+    <loc>http://localhost:1313/categories/convocanvas/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/</loc>
+    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/deepseek/</loc>
+    <loc>http://localhost:1313/tags/deepseek/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/development/</loc>
+    <loc>http://localhost:1313/categories/development/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/development/</loc>
+    <loc>http://localhost:1313/tags/development/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/diagrams/</loc>
+    <loc>http://localhost:1313/diagrams/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/fastapi/</loc>
+    <loc>http://localhost:1313/tags/fastapi/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/local-llm/</loc>
+    <loc>http://localhost:1313/tags/local-llm/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/mermaid/</loc>
+    <loc>http://localhost:1313/tags/mermaid/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/mvp/</loc>
+    <loc>http://localhost:1313/tags/mvp/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/obsidian/</loc>
+    <loc>http://localhost:1313/tags/obsidian/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/ollama/</loc>
+    <loc>http://localhost:1313/tags/ollama/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/origin-story/</loc>
+    <loc>http://localhost:1313/tags/origin-story/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/planning/</loc>
+    <loc>http://localhost:1313/categories/planning/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/planning/</loc>
+    <loc>http://localhost:1313/tags/planning/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/posts/</loc>
+    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/python/</loc>
+    <loc>http://localhost:1313/tags/python/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/refactoring/</loc>
+    <loc>http://localhost:1313/tags/refactoring/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/rtx-4080/</loc>
+    <loc>http://localhost:1313/tags/rtx-4080/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/season-1/</loc>
+    <loc>http://localhost:1313/categories/season-1/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</loc>
+    <loc>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/ai/</loc>
+    <loc>http://localhost:1313/tags/ai/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/automation/</loc>
+    <loc>http://localhost:1313/tags/automation/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/infrastructure/</loc>
+    <loc>http://localhost:1313/tags/infrastructure/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/introduction/</loc>
+    <loc>http://localhost:1313/tags/introduction/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/meta/</loc>
+    <loc>http://localhost:1313/categories/meta/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/tags/meta/</loc>
+    <loc>http://localhost:1313/tags/meta/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/categories/technical/</loc>
+    <loc>http://localhost:1313/categories/technical/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/posts/test-post/</loc>
+    <loc>http://localhost:1313/posts/test-post/</loc>
     <lastmod>2025-10-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.rduffy.uk/about/</loc>
+    <loc>http://localhost:1313/about/</loc>
   </url>
 </urlset>

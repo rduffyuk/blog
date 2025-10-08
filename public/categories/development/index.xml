@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Development on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>https://blog.rduffy.uk/categories/development/</link>
+    <link>http://localhost:1313/categories/development/</link>
     <description>Recent content in Development on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.rduffy.uk/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/development/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building the Foundation: MVP in 72 Hours</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
+      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
+      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
       <description>From vault design to working code in 72 hours. The 3-hour refactoring marathon, the first successful parse, and 6 content ideas from 1 conversation.</description>
     </item>
     <item>
       <title>The AI Awakening: Breaking Free from Context Limits</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
+      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
+      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
       <description>From context window frustration to local control. A 15-hour implementation marathon installing 17 local models on an RTX 4080 for persistent, private conversations.</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</title>
-    <link>https://blog.rduffy.uk/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Ryan Duffy - AI Infrastructure &amp; Local LLM Journey</description>
     <generator>Hugo -- 0.146.4</generator>
     <language>en-gb</language>
     <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.rduffy.uk/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Welcome to My AI Infrastructure Journey</title>
-      <link>https://blog.rduffy.uk/posts/welcome/</link>
+      <link>http://localhost:1313/posts/welcome/</link>
       <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/welcome/</guid>
+      <guid>http://localhost:1313/posts/welcome/</guid>
       <description>&lt;h2 id=&#34;why-this-blog-exists&#34;&gt;Why This Blog Exists&lt;/h2&gt;
 &lt;p&gt;After months of building a local AI infrastructure stack, I kept encountering the same problem: &lt;strong&gt;most AI content online is either too theoretical or too enterprise-focused&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;I wanted to share what actually works when you&amp;rsquo;re running LLMs on a consumer GPU - the real performance numbers, the gotchas, the configuration tweaks that made the difference.&lt;/p&gt;
@@ -21,30 +21,30 @@
     </item>
     <item>
       <title>Building the Foundation: MVP in 72 Hours</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
+      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
+      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-2-mvp-72-hours/</guid>
       <description>From vault design to working code in 72 hours. The 3-hour refactoring marathon, the first successful parse, and 6 content ideas from 1 conversation.</description>
     </item>
     <item>
       <title>Day Zero: The ConvoCanvas Vision</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/</link>
+      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-1-day-zero/</guid>
+      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-1-day-zero/</guid>
       <description>The context window overflow error that sparked a 25-day process from idea to fully automated infrastructure. Looking back, this is how it all began.</description>
     </item>
     <item>
       <title>The AI Awakening: Breaking Free from Context Limits</title>
-      <link>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
+      <link>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</link>
       <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
+      <guid>http://localhost:1313/posts/2025-10-05-season-1-episode-3-ai-awakening/</guid>
       <description>From context window frustration to local control. A 15-hour implementation marathon installing 17 local models on an RTX 4080 for persistent, private conversations.</description>
     </item>
     <item>
       <title>Testing My New Blog Publishing System</title>
-      <link>https://blog.rduffy.uk/posts/test-post/</link>
+      <link>http://localhost:1313/posts/test-post/</link>
       <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.rduffy.uk/posts/test-post/</guid>
+      <guid>http://localhost:1313/posts/test-post/</guid>
       <description>First test of the Obsidian → Hugo → Cloudflare automated blog pipeline</description>
     </item>
   </channel>
