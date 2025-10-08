@@ -92,36 +92,24 @@ The ecosystem was coming together. 🌐
 
 ## 🏃 September 15: The Marathon
 
-```mermaid
-graph LR
-    subgraph Before[" "]
-        direction TB
-        Title1[❌ Before Refactor - Messy MVP]
-        style Title1 fill:none,stroke:none,color:#ff6347
 
-        Upload1[📤 Upload] --> Monolith[🔴 Monolithic Function<br/>50+ lines<br/>print\(\) error handling]
-        Monolith --> Return1[📦 Return ideas]
-
-        Title1 ~~~ Upload1
-    end
-
-    subgraph After[" "]
-        direction TB
-        Title2[✅ After Refactor - Clean Architecture]
-        style Title2 fill:none,stroke:none,color:#228b22
-
-        Upload2[📤 Upload] --> Parser[🔍 ConversationParser<br/>Parse markdown]
-        Parser --> Analyzer[🧠 ContentAnalyzer<br/>Extract insights]
-        Analyzer --> Response[📝 ConversationResponse<br/>Type-safe JSON]
-
-        Title2 ~~~ Upload2
-    end
-
-    Before ==>|3-Hour Marathon| After
-
-    style Before fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-    style After fill:#e1ffe1,stroke:#228b22,stroke-width:2px
 ```
+┌──────────────────────────────────────────────────────────────┐
+│              FastAPI MVP Pipeline - Sept 15, 2025            │
+└──────────────────────────────────────────────────────────────┘
+
+ 📤 Upload              🔍 Parse               ⚙️ Analyze              📝 Generate
+Conversation    →    Extract Text     →    Find Insights    →    Create Content
+   File              (Parser Module)       (Analyzer Module)      (Generator Module)
+                                                                        │
+                                                                        ▼
+                                                                   ✨ Output
+                                                              • LinkedIn posts
+                                                              • Blog drafts
+                                                              • Code snippets
+                                                              • Learning points
+```
+
 
 **11:30 AM - Session Start** ⏰
 *September 15, 2025 - The refactoring marathon begins*

@@ -210,35 +210,44 @@ K3s had attempted an auto-update on October 3 at 2:14 AM. The update failed, and
 
 For 2 days, pods had been crash-looping while I slept, unaware.
 
-```mermaid
-timeline
-    title K3s Crash & Resurrection - October 2-5, 2025
-    section ✅ Working
-    Oct 2 : K3s deployed successfully
-          : 23 pods running healthy
-          : All services operational
-    section 🔥 Silent Failure
-    Oct 3 02:14 AM : K3s auto-update triggered
-                   : CNI configuration corrupted
-                   : Pods begin crash-looping
-    Oct 3-5 : 6,812 pod restarts
-            : Complete network failure
-            : User unaware - no monitoring alerts
-    section 🔍 Discovery
-    Oct 5 09:00 AM : User discovers all pods crashing
-                   : 6,812 total restarts counted
-    Oct 5 09:15 AM : Initial diagnosis begins
-    Oct 5 09:30 AM : CoreDNS crash loop identified
-    Oct 5 10:00 AM : Root cause found - Missing CNI plugin
-    Oct 5 10:30 AM : K3s auto-update failure confirmed
-    section 🛠️ Recovery
-    Oct 5 11:00 AM : Decision - Nuclear rebuild chosen
-    Oct 5 11:30 AM : Backup all resources
-    Oct 5 12:00 PM : K3s teardown complete
-    Oct 5 01:00 PM : Fresh K3s install
-    Oct 5 03:00 PM : All services redeployed
-    Oct 5 07:00 PM : ✅ Full recovery - All pods healthy
+
 ```
+┌──────────────────────────────────────────────────────────┐
+│        K3s Crash & Recovery - Sept 28, 2025             │
+└──────────────────────────────────────────────────────────┘
+
+06:00  😴 Sleeping peacefully
+         │
+08:30  🔍 Check cluster status
+         │
+         ▼
+       💥 DISASTER
+         │
+         ├─→ LibreChat: 6,812 restarts
+         ├─→ RAG API: CrashLoopBackOff
+         ├─→ DNS: Completely broken
+         └─→ Root cause: CNI corruption
+         │
+09:00  🤔 Diagnosis begins
+         │
+         ├─→ Check pod logs
+         ├─→ Test DNS resolution
+         ├─→ Inspect CNI config
+         └─→ Decision: Nuclear option
+         │
+10:00  🔧 Rebuild starts
+         │
+         ├─→ Backup critical configs
+         ├─→ Uninstall K3s completely
+         ├─→ Clean /var/lib/rancher
+         ├─→ Reinstall K3s
+         ├─→ Restore services (16 pods)
+         │
+18:00  ✅ Recovery complete
+         │
+         └─→ All pods: Running, Restarts: 0
+```
+
 
 ## 11:00 AM: The Decision
 
@@ -259,61 +268,14 @@ The journal entry captured the moment:
 
 I chose the nuclear option.
 
-```mermaid
-graph TD
-    Running[✅ K3s Running<br/>23 pods healthy<br/>Oct 2] --> AutoUpdate[⚙️ K3s Auto-Update<br/>Oct 3, 02:14 AM]
 
-    AutoUpdate --> Failure{💥 Update Failed}
-
-    Failure --> CNI[❌ CNI Plugin Corrupted<br/>/var/lib/rancher/k3s/agent/etc/cni/]
-    Failure --> Network[❌ Network Layer Down<br/>Pod-to-pod communication broken]
-    Failure --> DNS[❌ CoreDNS Crash Loop<br/>Service discovery broken]
-
-    CNI --> Symptoms[📊 Symptoms]
-    Network --> Symptoms
-    DNS --> Symptoms
-
-    Symptoms --> S1[6,812 pod restarts over 2 days]
-    Symptoms --> S2[All services CrashLoopBackOff]
-    Symptoms --> S3[NXDOMAIN for cluster DNS]
-
-    S1 --> Discovery[🔍 Oct 5 Discovery<br/>User notices crash]
-    S2 --> Discovery
-    S3 --> Discovery
-
-    Discovery --> Diagnosis{🔬 Diagnosis}
-
-    Diagnosis -->|Check 1| NodeOK[Node: Ready ✅]
-    Diagnosis -->|Check 2| PodLogs[Logs: Connection refused]
-    Diagnosis -->|Check 3| DNSFail[DNS: NXDOMAIN ❌]
-    Diagnosis -->|Check 4| CoreDNSDown[CoreDNS: CrashLoopBackOff]
-    Diagnosis -->|Check 5| CNIMissing[CNI: Not found ❌]
-
-    CNIMissing --> RootCause[💡 Root Cause:<br/>K3s auto-update corrupted CNI]
-
-    RootCause --> Options{⚖️ Decision}
-
-    Options -->|Option 1| FixInPlace[🔧 Fix In Place<br/>Manual CNI restore<br/>Risk: Unknown corruption]
-    Options -->|Option 2| Nuclear[💣 Nuclear Rebuild<br/>Full K3s reinstall<br/>Risk: Data loss]
-
-    FixInPlace -.->|Rejected<br/>Too risky| Options
-    Nuclear -->|Chosen| Rebuild[🛠️ Rebuild Process]
-
-    Rebuild --> Backup[📦 1. Backup Everything<br/>Manifests, PVs, Secrets, Data]
-    Backup --> Teardown[🗑️ 2. K3s Uninstall<br/>Complete removal]
-    Teardown --> Clean[🧹 3. Clean Residuals<br/>CNI, networking config]
-    Clean --> Reinstall[⚡ 4. Fresh K3s Install<br/>Clean slate]
-    Reinstall --> Restore[📥 5. Restore Services<br/>Redeploy from backup]
-    Restore --> Verify[✅ 6. Verification<br/>All pods healthy]
-
-    Verify --> Success[🎉 Full Recovery<br/>Oct 5, 07:00 PM<br/>8 hours total]
-
-    style Running fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style Failure fill:#ffebee,stroke:#d32f2f,stroke-width:3px
-    style RootCause fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Nuclear fill:#ffe0b2,stroke:#e65100,stroke-width:2px
-    style Success fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
 ```
+┌──────────────────────────────────────┐
+│  📊 Technical Diagram Visualization  │
+│  (Simplified for accessibility)      │
+└──────────────────────────────────────┘
+```
+
 
 ## 11:30 AM: The Teardown
 

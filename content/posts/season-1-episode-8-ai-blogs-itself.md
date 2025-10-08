@@ -97,38 +97,12 @@ Each search returned primary sources - conversations, journal entries, technical
 
 **The vault had perfect memory.**
 
-```mermaid
-graph LR
-    subgraph Creation["📝 Content Creation (Sept 11 - Oct 5)"]
-        direction TB
-        User[👤 User + AI] --> Convos[💬 AI Conversations<br/>200+ sessions]
-        Convos --> Vault[📁 Obsidian Vault<br/>1,133 documents]
-        Vault --> ChromaDB[(🗄️ ChromaDB<br/>Vector embeddings)]
-    end
 
-    subgraph Analysis["🔍 Analysis (Oct 5, 11:30 PM)"]
-        direction TB
-        Search[🔍 Deep Research<br/>Semantic search] --> Timeline[📊 Timeline Builder<br/>25-day scan]
-        Timeline --> Validator[✅ Content Validator<br/>Claim verification]
-        Validator --> Ollama[🧠 Ollama Analysis<br/>DeepSeek + Qwen + Mistral]
-    end
-
-    subgraph Generation["✍️ Blog Generation (Oct 5-6, 12:00 AM)"]
-        direction TB
-        Draft[📝 Episode Drafts<br/>8 episodes] --> Review[👤 Human Review]
-        Review --> Publish[📢 Published Blog<br/>Season 1 Complete]
-    end
-
-    ChromaDB --> Search
-    Ollama --> Draft
-
-    Publish -.->|"Creates new AI conversations<br/>about blogging itself"| Convos
-
-    style Creation fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
-    style Analysis fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Generation fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style Publish fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 ## 11:50 PM: The Timeline Emerges
 
@@ -153,33 +127,12 @@ I analyzed file modification timestamps across 25 days:
 7. Automation (self-documenting system)
 8. Meta (AI documenting itself)
 
-```mermaid
-gantt
-    title Season 1: 25-Day Journey (Sept 11 - Oct 5, 2025)
-    dateFormat YYYY-MM-DD
 
-    section Foundation
-    Day Zero Planning           :done, ep1, 2025-09-11, 1d
-    Silent Development Days     :active, ep2a, 2025-09-12, 2d
-    MVP Sprint & Refactoring    :done, ep2b, 2025-09-14, 2d
-
-    section AI Infrastructure
-    Ollama Research & Setup     :crit, ep3, 2025-09-18, 2d
-    17 Models Installed         :ep3b, 2025-09-19, 1d
-
-    section Knowledge Systems
-    Documentation Crisis        :ep4a, 2025-09-22, 1d
-    ChromaDB Implementation     :ep4b, 2025-09-24, 4d
-
-    section Production
-    K3s Research & Debate       :ep5, 2025-09-30, 3d
-    K3s Auto-Update Failure     :milestone, crash, 2025-10-03, 0d
-    K3s Resurrection (8 hours)  :crit, ep6, 2025-10-05, 1d
-
-    section Automation
-    Diagram System (12 iterations) :ep7, 2025-10-05, 1d
-    AI Blogs Itself             :ep8, 2025-10-05, 1d
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 ## October 5, 11:55 PM: The Writing Challenge
 
@@ -407,38 +360,12 @@ As I finished Episode 8, I understood what we'd built:
 
 **The ultimate automation**: A system that explains its own existence.
 
-```mermaid
-graph TB
-    subgraph Metrics["📊 Season 1 By The Numbers (Sept 11 - Oct 5, 2025)"]
-        direction TB
 
-        Files[📄 Vault Growth<br/>1 file → 1,170 files]
-        Models[🤖 AI Models<br/>0 → 17 local models]
-        Services[⚙️ Services Deployed<br/>0 → 8 microservices]
-        Episodes[📝 Blog Episodes<br/>0 → 8 published]
-
-        Days[📅 Duration: 25 days]
-        Conversations[💬 AI Conversations: 200+]
-        Restarts[🔄 Pod Restarts: 6,812]
-        Lines[💻 Code Written: ~15K lines]
-
-        Files -.->|Scale| Insight1[From 1 to 1,170<br/>~47 files/day average]
-        Models -.->|Technology| Insight2[17 specialized models<br/>DeepSeek, Qwen, Mistral]
-        Services -.->|Infrastructure| Insight3[K3s cluster<br/>23 pods, 5 namespaces]
-        Episodes -.->|Content| Insight4[8 episodes<br/>~15K words total]
-
-        Days -.->|Velocity| Insight5[25-day sprint<br/>Foundation to production]
-        Restarts -.->|Crisis| Insight6[K3s crash recovery<br/>8 hours to rebuild]
-    end
-
-    style Metrics fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
-    style Insight1 fill:#e1f5fe,stroke:#1976d2,stroke-width:1px
-    style Insight2 fill:#fff3e0,stroke:#f57c00,stroke-width:1px
-    style Insight3 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px
-    style Insight4 fill:#fce4ec,stroke:#c2185b,stroke-width:1px
-    style Insight5 fill:#e0f2f1,stroke:#00796b,stroke-width:1px
-    style Insight6 fill:#ffebee,stroke:#d32f2f,stroke-width:1px
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 ## The Numbers (25-Day Process)
 

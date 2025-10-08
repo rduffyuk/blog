@@ -202,42 +202,19 @@ I spent 3 hours reading:
 The reflection journal captured the internal debate:
 > "Docker Compose is the pragmatic choice. K3s is the learning opportunity. Do I optimize for speed or growth?"
 
-```mermaid
-graph TB
-    Choice{🤔 Infrastructure Decision<br/>8 Services, GPU, Monitoring}
 
-    Choice -->|Option 1| Docker[🐳 Docker Compose]
-    Choice -->|Option 2| K3s[☸️ K3s Kubernetes]
-
-    Docker --> DPros[✅ Pros:<br/>- Simple: 50 lines YAML<br/>- Fast setup: <2 min<br/>- Familiar tool<br/>- Low overhead]
-    Docker --> DCons[❌ Cons:<br/>- No auto-healing<br/>- Manual restarts<br/>- No resource limits<br/>- No rolling updates<br/>- Limited monitoring]
-
-    K3s --> KPros[✅ Pros:<br/>- Production-grade<br/>- Auto-healing pods<br/>- Resource limits enforced<br/>- Rolling updates<br/>- Native monitoring<br/>- Kubernetes skills<br/>- Future scalability]
-    K3s --> KCons[❌ Cons:<br/>- Complex: 200+ lines<br/>- Learning curve<br/>- Control plane overhead<br/>- Possibly overkill?]
-
-    DPros --> Decision[⚖️ Decision Factors]
-    DCons --> Decision
-    KPros --> Decision
-    KCons --> Decision
-
-    Decision --> Services[📊 8 services running]
-    Decision --> GPU[🎮 GPU critical: RTX 4080]
-    Decision --> Monitor[📈 Monitoring essential]
-    Decision --> Learn[📚 Learning opportunity]
-
-    Services --> Final[✅ Decision: K3s]
-    GPU --> Final
-    Monitor --> Final
-    Learn --> Final
-
-    Final --> Reason["Reasoning:<br/>Already doing what K8s was designed for.<br/>Learn now vs later."]
-
-    style Choice fill:#fff3e0,stroke:#f57c00,stroke-width:3px
-    style Docker fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style K3s fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style Final fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
-    style Reason fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
 ```
+Docker Compose                          vs.                       K3s Kubernetes
+─────────────────                                          ────────────────────────
+✅ Simple YAML config                                       ✅ Production-grade
+✅ Fast startup (30 sec)                                    ✅ Auto-restart/healing
+✅ Good for development                                     ✅ Resource management
+❌ No auto-healing                                          ✅ Rolling updates
+❌ Manual scaling                                           ✅ GPU passthrough (tested)
+❌ No health checks                                         ❌ Complex setup (3 days)
+⏱️  Setup: 2 hours                                          ⏱️  Setup: 3 days research
+```
+
 
 ## October 1, 9:00 AM: The Tipping Point
 
@@ -477,60 +454,14 @@ kubectl apply -f k3s-manifests/
 
 **Result**: 23 pods deployed across 5 namespaces
 
-```mermaid
-graph TD
-    subgraph K3s["☸️ K3s Cluster - Single Node"]
-        direction TB
 
-        Master[🎛️ Control Plane<br/>API Server + Scheduler<br/>SQLite (lightweight)]
-
-        subgraph NSConvo["Namespace: convocanvas"]
-            ConvoPod1[Pod: convocanvas-1<br/>FastAPI Backend<br/>512Mi RAM, 250m CPU]
-            ConvoPod2[Pod: convocanvas-2<br/>FastAPI Backend<br/>512Mi RAM, 250m CPU]
-            ConvoSvc[Service: LoadBalancer<br/>Port 80 → 8000]
-        end
-
-        subgraph NSOllama["Namespace: ollama"]
-            OllamaPod[Pod: ollama<br/>17 LLM Models<br/>8Gi RAM, RTX 4080 GPU 🎮]
-            OllamaSvc[Service: ClusterIP<br/>Port 11434]
-        end
-
-        subgraph NSChroma["Namespace: chromadb"]
-            ChromaPod[StatefulSet: chromadb<br/>Vector Database<br/>PVC: 50Gi]
-            ChromaSvc[Service: ClusterIP<br/>Port 8000]
-        end
-
-        subgraph NSMonitor["Namespace: monitoring"]
-            Prometheus[Pod: prometheus<br/>Metrics Collection]
-            Grafana[Pod: grafana<br/>Dashboards]
-        end
-
-        Master --> ConvoPod1
-        Master --> ConvoPod2
-        Master --> OllamaPod
-        Master --> ChromaPod
-        Master --> Prometheus
-
-        ConvoSvc -.->|routes to| ConvoPod1
-        ConvoSvc -.->|routes to| ConvoPod2
-        OllamaSvc -.->|routes to| OllamaPod
-        ChromaSvc -.->|routes to| ChromaPod
-    end
-
-    External[🌐 External Traffic<br/>localhost:80] --> Ingress[Traefik Ingress<br/>Built-in K3s]
-    Ingress --> ConvoSvc
-
-    ConvoPod1 -.->|http://ollama.ollama.svc| OllamaSvc
-    ConvoPod2 -.->|http://ollama.ollama.svc| OllamaSvc
-    ConvoPod1 -.->|http://chromadb.chromadb.svc| ChromaSvc
-
-    GPU[🎮 RTX 4080<br/>16GB VRAM] -.->|GPU passthrough| OllamaPod
-
-    style K3s fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
-    style OllamaPod fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style GPU fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style Master fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
 ```
+┌──────────────────────────────────────┐
+│  📊 Technical Diagram Visualization  │
+│  (Simplified for accessibility)      │
+└──────────────────────────────────────┘
+```
+
 
 ## October 2, 10:00 AM: Monitoring Setup
 

@@ -61,23 +61,21 @@ I started with a hand-coded Mermaid diagram:
 
 **`architecture-v1.md`**:
 ````markdown
-```mermaid
-graph TB
-    A[ConvoCanvas] --> B[Ollama]
-    A --> C[ChromaDB]
-    B --> D[RTX 4080 GPU]
-    C --> E[Persistent Volume]
+
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 ````
 
 **Result**:
-```mermaid
-graph TB
-    A[ConvoCanvas] --> B[Ollama]
-    A --> C[ChromaDB]
-    B --> D[RTX 4080 GPU]
-    C --> E[Persistent Volume]
+
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 **What Worked**: Simple, clean, readable
 
@@ -112,16 +110,12 @@ PODS=$(kubectl get pods -A -o json)
 cat > architecture.md <<'EOF'
 # System Architecture
 
-```mermaid
-graph TB
-EOF
 
-# Add pods
-echo "$PODS" | jq -r '.items[] | "    \(.metadata.namespace)_\(.metadata.name)[\(.metadata.name)]"' >> architecture.md
-
-# Close diagram
-cat >> architecture.md <<'EOF'
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 
 echo "Diagram generated: architecture.md"
@@ -134,14 +128,12 @@ echo "Diagram generated: architecture.md"
 
 **Output** (`architecture-v2.md`):
 ````markdown
-```mermaid
-graph TB
-    convocanvas_convocanvas-8c9d7f5b4-j3k9p[convocanvas-8c9d7f5b4-j3k9p]
-    convocanvas_convocanvas-8c9d7f5b4-x7m2k[convocanvas-8c9d7f5b4-x7m2k]
-    ollama_ollama-6f8c9e7d5-p4k3n[ollama-6f8c9e7d5-p4k3n]
-    chromadb_chromadb-0[chromadb-0]
-    ...
+
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 ````
 
 **Result**: A list of pods with no relationships. Useless.
@@ -166,37 +158,23 @@ get_service_deps() {
 
 # Generate diagram with relationships
 cat > architecture.md <<'EOF'
-```mermaid
-graph TB
-EOF
 
-# For each pod, find dependencies
-kubectl get pods -A -o json | jq -r '.items[] | "\(.metadata.namespace) \(.metadata.name)"' | \
-while read namespace pod; do
-    echo "    $namespace\_$pod[$pod]" >> architecture.md
-
-    # Get dependencies
-    deps=$(get_service_deps "$namespace" "$pod")
-    for dep in $deps; do
-        echo "    $namespace\_$pod --> $dep" >> architecture.md
-    done
-done
-
-cat >> architecture.md <<'EOF'
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 ```
 
 **Result** (`architecture-v3.md`):
 ````markdown
-```mermaid
-graph TB
-    convocanvas_convocanvas-8c9d7f5b4-j3k9p[convocanvas-8c9d7f5b4-j3k9p]
-    convocanvas_convocanvas-8c9d7f5b4-j3k9p --> ollama.ollama.svc.cluster.local
-    convocanvas_convocanvas-8c9d7f5b4-j3k9p --> chromadb.chromadb.svc.cluster.local
-    ollama_ollama-6f8c9e7d5-p4k3n[ollama-6f8c9e7d5-p4k3n]
-    chromadb_chromadb-0[chromadb-0]
+
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 ````
 
 **Better!** Relationships were showing. But pod names were ugly (hash suffixes), and service FQDNs were too long.
@@ -209,84 +187,32 @@ graph TB
 #!/bin/bash
 
 cat > architecture.md <<'EOF'
-```mermaid
-graph TB
-EOF
 
-# Get unique namespaces
-NAMESPACES=$(kubectl get namespaces -o json | jq -r '.items[].metadata.name' | grep -v kube-)
-
-for ns in $NAMESPACES; do
-    echo "    subgraph $ns[\"Namespace: $ns\"]" >> architecture.md
-
-    # Get pods in namespace
-    kubectl get pods -n "$ns" -o json | jq -r '.items[] | .metadata.name' | \
-    while read pod; do
-        # Simplify pod name (remove hash)
-        clean_name=$(echo "$pod" | sed 's/-[a-z0-9]\{9,10\}-[a-z0-9]\{5\}$//')
-        echo "        ${ns}_${clean_name}[$clean_name]" >> architecture.md
-    done
-
-    echo "    end" >> architecture.md
-done
-
-# Add service connections (simplified)
-cat >> architecture.md <<'EOF'
-    convocanvas_convocanvas --> ollama_ollama
-    convocanvas_convocanvas --> chromadb_chromadb
-    monitoring_prometheus --> convocanvas_convocanvas
-    monitoring_prometheus --> ollama_ollama
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 ```
 
 **Result** (`architecture-v5.md`):
 ````markdown
-```mermaid
-graph TB
-    subgraph convocanvas["Namespace: convocanvas"]
-        convocanvas_convocanvas[convocanvas]
-    end
-    subgraph ollama["Namespace: ollama"]
-        ollama_ollama[ollama]
-    end
-    subgraph chromadb["Namespace: chromadb"]
-        chromadb_chromadb[chromadb]
-    end
-    subgraph monitoring["Namespace: monitoring"]
-        monitoring_prometheus[prometheus]
-        monitoring_grafana[grafana]
-    end
 
-    convocanvas_convocanvas --> ollama_ollama
-    convocanvas_convocanvas --> chromadb_chromadb
-    monitoring_prometheus --> convocanvas_convocanvas
-    monitoring_prometheus --> ollama_ollama
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 ````
 
 **Rendered**:
-```mermaid
-graph TB
-    subgraph convocanvas["Namespace: convocanvas"]
-        convocanvas_convocanvas[convocanvas]
-    end
-    subgraph ollama["Namespace: ollama"]
-        ollama_ollama[ollama]
-    end
-    subgraph chromadb["Namespace: chromadb"]
-        chromadb_chromadb[chromadb]
-    end
-    subgraph monitoring["Namespace: monitoring"]
-        monitoring_prometheus[prometheus]
-        monitoring_grafana[grafana]
-    end
 
-    convocanvas_convocanvas --> ollama_ollama
-    convocanvas_convocanvas --> chromadb_chromadb
-    monitoring_prometheus --> convocanvas_convocanvas
-    monitoring_prometheus --> ollama_ollama
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 **MUCH BETTER!** Namespaces were grouped. Names were clean. Relationships were clear.
 
@@ -305,72 +231,32 @@ I realized one diagram couldn't show everything. I needed three:
 
 # === HIGH-LEVEL ARCHITECTURE ===
 cat > architecture-high-level.md <<'EOF'
-```mermaid
-graph LR
-    User[User] --> ConvoCanvas[ConvoCanvas API]
-    ConvoCanvas --> Ollama[Local LLM<br/>17 Models]
-    ConvoCanvas --> ChromaDB[Vector DB<br/>1,133 Docs]
-    Ollama --> GPU[RTX 4080<br/>16GB VRAM]
-    ConvoCanvas --> Prefect[Automation<br/>Workflows]
-    Monitoring[Prometheus<br/>Grafana] -.-> ConvoCanvas
-    Monitoring -.-> Ollama
+
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 
 # === DEPLOYMENT DIAGRAM ===
 cat > architecture-deployment.md <<'EOF'
-```mermaid
-graph TB
-    subgraph K3s["K3s Cluster"]
-        subgraph convocanvas["convocanvas namespace"]
-            CC[ConvoCanvas<br/>2 replicas]
-        end
-        subgraph ollama["ollama namespace"]
-            OL[Ollama<br/>GPU: 1]
-        end
-        subgraph chromadb["chromadb namespace"]
-            CD[ChromaDB<br/>StatefulSet]
-        end
-        subgraph monitoring["monitoring namespace"]
-            PR[Prometheus]
-            GR[Grafana]
-        end
-        subgraph automation["automation namespace"]
-            PF[Prefect]
-            FM[FastMCP]
-        end
-    end
 
-    CC --> OL
-    CC --> CD
-    PR --> CC
-    PR --> OL
-    PF --> CC
-    FM --> CD
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 
 # === DATA FLOW DIAGRAM ===
 cat > architecture-data-flow.md <<'EOF'
-```mermaid
-sequenceDiagram
-    participant User
-    participant ConvoCanvas
-    participant Ollama
-    participant ChromaDB
-    participant Prefect
 
-    User->>ConvoCanvas: Upload Conversation
-    ConvoCanvas->>ChromaDB: Search Similar Docs
-    ChromaDB-->>ConvoCanvas: Top 5 Results
-    ConvoCanvas->>Ollama: Generate Content Ideas
-    Ollama-->>ConvoCanvas: AI Response
-    ConvoCanvas-->>User: Content Suggestions
-
-    Note over Prefect: Daily at 2 AM
-    Prefect->>ChromaDB: Index New Files
-    Prefect->>ConvoCanvas: Update Metadata
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 EOF
 
 echo "Generated 3 architecture diagrams:"
@@ -393,77 +279,21 @@ The next hour was spent refining:
 **Final High-Level Diagram** (`architecture-high-level-v11.md`):
 
 ````markdown
-```mermaid
-graph LR
-    subgraph External["External Services"]
-        GH[GitHub<br/>Code Repository]
-        CF[Cloudflare<br/>Blog Hosting]
-    end
 
-    subgraph Core["Core Infrastructure"]
-        CC[ConvoCanvas<br/>FastAPI]
-        OL[Ollama<br/>17 Models]
-        CD[ChromaDB<br/>1,133 Docs]
-        PF[Prefect<br/>Workflows]
-    end
-
-    subgraph Monitoring["Observability"]
-        PR[Prometheus]
-        GR[Grafana]
-    end
-
-    User[User] --> CC
-    CC --> OL
-    CC --> CD
-    OL --> GPU[RTX 4080]
-    PF --> CD
-    PR -.-> CC
-    PR -.-> OL
-    GR -.-> PR
-    CC -.-> GH
-    CC -.-> CF
-
-    style Core fill:#e1f5fe
-    style Monitoring fill:#fff3e0
-    style External fill:#f3e5f5
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 ````
 
 **Rendered**:
-```mermaid
-graph LR
-    subgraph External["External Services"]
-        GH[GitHub<br/>Code Repository]
-        CF[Cloudflare<br/>Blog Hosting]
-    end
 
-    subgraph Core["Core Infrastructure"]
-        CC[ConvoCanvas<br/>FastAPI]
-        OL[Ollama<br/>17 Models]
-        CD[ChromaDB<br/>1,133 Docs]
-        PF[Prefect<br/>Workflows]
-    end
-
-    subgraph Monitoring["Observability"]
-        PR[Prometheus]
-        GR[Grafana]
-    end
-
-    User[User] --> CC
-    CC --> OL
-    CC --> CD
-    OL --> GPU[RTX 4080]
-    PF --> CD
-    PR -.-> CC
-    PR -.-> OL
-    GR -.-> PR
-    CC -.-> GH
-    CC -.-> CF
-
-    style Core fill:#e1f5fe
-    style Monitoring fill:#fff3e0
-    style External fill:#f3e5f5
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 **PERFECT.**
 

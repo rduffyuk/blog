@@ -75,40 +75,12 @@ I needed local inference. I needed **Ollama**.
 
 **Reality check**: Local models still have context limits (Llama 3.1: 128K tokens, DeepSeek R1: 32K tokens). But I could **choose** the right model for each task and **save/resume** conversations across sessions. The win wasn't unlimited context - it was **control over the context**.
 
-```mermaid
-graph LR
-    subgraph External["❌ External Services - Before Sept 18"]
-        direction TB
-        Title1[Context Window Limits]
-        style Title1 fill:none,stroke:none,color:#ff6347
 
-        Claude[Claude Code<br/>200K token limit] -->|Hit Limit| Restart1[🔄 Forced Restart]
-        ChatGPT[ChatGPT<br/>128K token limit] -->|Hit Limit| Restart2[🔄 Forced Restart]
-
-        Restart1 --> LostContext[💔 Lost Context<br/>Start Over]
-        Restart2 --> LostContext
-
-        Title1 ~~~ Claude
-    end
-
-    subgraph Local["✅ Local Ollama - After Sept 18"]
-        direction TB
-        Title2[Context Control]
-        style Title2 fill:none,stroke:none,color:#228b22
-
-        Ollama[Ollama Models<br/>32K-128K limits] -->|Save State| Persist[💾 Save Conversation]
-        Persist --> Resume[▶️ Resume Anytime]
-        Resume --> Control[🎛️ Choose Right Model<br/>Per Task]
-
-        Title2 ~~~ Ollama
-    end
-
-    External -.->|"September 18, 2025<br/>15-Hour Sprint"| Migration[🔄 Migration]
-    Migration -.-> Local
-
-    style External fill:#ffe4e1,stroke:#ff6347,stroke-width:2px
-    style Local fill:#e1ffe1,stroke:#228b22,stroke-width:2px
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 ## September 18, 9:00 AM - The Research Phase
 
@@ -216,35 +188,12 @@ By noon, I had **17 models** installed:
 
 **The RTX 4080 could handle them all.** (Just not simultaneously.)
 
-```mermaid
-graph TD
-    Start[🎯 Goal: Context Freedom] --> Research[🔍 Research Phase<br/>9:00-9:30 AM]
-    Research --> Install[⚡ Install Ollama<br/>9:30 AM]
-    Install --> First6[📦 First 6 Models<br/>10:00-10:35 AM]
 
-    First6 --> Reasoning[💡 DeepSeek R1<br/>Reasoning]
-    First6 --> Fast[⚡ Mistral 7B<br/>General Purpose]
-    First6 --> Code[💻 CodeLlama<br/>Code Tasks]
-    First6 --> Latest[🆕 Llama 3.1<br/>Meta's Latest]
-    First6 --> Creative[🎨 Nous Hermes<br/>Creative]
-    First6 --> Mini[⚙️ Phi-3 Mini<br/>Quick Tasks]
-
-    First6 --> Testing[🧪 Testing Phase<br/>10:35-11:00 AM]
-    Testing --> Decision{More Models?}
-    Decision -->|Yes| More11[📦 +11 More Models<br/>11:00 AM-12:00 PM]
-
-    More11 --> Heavy[🏋️ Yi-34B<br/>Heavy Lifting]
-    More11 --> Expert[🎯 Mixtral 8x7B<br/>Mixture of Experts]
-    More11 --> Plus9[+9 More Specialized]
-
-    More11 --> Final[🎊 17 Total Models<br/>78GB Downloaded<br/>By Noon]
-
-    Final --> Result[✅ Complete Collection<br/>Ready for Testing]
-
-    style Start fill:#ffd700,stroke:#ff6347,stroke-width:2px
-    style Final fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Result fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 ## 1:00 PM - Testing Context Persistence
 
@@ -356,26 +305,12 @@ class ModelSupervisor:
         return response.json()["response"]
 ```
 
-```mermaid
-graph TD
-    User[👤 User Request] --> Router{🎯 Task Router<br/>Model Supervisor}
 
-    Router -->|"Need reasoning<br/>or analysis"| DeepSeek[🧠 DeepSeek R1 7B<br/>32K context<br/>4.2GB VRAM]
-    Router -->|"Code generation<br/>or debugging"| CodeLlama[💻 CodeLlama 7B<br/>16K context<br/>4.3GB VRAM]
-    Router -->|"Quick question<br/>fast response"| Mistral[⚡ Mistral 7B<br/>32K context<br/>4.1GB VRAM]
-    Router -->|"Long document<br/>large context"| Llama[🆕 Llama 3.1 8B<br/>128K context!<br/>4.8GB VRAM]
-    Router -->|"Heavy analysis<br/>complex task"| Yi[🏋️ Yi-34B Quantized<br/>4K context<br/>12.1GB VRAM]
-
-    DeepSeek --> Response[📤 Response with<br/>Full Context Retained]
-    CodeLlama --> Response
-    Mistral --> Response
-    Llama --> Response
-    Yi --> Response
-
-    style Router fill:#ffd700,stroke:#ff6347,stroke-width:3px
-    style Llama fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style Response fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
 ```
+📊 Diagram
+(Diagram visualization simplified for readability)
+```
+
 
 **Usage**:
 ```python

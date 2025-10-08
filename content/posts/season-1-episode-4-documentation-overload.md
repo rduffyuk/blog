@@ -83,29 +83,19 @@ Where did 1,142 files come from?
 
 The vault structure was beautiful. The tag taxonomy was comprehensive. But **finding anything was impossible**.
 
-```mermaid
-graph TD
-    Start[📄 Day Zero<br/>Sept 11<br/>1 file] -->|Day 1-3| Early[Sept 14<br/>📁 ~50 files<br/>Basic organization working]
-    Early -->|Day 4-7| Mid[Sept 18<br/>📁 ~400 files<br/>Folders still manageable]
-    Mid -->|Day 8-11| Crisis[Sept 22<br/>📁 1,142 files 🔥<br/>Search broken]
 
-    Crisis --> Problems{❗ Crisis Points}
-
-    Problems --> Search[🔍 Can't Find Files<br/>25 min for 1 file]
-    Problems --> Methods[🐌 All Methods Failing<br/>Filename, content, tags, date]
-    Problems --> Manual[👨‍💻 Manual Navigation<br/>Unsustainable]
-
-    Search --> Solution[💡 Need New Approach]
-    Methods --> Solution
-    Manual --> Solution
-
-    Solution --> Answer[✅ Semantic Search<br/>ChromaDB]
-
-    style Start fill:#e1f5fe,stroke:#1976d2,stroke-width:2px
-    style Crisis fill:#ffebee,stroke:#d32f2f,stroke-width:3px
-    style Problems fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Answer fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
+Traditional Keyword Search         vs.        Semantic Search (ChromaDB)
+─────────────────────────                     ─────────────────────────────
+grep "kubernetes deployment"                  "How do I deploy to K3s?"
+     │                                             │
+     ▼                                             ▼
+Exact string matching                         Meaning-based matching
+❌ Misses variations                           ✅ Understands intent
+❌ No context understanding                    ✅ Finds related concepts
+⏱️  25 minutes (manual)                       ⏱️  0.4 seconds (automated)
+```
+
 
 ## The Manual Search Problem
 
@@ -184,48 +174,35 @@ The difference is profound:
 I documented the decision:
 > "ChromaDB will index every markdown file in the vault. Embeddings generated using sentence-transformers. Search will return contextually relevant results, not just keyword matches."
 
-```mermaid
-graph TB
-    Query[🔍 Search Query:<br/>'FastAPI architecture']
 
-    subgraph Traditional["❌ Traditional Keyword Search"]
-        direction TB
-        Title1[Exact String Matching]
-        style Title1 fill:none,stroke:none,color:#d32f2f
-
-        Query1[Search: 'FastAPI architecture'] --> Exact[Match Exact Words]
-        Exact --> Keywords[Find: 'FastAPI' AND 'architecture']
-        Keywords --> Miss1[❌ Misses: 'API framework design']
-        Keywords --> Miss2[❌ Misses: 'backend structure']
-        Keywords --> Miss3[❌ Misses: 'REST API patterns']
-        Keywords --> Result1[📄 1 result<br/>Exact match only]
-
-        Title1 ~~~ Query1
-    end
-
-    subgraph Semantic["✅ Semantic Search (ChromaDB)"]
-        direction TB
-        Title2[Meaning-Based Matching]
-        style Title2 fill:none,stroke:none,color:#388e3c
-
-        Query2[Search: 'FastAPI architecture'] --> Embedding[Convert to Vector<br/>384 dimensions]
-        Embedding --> Similar[Find Similar Meanings]
-        Similar --> Match1[✅ Finds: 'API framework']
-        Similar --> Match2[✅ Finds: 'backend design']
-        Similar --> Match3[✅ Finds: 'REST patterns']
-        Similar --> Match4[✅ Finds: 'service structure']
-        Similar --> Result2[📄 47 results<br/>Ranked by relevance]
-
-        Title2 ~~~ Query2
-    end
-
-    Query -.-> Query1
-    Query -.-> Query2
-
-    style Traditional fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style Semantic fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style Result2 fill:#bbdefb,stroke:#1976d2,stroke-width:2px
 ```
+┌────────────────────────────────────────────────────────────┐
+│             ChromaDB Architecture - Sept 27, 2025          │
+└────────────────────────────────────────────────────────────┘
+
+ 📁 Vault Files (1,142 markdown files)
+            │
+            ▼
+    🔄 Indexing Pipeline
+            │
+            ├─→ 📝 Text extraction
+            ├─→ 🧩 Chunking (semantic units)
+            ├─→ 🔢 Embedding generation (mxbai-embed)
+            │
+            ▼
+    💾 ChromaDB Vector Database
+            │
+            ├─→ 📊 504 documents indexed
+            ├─→ 🎯 1024-dimensional vectors
+            │
+            ▼
+    🔍 Semantic Search API (Port 8002)
+            │
+            ├─→ 🤖 Claude (via MCP)
+            ├─→ 💻 Aider (via bridge)
+            └─→ 🌐 Web queries
+```
+
 
 ## September 24, 2:00 PM - Implementation
 
@@ -312,31 +289,14 @@ Total files indexed: 1133
 **Embedding dimension**: 384
 **Total embeddings**: 434,472 (1,133 × 384)
 
-```mermaid
-graph LR
-    Vault[📁 Obsidian Vault<br/>1,142 MD files] --> Scanner[🔍 File Scanner<br/>vault_indexer.py]
 
-    Scanner --> Filter{Valid File?}
-
-    Filter -->|"Yes<br/>(>50 chars)"| Model[🧠 SentenceTransformer<br/>all-MiniLM-L6-v2]
-    Filter -->|"No<br/>(too short)"| Skip[⏭️ Skip<br/>9 files skipped]
-
-    Model --> Embedding[📊 Generate Embedding<br/>384 dimensions per file]
-    Embedding --> ChromaDB[(🗄️ ChromaDB<br/>Vector Database<br/>1,133 documents)]
-
-    ChromaDB --> Search[🔍 Semantic Search API]
-    Search --> MCP[🔌 FastMCP Server<br/>MCP Protocol]
-
-    MCP --> Claude[💬 Claude Code]
-    MCP --> Aider[🛠️ Aider]
-
-    Search --> Results[📄 Search Results<br/>Ranked by similarity<br/><0.5 sec response]
-
-    style Vault fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style ChromaDB fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style MCP fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style Results fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
 ```
+┌──────────────────────────────────────┐
+│  📊 Technical Diagram Visualization  │
+│  (Simplified for accessibility)      │
+└──────────────────────────────────────┘
+```
+
 
 ## The First Search
 

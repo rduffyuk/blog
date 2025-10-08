@@ -62,36 +62,36 @@ What followed was a 90-minute planning session that, in retrospect, would shape 
 
 ## 🗂️ The Vision: Five Folders to Rule Them All
 
-```mermaid
-graph TB
-    subgraph DayZero[" "]
-        direction TB
-        Title[🌟 Day Zero Architecture - Sept 11, 2025]
-        style Title fill:none,stroke:none,color:#ffd700
 
-        AI[👤 AI Conversations<br/>200+ scattered files] --> Vision{💡 ConvoCanvas Vision}
-
-        Vision --> V1[📁 01-AI-Conversations<br/>Raw material]
-        Vision --> V2[💎 02-Content-Ideas<br/>Extracted value]
-        Vision --> V3[📚 03-Learning-Log<br/>Knowledge capture]
-        Vision --> V4[🔧 04-Project-Development<br/>ConvoCanvas itself]
-        Vision --> V5[📋 05-Templates<br/>Automation foundation]
-
-        V1 --> Tags[🏷️ 50+ Tag Taxonomy]
-        V2 --> Tags
-        V3 --> Tags
-        V4 --> Tags
-        V5 --> Tags
-
-        Tags --> Future[🚀 Future: Automated<br/>Content Generation]
-
-        Title ~~~ AI
-    end
-
-    style Vision fill:#ffd700,stroke:#ff6347,stroke-width:3px
-    style Future fill:#98fb98,stroke:#228b22,stroke-width:2px
-    style DayZero fill:#f0f8ff,stroke:#4682b4,stroke-width:2px
 ```
+┌─────────────────────────────────────────────────────────────┐
+│          🌟 Day Zero Architecture - Sept 11, 2025          │
+└─────────────────────────────────────────────────────────────┘
+
+            👤 AI Conversations
+            200+ scattered files
+                    │
+                    ▼
+            💡 ConvoCanvas Vision
+                    │
+        ┌───────────┼───────────┬───────────┬───────────┐
+        │           │           │           │           │
+        ▼           ▼           ▼           ▼           ▼
+   📁 01-AI      💎 02-       📚 03-      🔧 04-      📋 05-
+ Conversations  Content-    Learning-   Project-    Templates
+ Raw material    Ideas       Log        Development Foundation
+                Extracted  Knowledge   ConvoCanvas  Automation
+                  value     capture      itself
+        │           │           │           │           │
+        └───────────┴───────────┴───────────┴───────────┘
+                            │
+                            ▼
+                    🏷️ 50+ Tag Taxonomy
+                            │
+                            ▼
+            🚀 Future: Automated Content Generation
+```
+
 
 
 
@@ -212,33 +212,17 @@ ConvoCanvas would be different:
 
 ## 🏗️ The Technical Vision
 
-```mermaid
-graph LR
-    subgraph Phase1["⚡ Phase 1: MVP (72 hours)"]
-        Upload[📤 Upload Conversation] --> Parse[🔍 Parse Content]
-        Parse --> Analyze[🧠 AI Analysis]
-        Analyze --> Generate[📝 Generate Ideas]
-    end
 
-    subgraph Phase2["🚀 Phase 2: Enhancement"]
-        WebUI[🌐 Web Interface]
-        Webhooks[🔗 Webhooks]
-        Drafts[✍️ Full Drafts]
-    end
-
-    subgraph Phase3["🤖 Phase 3: Automation"]
-        Schedule[⏰ Scheduled Publishing]
-        Multi[📱 Multi-Platform]
-        Analytics[📊 Analytics]
-    end
-
-    Phase1 --> Phase2
-    Phase2 --> Phase3
-
-    style Phase1 fill:#e1f5fe
-    style Phase2 fill:#fff3e0
-    style Phase3 fill:#f3e5f5
 ```
+⚡ Phase 1: MVP        →    🚀 Phase 2:         →    🤖 Phase 3:
+  (72 hours)                  Enhancement              Automation
+
+  • FastAPI backend           • Web interface          • Scheduled publishing
+  • File upload               • Webhook integration    • Multi-platform posting
+  • Content analysis          • Advanced drafting      • Analytics tracking
+  • Idea generation
+```
+
 
 
 
